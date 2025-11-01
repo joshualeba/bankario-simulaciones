@@ -1,0 +1,519 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bankario dashboard</title>
+    <link rel="icon" href="multimedia/logo.png" type="image/x-icon"/>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-icons/1.10.0/font/bootstrap-icons.min.css" rel="stylesheet">
+    <link href="css/dashboard.css" rel="stylesheet">
+</head>
+<body class="loader_bg">
+    <!-- Sección: Loader de carga -->
+    <div class="loader_p">
+        <div class="loader">    
+            <span class="loader-text">Cargando</span>
+            <span class="load"></span>
+        </div>
+    </div>
+
+    <!-- Sección: Barra de navegación superior -->
+    <nav class="navbar navbar-expand-lg fixed-top glass-nav">
+        <div class="container-fluid px-4">
+            <button class="btn btn-glass d-lg-none me-3" id="sidebarToggle" aria-label="Toggle navigation">
+                <i class="bi bi-list"></i>
+            </button>
+
+            <a class="navbar-brand d-flex align-items-center" href="#" data-section="inicio">
+                <img src="multimedia/logo.png" alt="Logo Bankario" class="me-2" width="40" height="40">
+            </a>
+            
+            <div class="d-flex align-items-center gap-3">
+                <button class="btn btn-glass" id="themeToggle" aria-label="Toggle theme">
+                    <i class="bi bi-sun-fill" id="themeIcon"></i>
+                </button>
+                
+                <div class="position-relative">
+                    <button class="btn btn-glass d-flex align-items-center" id="userBtn" aria-expanded="false" aria-controls="userDropdown">
+                        <span class="d-none d-md-inline">{{ usuario.nombres.split(' ')[0] }} {{ usuario.apellidos.split(' ')[0] }}</span>
+                    </button>
+                    
+                    <div class="user-dropdown glass-panel" id="userDropdown">
+                        <div class="p-3">
+                            <div class="text-center mb-3">
+                                <h6 class="mb-1">{{ usuario.nombres }} {{ usuario.apellidos }}</h6>
+                                <small class="mb-1">{{ usuario.correo }}</small>
+                            </div>
+                            <hr>
+                            <div class="d-grid gap-2">
+                                <button class="btn btn-outline-primary btn-sm" data-section="perfil" id="miPerfilBtn">
+                                    <i class="bi bi-person me-2"></i>Mi perfil
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Sección: Sidebar lateral -->
+    <div class="sidebar glass-sidebar" id="sidebar">
+        <div class="sidebar-content">
+            <ul class="nav flex-column">
+                <li class="nav-item">
+                    <a class="nav-link active" href="#" data-section="inicio">
+                        <i class="bi bi-house-door"></i>
+                        <span>Inicio</span>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="#" data-section="simulaciones">
+                        <i class="bi bi-calculator"></i>
+                        <span>Simulaciones</span>
+                    </a>
+                </li>
+                 <li class="nav-item">
+                    <a class="nav-link" href="#" data-section="test-conocimientos">
+                        <i class="bi bi-journal-check"></i>
+                        <span>Test de conocimientos</span>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="#" data-section="glosario">
+                        <i class="bi bi-book"></i>
+                        <span>Glosario de términos</span>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="#" data-section="perfil">
+                        <i class="bi bi-person"></i>
+                        <span>Mi perfil</span>
+                    </a>
+                </li>
+            </ul>
+        </div>
+        
+        <div class="sidebar-footer">
+            <button class="btn btn-outline-danger w-100" id="logoutBtn">
+                <i class="bi bi-box-arrow-right me-2"></i>
+                Cerrar sesión
+            </button>
+        </div>
+    </div>
+
+    <!-- Sección: Contenido principal -->
+    <main class="main-content">
+        <!-- Sección: Inicio -->
+        <section id="inicio-section" class="content-section">
+            <div class="glass-card p-4 fade-in">
+                <div class="row align-items-center mb-5">
+                    <div class="col-lg-7 col-md-12 order-md-2 order-lg-1 text-center text-lg-start mb-4 mb-lg-0">
+                        <h1 class="display-5 fw-bold mb-3 titulo-dashboard">¡Bienvenido/a {{ usuario.nombres.split(' ')[0] }}!</h1>
+                        <p class="lead text-muted mb-4">Tu plataforma financiera integral que te da el control para gestionar tus cuentas, realizar transferencias de forma sencilla y segura mediante simulaciones ¡Sin arriesgar nada!</p>
+                        <a href="#" class="btn btn-primary btn-lg" data-section="simulaciones">
+                            <i class="bi bi-calculator-fill me-2"></i> Comienza a simular
+                        </a>
+                    </div>
+                    <div class="col-lg-5 col-md-12 order-md-1 order-lg-2 text-center">
+                        <img src="multimedia/home_img.png" alt="Imagen de bienvenida a Bankario" class="img-fluid rounded shadow-lg" style="max-height: 400px; object-fit: cover;">
+                    </div>
+                </div>
+
+                <hr class="my-5">
+
+                <h3 class="text-center mb-4 titulo-dashboard">Explora nuestras herramientas clave</h3>
+                <div class="row text-center mt-4">
+                    <!-- Tarjeta: Simulaciones inteligentes -->
+                    <div class="col-lg-6 col-md-6 mb-4">
+                        <a href="#" class="text-decoration-none text-reset d-block glass-card p-3 h-100" data-section="simulaciones">
+                            <i class="bi bi-calculator-fill text-success fs-1 mb-3"></i>
+                            <h5>Simulaciones inteligentes</h5>
+                            <p class="card-text text-muted">Planifica tu futuro financiero con nuestras herramientas de proyección avanzadas.</p>
+                        </a>
+                    </div>
+                    <!-- Tarjeta: Test de conocimientos -->
+                    <div class="col-lg-6 col-md-6 mb-4">
+                        <a href="#" class="text-decoration-none text-reset d-block glass-card p-3 h-100" data-section="test-conocimientos">
+                            <i class="bi bi-journal-check text-primary fs-1 mb-3"></i>
+                            <h5>Test de conocimientos</h5>
+                            <p class="card-text text-muted">Pon a prueba tus habilidades financieras y aprende de forma interactiva.</p>
+                        </a>
+                    </div>
+                    <!-- Tarjeta: Glosario de términos -->
+                    <div class="col-lg-6 col-md-6 mb-4">
+                        <a href="#" class="text-decoration-none text-reset d-block glass-card p-3 h-100" data-section="glosario">
+                            <i class="bi bi-book text-info fs-1 mb-3"></i>
+                            <h5>Glosario de términos</h5>
+                            <p class="card-text text-muted">Descubre el significado de los conceptos financieros clave de manera sencilla.</p>
+                        </a>
+                    </div>
+                    <!-- Tarjeta: Perfil personalizado -->
+                    <div class="col-lg-6 col-md-6 mb-4">
+                        <a href="#" class="text-decoration-none text-reset d-block glass-card p-3 h-100" data-section="perfil">
+                            <i class="bi bi-person-fill text-danger fs-1 mb-3"></i>
+                            <h5>Perfil personalizado</h5>
+                            <p class="card-text text-muted">Administra tus datos, preferencias y ajustes de seguridad fácilmente.</p>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Sección: Simulaciones -->
+        <section id="simulaciones-section" class="content-section d-none">
+            <div class="glass-card p-4 fade-in">
+                <h2 class="mb-4 titulo-dashboard text-center">¡Prepara tu futuro financiero con nuestras simulaciones!</h2>
+                <p class="lead text-muted text-center mb-5">Explora diferentes escenarios financieros y toma decisiones informadas sin riesgo. Nuestras herramientas interactivas te ayudarán a entender el impacto de tus elecciones.</p>
+
+                <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-4">
+                    <div class="col">
+                        <div class="glass-card h-100 p-4 d-flex flex-column">
+                            <i class="bi bi-wallet-fill text-success fs-1 mb-3 text-center"></i>
+                            <h5 class="card-title text-center mb-3">Simulador de ahorro</h5>
+                            <p class="card-text text-muted text-center flex-grow-1">Calcula cuánto necesitas ahorrar y por cuánto tiempo para alcanzar tus metas financieras, como comprar una casa o jubilarte cómodamente.</p>
+                            <a href="{{ url_for('simulador_ahorro') }}" class="btn btn-outline-success w-100 mt-auto">
+                                <i class="bi bi-play-circle me-2"></i> Iniciar simulación
+                            </a>
+                        </div>
+                    </div>
+
+                    <div class="col">
+                        <div class="glass-card h-100 p-4 d-flex flex-column">
+                            <i class="bi bi-currency-dollar text-primary fs-1 mb-3 text-center"></i>
+                            <h5 class="card-title text-center mb-3">Simulador de crédito</h5>
+                            <p class="card-text text-muted text-center flex-grow-1">Estima las cuotas mensuales, intereses y el costo total de un préstamo. Juega con diferentes plazos y tasas de interés para encontrar la mejor opción.</p>
+                            <a href="{{ url_for('simulador_credito') }}" class="btn btn-outline-info w-100 mt-auto">
+                                <i class="bi bi-cash-stack me-2"></i>Iniciar simulación
+                            </a>
+                        </div>
+                    </div>
+
+                    <div class="col">
+                        <div class="glass-card h-100 p-4 d-flex flex-column">
+                            <i class="bi bi-graph-up-arrow text-warning fs-1 mb-3 text-center"></i>
+                            <h5 class="card-title text-center mb-3">Simulador de inversión</h5>
+                            <p class="card-text text-muted text-center flex-grow-1">Proyecta el crecimiento de tus inversiones a lo largo del tiempo, considerando aportaciones regulares y diferentes rendimientos esperados.</p>
+                            <a href="{{ url_for('simulador_inversion') }}" class="btn btn-outline-warning w-100 mt-auto">
+                                <i class="bi bi-play-circle me-2"></i>Iniciar simulación
+                            </a>
+                        </div>
+                    </div>
+
+                    <div class="col">
+                        <div class="glass-card h-100 p-4 d-flex flex-column">
+                            <i class="bi bi-pie-chart-fill text-info fs-1 mb-3 text-center"></i>
+                            <h5 class="card-title text-center mb-3">Simulador de presupuesto personal</h5>
+                            <p class="card-text text-muted text-center flex-grow-1">Crea un presupuesto interactivo para visualizar cómo tus ingresos y gastos impactan tu capacidad de ahorro y cumplimiento de objetivos.</p>
+                            <a href="{{ url_for('simulador_presupuesto_personal') }}" class="btn btn-outline-info w-100 mt-auto">
+                                <i class="bi bi-play-circle me-2"></i>Iniciar simulación
+                            </a>
+                        </div>
+                    </div>
+
+                    <div class="col">
+                        <div class="glass-card h-100 p-4 d-flex flex-column">
+                            <i class="bi bi-person-lines-fill text-secondary fs-1 mb-3 text-center"></i>
+                            <h5 class="card-title text-center mb-3">Simulador de retiro/jubilación</h5>
+                            <p class="card-text text-muted text-center flex-grow-1">Planifica tu jubilación. Determina cuánto necesitas ahorrar para mantener tu estilo de vida deseado después de dejar de trabajar.</p>
+                            <a href="{{ url_for('simulador_retiro_jubilacion') }}" class="btn btn-outline-secondary w-100 mt-auto">
+                                <i class="bi bi-play-circle me-2"></i>Iniciar simulación
+                            </a>
+                        </div>
+                    </div>
+
+                    <div class="col">
+                        <div class="glass-card h-100 p-4 d-flex flex-column">
+                            <i class="bi bi-cash-stack text-danger fs-1 mb-3 text-center"></i>
+                            <h5 class="card-title text-center mb-3">Calculadora de deuda</h5>
+                            <p class="card-text text-muted text-center flex-grow-1">Visualiza cuánto tiempo y dinero te tomará saldar una deuda con diferentes estrategias de pago.</p>
+                            <a href="{{ url_for('calculadora_deuda') }}" class="btn btn-outline-danger w-100 mt-auto">
+                                <i class="bi bi-play-circle me-2"></i>Iniciar simulación
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Sección: Test de conocimientos -->
+        <section id="test-conocimientos-section" class="content-section d-none">
+            <div class="glass-card p-4 fade-in">
+                <h2 class="mb-4 titulo-dashboard text-center">Test de conocimientos financieros</h2>
+                <p class="lead text-muted text-center mb-5">Pon a prueba tus conocimientos financieros con nuestras preguntas interactivas. ¡Aprende y diviértete!</p>
+
+                <!-- Contenedor del test (visible si no se ha completado) -->
+                <div id="testContainer">
+                    <div class="progress mb-4" role="progressbar" aria-label="Progreso del test" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100" style="height: 20px;">
+                        <div class="progress-bar" style="width: 0%"></div>
+                    </div>
+                    <div class="question-display text-center glass-panel p-4 mb-4">
+                        <p id="questionText" class="fs-4 fw-bold"></p>
+                        <div id="optionsContainer" class="d-flex flex-column align-items-center gap-3 mt-4">
+                            <!-- Las opciones de respuesta se renderizarán aquí -->
+                        </div>
+                        <div id="feedbackMessage" class="mt-3 fs-5 fw-bold" style="min-height: 30px;"></div>
+                        <div id="timerDisplay" class="mt-2 fs-5 fw-bold text-primary">Tiempo restante: <span id="timeRemaining"></span>s</div>
+                    </div>
+
+                    <div class="d-flex justify-content-between mt-4">
+                        <button class="btn btn-outline-secondary" id="prevQuestionBtn" style="visibility: hidden;">
+                            <i class="bi bi-arrow-left me-2"></i> Anterior
+                        </button>
+                        <button class="btn btn-primary" id="checkAnswerBtn">Comprobar <i class="bi bi-check-circle ms-2"></i></button>
+                        <button class="btn btn-primary d-none" id="nextQuestionBtn">Siguiente <i class="bi bi-arrow-right ms-2"></i></button>
+                        <button class="btn btn-success d-none" id="submitTestBtn">Finalizar test <i class="bi bi-send ms-2"></i></button>
+                    </div>
+                </div>
+
+                <!-- Sección de resultados inmediatos (después de terminar el test, antes de ver el ranking) -->
+                <div id="testResult" class="glass-panel p-4 mt-5 d-none text-center">
+                    <h3 class="titulo-dashboard mb-3">Resultados del test</h3>
+                    <p class="fs-4">Respuestas correctas: <span id="scoreDisplay" class="fw-bold text-primary"></span> de <span id="totalQuestionsDisplay" class="fw-bold"></span></p>
+                    <p class="fs-4">Puntuación total: <span id="totalPointsDisplay" class="fw-bold text-success"></span></p>
+                    <p class="lead" id="resultMessage"></p>
+                    <button class="btn btn-info mt-3" id="viewRankingBtn">Ver ranking <i class="bi bi-trophy ms-2"></i></button>
+                </div>
+
+                <!-- Sección para cuando el test ya ha sido completado (se carga al iniciar la sección del test) -->
+                <div id="testCompletedSection" class="glass-panel p-4 mt-5 d-none text-center">
+                    <h3 class="titulo-dashboard mb-3">Test de conocimientos completado</h3>
+                    <p class="fs-4">Has respondido <span id="completedCorrectAnswers" class="fw-bold text-primary"></span> de <span id="completedTotalQuestions" class="fw-bold"></span> preguntas correctamente.</p>
+                    <p class="fs-4">Tu puntuación final fue: <span id="completedTotalPoints" class="fw-bold text-success"></span> puntos.</p>
+                    <p class="lead" id="completedResultMessage"></p>
+                    <button class="btn btn-info mt-3" id="viewRankingBtnCompleted">Ver ranking <i class="bi bi-trophy ms-2"></i></button>
+                </div>
+            </div>
+        </section>
+
+        <!-- Sección: Glosario de términos -->
+        <section id="glosario-section" class="content-section d-none">
+            <div class="glass-card p-4 fade-in">
+                <h2 class="mb-4 titulo-dashboard text-center">Glosario de términos financieros</h2>
+                <p class="lead text-muted text-center mb-5">
+                    Explora y comprende los conceptos clave del mundo financiero. Desde términos básicos hasta definiciones más complejas, nuestro glosario está diseñado para ayudarte a dominar el lenguaje de las finanzas.
+                </p>
+                <div class="text-center">
+                    <a href="{{ url_for('glosario') }}" class="btn btn-primary btn-lg">
+                        <i class="bi bi-book-fill me-2"></i> Ir al glosario completo
+                    </a>
+                </div>
+            </div>
+        </section>
+
+        <!-- Sección: Mi perfil -->
+        <section id="perfil-section" class="content-section d-none">
+            <div class="glass-card p-4 fade-in">
+                <h2 class="mb-4 titulo-dashboard text-center">Mi perfil</h2>
+                <p class="lead text-muted text-center mb-5">Aquí puedes revisar y gestionar tu información personal y los detalles de tu cuenta.</p>
+
+                <div class="row justify-content-center">
+                    <div class="col-lg-8 col-md-10">
+                        <div class="glass-card p-4 mb-4">
+                            <h5 class="mb-3 text-primary"><i class="bi bi-person-circle me-2"></i> Información personal</h5>
+                            <hr>
+                            <div class="row mb-2">
+                                <div class="col-md-4 text-muted">Nombre completo:</div>
+                                <div class="col-md-8 fw-bold text-break">{{ usuario.nombres }} {{ usuario.apellidos }}</div>
+                            </div>
+                            <div class="row mb-2">
+                                <div class="col-md-4 text-muted">Correo electrónico:</div>
+                                <div class="col-md-8 fw-bold text-break">{{ usuario.correo }}</div>
+                            </div>
+                            <div class="row mb-2">
+                                <div class="col-md-4 text-muted">Fecha de registro:</div>
+                                <div class="col-md-8 fw-bold">{{ usuario.fecha_registro }}</div>
+                            </div>
+                            <!-- <div class="row mb-2">
+                                <div class="col-md-4 text-muted">Tipo de cuenta:</div>
+                                <div class="col-md-8 fw-bold">{{ usuario.tipo_cuenta }}</div>
+                            </div> -->
+                            <div class="d-grid gap-2 mt-4">
+                                <button class="btn btn-outline-secondary btn-sm" data-bs-toggle="modal" data-bs-target="#editarPerfilModal">
+                                    <i class="bi bi-pencil-square me-2"></i> Editar información personal
+                                </button>
+                            </div>
+                        </div>
+
+                        <div class="glass-card p-4 mb-4">
+                            <h5 class="mb-3 text-success"><i class="bi bi-shield-lock me-2"></i> Seguridad de la cuenta</h5>
+                            <hr>
+                            <div class="row mb-2">
+                                <div class="col-md-4 text-muted">Último inicio de sesión:</div>
+                                <div class="col-md-8 fw-bold">{{ usuario.ultima_sesion }}</div>
+                            </div>
+                            <div class="d-grid gap-2 mt-4">
+                                <button class="btn btn-outline-primary btn-sm" data-bs-toggle="modal" data-bs-target="#cambiarContrasenaModal">
+                                    <i class="bi bi-key me-2"></i> Cambiar contraseña
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Modal: Editar información personal -->
+        <div class="modal fade" id="editarPerfilModal" tabindex="-1" aria-labelledby="editarPerfilModalLabel" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered">
+                <div class="modal-content glass-modal">
+                    <div class="modal-header border-0">
+                        <h5 class="modal-title" id="editarPerfilModalLabel">Editar información personal</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Cerrar"></button>
+                    </div>
+                    <form action="/actualizar_perfil" method="post">
+                        <div class="modal-body">
+                            <div class="mb-3">
+                                <label for="editNombres" class="form-label">Nombre(s):</label>
+                                <input type="text" class="form-control glass-input" id="editNombres" name="nombres" value="{{ usuario.nombres }}" required>
+                            </div>
+                            <div class="mb-3">
+                                <label for="editApellidos" class="form-label">Apellidos:</label>
+                                <input type="text" class="form-control glass-input" id="editApellidos" name="apellidos" value="{{ usuario.apellidos }}" required>
+                            </div>
+                            <div class="mb-3">
+                                <label for="editCorreo" class="form-label">Correo electrónico:</label>
+                                <input type="email" class="form-control glass-input" id="editCorreo" name="correo_electronico" value="{{ usuario.correo }}" readonly>
+                            </div>
+                        </div>
+                        <div class="modal-footer border-0">
+                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                            <button type="submit" class="btn btn-primary">Guardar cambios</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+
+        <!-- Modal: Cambiar contraseña -->
+        <div class="modal fade" id="cambiarContrasenaModal" tabindex="-1" aria-labelledby="cambiarContrasenaModalLabel" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered">
+                <div class="modal-content glass-modal">
+                    <div class="modal-header border-0">
+                        <h5 class="modal-title" id="cambiarContrasenaModalLabel">Cambiar contraseña</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Cerrar"></button>
+                    </div>
+                    <form id="formCambiarContrasena" action="/cambiar_contrasena" method="post">
+                        <div class="modal-body">
+                            <div class="mb-3">
+                                <label for="contrasenaActual" class="form-label">Contraseña actual:</label>
+                                <div class="input-group">
+                                    <input type="password" class="form-control glass-input" id="contrasenaActual" name="contrasena_actual" required>
+                                    <button class="btn btn-outline-secondary toggle-password" type="button" data-target="contrasenaActual">
+                                        <i class="bi bi-eye"></i>
+                                    </button>
+                                </div>
+                            </div>
+                            <div class="mb-3">
+                                <label for="nuevaContrasena" class="form-label">Nueva contraseña:</label>
+                                <div class="input-group">
+                                    <input type="password" class="form-control glass-input" id="nuevaContrasena" name="nueva_contrasena" required>
+                                    <button class="btn btn-outline-secondary toggle-password" type="button" data-target="nuevaContrasena">
+                                        <i class="bi bi-eye"></i>
+                                    </button>
+                                </div>
+                                <div id="nuevaContrasenaFeedback" class="invalid-feedback d-block"></div>
+                            </div>
+                            <div class="mb-3">
+                                <label for="confirmarNuevaContrasena" class="form-label">Confirmar nueva contraseña:</label>
+                                <div class="input-group">
+                                    <input type="password" class="form-control glass-input" id="confirmarNuevaContrasena" name="confirmar_nueva_contrasena" required>
+                                    <button class="btn btn-outline-secondary toggle-password" type="button" data-target="confirmarNuevaContrasena">
+                                        <i class="bi bi-eye"></i>
+                                    </button>
+                                </div>
+                                <div id="confirmarNuevaContrasenaFeedback" class="invalid-feedback d-block"></div>
+                            </div>
+                        </div>
+                        <div class="modal-footer border-0">
+                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                            <button type="submit" class="btn btn-primary" id="submitCambiarContrasena">Cambiar contraseña</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- Modal: Cerrar sesión -->
+    <div class="modal fade" id="logoutModal" tabindex="-1" aria-labelledby="logoutModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content glass-modal">
+                <div class="modal-header border-0">
+                    <h5 class="modal-title" id="logoutModalLabel">Cerrar sesión</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Cerrar"></button>
+                </div>
+                <div class="modal-body">
+                    <p>¿Estás seguro/a de que deseas cerrar sesión?</p>
+                </div>
+                <div class="modal-footer border-0">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                    <button type="button" class="btn btn-danger" id="confirmLogout">Cerrar sesión</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal: Resultados del test (se mantiene, pero su contenido será dinámico) -->
+    <div class="modal fade" id="testResultModal" tabindex="-1" aria-labelledby="testResultModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content glass-modal"> 
+                <div class="modal-header border-0">
+                    <h5 class="modal-title" id="testResultModalLabel">Resultados del test</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Cerrar"></button>
+                </div>
+                <div class="modal-body text-center">
+                    <p class="fs-4">Has respondido <span id="finalScoreModal" class="fw-bold text-primary"></span> de <span id="totalQuestionsModal" class="fw-bold"></span> preguntas correctamente.</p>
+                    <p class="fs-4">Tu puntuación total: <span id="finalTotalPointsModal" class="fw-bold text-success"></span> puntos.</p>
+                    <p class="lead" id="resultMessageModal"></p>
+                </div>
+                <div class="modal-footer border-0 justify-content-center">
+                    <button type="button" class="btn btn-primary" data-bs-dismiss="modal">Aceptar</button>
+                    <button type="button" class="btn btn-info" id="viewRankingBtnModal">Ver ranking <i class="bi bi-trophy ms-2"></i></button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal: Ranking -->
+    <div class="modal fade" id="rankingModal" tabindex="-1" aria-labelledby="rankingModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered modal-lg">
+            <div class="modal-content glass-modal">
+                <div class="modal-header border-0">
+                    <h5 class="modal-title" id="rankingModalLabel">Ranking de conocimientos financieros</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Cerrar"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="table-responsive">
+                        <table class="table table-hover table-striped">
+                            <thead>
+                                <tr>
+                                    <th scope="col">Posición</th>
+                                    <th scope="col">Usuario</th>
+                                    <th scope="col">Puntuación</th>
+                                    <th scope="col">Tiempo</th>
+                                    <th scope="col">Correctas</th>
+                                </tr>
+                            </thead>
+                            <tbody id="rankingTableBody">
+                                <!-- Filas del ranking se insertarán aquí -->
+                            </tbody>
+                        </table>
+                    </div>
+                    <div id="userRankingInfo" class="mt-4 p-3 glass-panel d-none">
+                        <h6 class="text-center">Tu posición: <span id="userPositionDisplay" class="fw-bold text-primary"></span></h6>
+                        <p class="text-center mb-0">Puntuación: <span id="userScoreRanking" class="fw-bold"></span> | Tiempo: <span id="userTimeRanking" class="fw-bold"></span>s | Correctas: <span id="userCorrectRanking" class="fw-bold"></span></p>
+                    </div>
+                </div>
+                <div class="modal-footer border-0 justify-content-center">
+                    <button type="button" class="btn btn-primary" data-bs-dismiss="modal">Aceptar</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/js/bootstrap.bundle.min.js"></script>
+    <script src="js/dashboard.js"></script>
+</body>
+</html>

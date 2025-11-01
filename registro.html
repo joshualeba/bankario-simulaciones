@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Registro - BANKario</title>
+    <link rel="stylesheet" href="css/registro.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="icon" href="multimedia/logo.ico" type="image/x-icon" />
+</head>
+<body class="loader_bg">
+  <div class="loader_p">
+        <div class="loader">
+            <span class="loader-text">Cargando</span>
+            <span class="load"></span>
+        </div>
+  </div>
+    <div class="contenedor">
+        <div class="lado-izquierdo">
+            <img src="multimedia/logo.png" alt="BANKario Logo" class="logo-bankario">
+            <video autoplay loop muted class="bg-video">
+                <source src="multimedia/registro_video.mp4" type="video/mp4">
+                tu navegador no soporta videos HTML5.
+            </video>
+            <a href="index.html" class="boton-volver">
+                <i class="fas fa-arrow-left"></i> Volver
+            </a>
+        </div>
+
+        <div class="lado-derecho">
+            <div class="formulario">
+                <h2>Crear una cuenta</h2>
+                <p>¿Ya tienes una cuenta? <a href="iniciar_sesion.html" class="inicio_btn">Inicia sesión</a></p>
+                <form id="registroForm" action="/registrar_usuario" method="post">
+                    <div class="input-doble">
+                        <input type="text" placeholder="Nombre(s)" name="nombres" required minlength="2" maxlength="30" pattern="[A-Za-zÁÉÍÓÚáéíóúÑñ\s]+" title="solo letras y espacios" oninput="this.value = this.value.replace(/[^A-Za-zÁÉÍÓÚáéíóúÑñ\s]/g, '')">
+                        <input type="text" placeholder="Apellido(s)" name="apellidos" required minlength="2" maxlength="30" pattern="[A-Za-zÁÉÍÓÚáéíóúÑñ\s]+" title="solo letras y espacios" oninput="this.value = this.value.replace(/[^A-Za-zÁÉÍÓÚáéíóúÑñ\s]/g, '')">
+                    </div>
+                    <input type="email" placeholder="Correo electrónico" name="correo_electronico" required id="correo" minlength="6" maxlength="100">
+                    <div class="input-container">
+                        <input type="password" id="password" name="contrasena" placeholder="Contraseña" required minlength="8" maxlength="25"
+                            oninput="checkPasswords()" onfocus="mostrarRequisitos()" onblur="ocultarRequisitos()">
+                        <span id="eye-icon-password" class="fa fa-eye" onclick="togglePasswordVisibility('password')"></span>
+                    </div>
+
+                    <ul id="password-requisitos" style="display: none; color: white; font-size: 12px; margin-top: 4px; list-style: none; padding-left: 0;">
+                        <li id="regla-mayuscula">❌ una mayúscula</li>
+                        <li id="regla-especial">❌ un carácter especial</li>
+                        <li id="regla-minimo">❌ 8 caracteres</li>
+                        <li id="regla-maximo">✅ menos de 25 caracteres</li>
+                    </ul>
+                    <div class="input-container">
+                        <input type="password" id="confirm-password" placeholder="Confirmar contraseña"
+                            oninput="checkPasswords()">
+                        <span id="eye-icon-confirm" class="fa fa-eye" onclick="togglePasswordVisibility('confirm-password')"></span>
+                    </div>
+                    <p id="password-message" style="color: rgb(209, 34, 34); font-size: 12px; margin-top: 4px;"></p>
+                    <div class="checkbox">
+                        <input type="checkbox" required><span class="chkbx_tyc">Acepto los <a href="terminos_y_condiciones.html" style="color: #6a5d92;">términos y condiciones</a></span>
+                    </div>
+                    <button type="submit" class="boton-principal">Crear cuenta</button>
+                    </form>
+            </div>
+        </div>
+    </div>
+
+    <div id="custom-alert-overlay" class="custom-alert-overlay">
+        <div id="custom-alert-box" class="custom-alert-box">
+            <span class="close-alert-btn" id="close-alert-btn">&times;</span>
+            <p id="custom-alert-message"></p>
+            <button id="custom-alert-ok-btn">ok</button>
+        </div>
+    </div>
+
+<script src="js/registro.js"></script>
+
+</body>
+</html>

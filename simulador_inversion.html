@@ -1,0 +1,216 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bankario - Simulador de inversión</title>
+    <link rel="icon" href="multimedia/logo.ico" type="image/x-icon"/>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-icons/1.10.0/font/bootstrap-icons.min.css" rel="stylesheet">
+    <link href="css/simulador_inversion.css" rel="stylesheet">
+</head>
+<body class="loader_bg">
+    <div class="loader_p">
+        <div class="loader">    
+            <span class="loader-text">Cargando</span>
+            <span class="load"></span>
+        </div>
+    </div>
+
+    <nav class="navbar navbar-expand-lg fixed-top glass-nav">
+        <div class="container-fluid px-4">
+            <a class="navbar-brand d-flex align-items-center" href="{{ url_for('dashboard') }}">
+                <img src="multimedia/logo.png" alt="logo bankario" class="me-2" width="40" height="40">
+            </a>
+            
+            <div class="d-flex align-items-center gap-3">
+                <a href="{{ url_for('dashboard') }}" class="btn btn-glass">
+                    <i class="bi bi-arrow-left-circle-fill me-2"></i>Regresar
+                </a>
+
+                <button class="btn btn-glass" id="themeToggle" aria-label="toggle theme">
+                    <i class="bi bi-sun-fill" id="themeIcon"></i>
+                </button>
+                
+                <div class="position-relative">
+                    <div class="notification-dropdown glass-panel" id="notificationDropdown">
+                        <div class="p-3">
+                            <h6 class="mb-3">Notificaciones</h6>
+                            <div class="notification-item">
+                                <i class="bi bi-check-circle text-success"></i>
+                                <div>
+                                    <small class="text-muted">Hace 2 min</small>
+                                    <p class="mb-0">Transferencia completada exitosamente</p>
+                                </div>
+                            </div>
+                            <div class="notification-item">
+                                <i class="bi bi-exclamation-triangle text-warning"></i>
+                                <div>
+                                    <small class="text-muted">Hace 1 hora</small>
+                                    <p class="mb-0">Límite de retiro próximo a alcanzar</p>
+                                </div>
+                            </div>
+                            <div class="notification-item">
+                                <i class="bi bi-info-circle text-primary"></i>
+                                <div>
+                                    <small class="text-muted">Hace 3 horas</small>
+                                    <p class="mb-0">Nueva función disponible en simulaciones</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="position-relative">
+                    <button class="btn btn-glass d-flex align-items-center" id="userBtn" aria-expanded="false" aria-controls="userDropdown">
+                        <span class="d-none d-md-inline">{{ usuario.nombres.split(' ')[0] }} {{ usuario.apellidos.split(' ')[0] }}</span>
+                    </button>
+                    
+                    <div class="user-dropdown glass-panel" id="userDropdown">
+                        <div class="p-3">
+                            <div class="text-center mb-3">
+                                <h6 class="mb-1">{{ usuario.nombres }} {{ usuario.apellidos }}</h6>
+                                <small class="mb-1">{{ usuario.correo }}</small>
+                            </div>
+                            <hr>
+                            <div class="d-grid gap-2">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <main class="main-content">
+        <section id="simulacion-inversion-section" class="content-section">
+            <div class="glass-card p-4 fade-in">
+                <h2 class="mb-4 titulo-dashboard text-center">¡Simulador de inversión!</h2>
+                <p class="lead text-muted text-center mb-5">Estima el crecimiento de tu dinero con el poder del interés compuesto.</p>
+
+                <div id="simulation-form-section" class="mt-5">
+                    <h3 class="mb-4 titulo-dashboard text-center">Calcula tu inversión</h3>
+                    <form id="investmentSimulationForm" class="row g-4 justify-content-center">
+                        <div class="col-md-6 col-lg-5">
+                            <div class="form-group glass-card p-4">
+                                <label for="initialAmount" class="form-label mb-2"><i class="bi bi-cash-stack me-2"></i>Monto inicial:</label>
+                                <input type="number" class="form-control glass-input" id="initialAmount" placeholder="Ej: 1000" min="0" required>
+                                <div class="invalid-feedback">Ingresa un monto inicial válido (mayor o igual a 0).</div>
+                            </div>
+                        </div>
+                        <div class="col-md-6 col-lg-5">
+                            <div class="form-group glass-card p-4">
+                                <label for="monthlyContribution" class="form-label mb-2"><i class="bi bi-currency-dollar me-2"></i>Aporte mensual:</label>
+                                <input type="number" class="form-control glass-input" id="monthlyContribution" placeholder="Ej: 100" min="0" required>
+                                <div class="invalid-feedback">Ingresa un aporte mensual válido (mayor o igual a 0).</div>
+                            </div>
+                        </div>
+                        <div class="col-md-6 col-lg-5">
+                            <div class="form-group glass-card p-4">
+                                <label for="annualReturnRate" class="form-label mb-2"><i class="bi bi-graph-up-arrow me-2"></i>Tasa de rendimiento anual (%):</label>
+                                <input type="number" class="form-control glass-input" id="annualReturnRate" placeholder="Ej: 8" min="0" step="0.01" required>
+                                <div class="invalid-feedback">Ingresa una tasa de rendimiento válida (mayor o igual a 0).</div>
+                            </div>
+                        </div>
+                        <div class="col-md-6 col-lg-5">
+                            <div class="form-group glass-card p-4">
+                                <label for="investmentTerm" class="form-label mb-2"><i class="bi bi-calendar-range-fill me-2"></i>Plazo de inversión (años):</label>
+                                <input type="number" class="form-control glass-input" id="investmentTerm" placeholder="Ej: 5" min="1" required>
+                                <div class="invalid-feedback">Ingresa un plazo de inversión válido (mayor a 0).</div>
+                            </div>
+                        </div>
+                        
+                        <div class="col-12 text-center">
+                            <button type="submit" class="btn btn-primary btn-lg mt-4">
+                                <i class="bi bi-calculator-fill me-2"></i> Calcular Inversión
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <div class="modal fade" id="resultsModal" tabindex="-1" aria-labelledby="resultsModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content glass-modal">
+                <div class="modal-header border-0">
+                    <h5 class="modal-title" id="resultsModalLabel">Resultados de tu simulación de inversión</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Cerrar"></button>
+                </div>
+                <div class="modal-body text-center">
+                    <i class="bi bi-cash-coin text-success fs-1 mb-3"></i>
+                    <p class="lead text-muted mb-4">Aquí tienes una estimación del crecimiento de tu inversión:</p>
+                    <div class="glass-card p-3 mb-3 text-start">
+                        <p class="mb-1 text-muted">Monto inicial: <strong id="modalInitialAmount"></strong></p>
+                        <p class="mb-1 text-muted">Aporte mensual: <strong id="modalMonthlyContribution"></strong></p>
+                        <p class="mb-1 text-muted">Tasa de rendimiento anual: <strong id="modalAnnualReturnRate"></strong></p>
+                        <p class="mb-0 text-muted">Plazo de inversión: <strong id="modalInvestmentTerm"></strong></p>
+                    </div>
+                    <p class="fs-4 fw-bold text-success" id="modalFinalAmount"></p>
+                    <p class="fs-5 fw-bold text-primary" id="modalTotalGain"></p>
+                    <p class="text-muted"><small>Estos resultados son una estimación. El rendimiento real puede variar.</small></p>
+                </div>
+                <div class="modal-footer border-0">
+                    <button type="button" class="btn btn-primary" data-bs-dismiss="modal">¡Entendido!</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal fade" id="successMessageModal" tabindex="-1" aria-labelledby="successMessageModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content glass-modal">
+                <div class="modal-header border-0">
+                    <h5 class="modal-title" id="successMessageModalLabel">Éxito</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Cerrar"></button>
+                </div>
+                <div class="modal-body">
+                    <p id="successMessageModalBody"></p>
+                </div>
+                <div class="modal-footer border-0">
+                    <button type="button" class="btn btn-primary" data-bs-dismiss="modal">Aceptar</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal fade" id="errorMessageModal" tabindex="-1" aria-labelledby="errorMessageModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content glass-modal">
+                <div class="modal-header border-0">
+                    <h5 class="modal-title" id="errorMessageModalLabel">Error</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="cerrar"></button>
+                </div>
+                <div class="modal-body">
+                    <p id="errorMessageModalBody"></p>
+                </div>
+                <div class="modal-footer border-0">
+                    <button type="button" class="btn btn-danger" data-bs-dismiss="modal">cerrar</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal fade" id="logoutModal" tabindex="-1" aria-labelledby="logoutModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content glass-modal">
+                <div class="modal-header border-0">
+                    <h5 class="modal-title" id="logoutModalLabel">Cerrar sesión</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="cerrar"></button>
+                </div>
+                <div class="modal-body">
+                    <p>¿Estás seguro/a de que deseas cerrar sesión?</p>
+                </div>
+                <div class="modal-footer border-0">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                    <button type="button" class="btn btn-danger" id="confirmLogout">Cerrar sesión</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/js/bootstrap.bundle.min.js"></script>
+    <script src="js/simulador_inversion.js"></script>
+</body>
+</html>

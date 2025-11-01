@@ -1,0 +1,590 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+  body::-webkit-scrollbar {
+    width: 0.9em;
+  }
+  
+  body::-webkit-scrollbar-track {
+    background: #000;
+  }
+  
+  body::-webkit-scrollbar-thumb {
+    background-color: #fff;
+    border-radius: 20px;       
+    border: 3px solid #000;
+  }
+  
+  html {
+    scroll-behavior: smooth;
+    overflow-x: hidden;
+  }
+
+  body{
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background-color: #000;
+  }
+  
+.loader_bg {
+    overflow: hidden;
+  }
+  
+  /***************************************** loader *****************************************/
+  .loader_p {
+    display: grid;
+    grid-template-columns: repeat(2, 50px);
+    grid-template-rows: repeat(2, 50px);
+    gap: 0;
+    justify-content: center;
+    align-content: center;
+    width: 100vw;
+    height: 100vh;
+    position: relative;
+    z-index: 999999999999999;
+    background-color: #000;
+  }
+  
+  /* from uiverse.io by alexruix */ 
+.loader {
+  width: 80px;
+  height: 50px;
+  position: relative;
+}
+
+.loader-text {
+  position: absolute;
+  top: 0;
+  padding: 0;
+  margin: 0;
+  color: #fff;
+  animation: text_713 3.5s ease both infinite;
+  font-size: .8rem;
+  letter-spacing: 1px;
+}
+
+.load {
+  background-color: #21183b;
+  border-radius: 50px;
+  display: block;
+  height: 16px;
+  width: 16px;
+  bottom: 0;
+  position: absolute;
+  transform: translateX(64px);
+  animation: loading_713 3.5s ease both infinite;
+}
+
+.load::before {
+  position: absolute;
+  content: "";
+  width: 100%;
+  height: 100%;
+  background-color: #554979;
+  border-radius: inherit;
+  animation: loading2_713 3.5s ease both infinite;
+}
+
+@keyframes text_713 {
+  0% {
+    letter-spacing: 1px;
+    transform: translateX(0px);
+  }
+
+  40% {
+    letter-spacing: 2px;
+    transform: translateX(26px);
+  }
+
+  80% {
+    letter-spacing: 1px;
+    transform: translateX(32px);
+  }
+
+  90% {
+    letter-spacing: 2px;
+    transform: translateX(0px);
+  }
+
+  100% {
+    letter-spacing: 1px;
+    transform: translateX(0px);
+  }
+}
+
+@keyframes loading_713 {
+  0% {
+    width: 16px;
+    transform: translateX(0px);
+  }
+
+  40% {
+    width: 100%;
+    transform: translateX(0px);
+  }
+
+  80% {
+    width: 16px;
+    transform: translateX(64px);
+  }
+
+  90% {
+    width: 100%;
+    transform: translateX(0px);
+  }
+
+  100% {
+    width: 16px;
+    transform: translateX(0px);
+  }
+}
+
+@keyframes loading2_713 {
+  0% {
+    transform: translateX(0px);
+    width: 16px;
+  }
+
+  40% {
+    transform: translateX(0%);
+    width: 80%;
+  }
+
+  80% {
+    width: 100%;
+    transform: translateX(0px);
+  }
+
+  90% {
+    width: 80%;
+    transform: translateX(15px);
+  }
+
+  100% {
+    transform: translateX(0px);
+    width: 16px;
+  }
+}
+        
+    /* ocultar el loader cuando la página termine de cargar */
+    body.loaded .loader_p {
+      display: none;
+    }
+
+/***************************************** formulario *****************************************/
+
+.contenedor {
+    display: flex;
+    height: 110vh;
+    width: 100vw;
+}
+
+.lado-izquierdo, .lado-derecho {
+    width: 50vw;
+    position: relative;
+}
+
+.lado-izquierdo video {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.logo-bankario {
+    position: absolute;
+    top: 20px;
+    right: 20px;
+    width: 80px;
+    border-radius: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.5);
+}
+
+.boton-volver {
+    position: absolute;
+    top: 20px;
+    left: 20px;
+    background: rgba(255, 255, 255, 0.2);
+    padding: 10px 20px;
+    border-radius: 30px;
+    color: #fff;
+    text-decoration: none;
+    backdrop-filter: blur(10px);
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-weight: bold;
+    transition: 0.3s;
+}
+
+.boton-volver:hover {
+    background: rgba(255, 255, 255, 0.4);
+}
+
+.lado-derecho {
+    background-color: #000000;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.formulario {
+    background: rgba(255, 255, 255, 0.1);
+    padding: 40px;
+    border-radius: 20px;
+    backdrop-filter: blur(15px);
+    width: 75%;
+    color: #fff;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.formulario h2 {
+    font-size: 30px;
+    font-weight: bold;
+}
+
+.formulario p a {
+    color: #8171b3;
+    text-decoration: none;
+    font-weight: bold;
+}
+
+.formulario form {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+.input-doble {
+    display: flex;
+    gap: 10px;
+}
+
+.input-doble input {
+    flex: 1;
+}
+
+input, select {
+    background: rgba(255, 255, 255, 0.2);
+    border: none;
+    padding: 12px 15px;
+    border-radius: 10px;
+    color: #fff;
+    outline: none;
+}
+
+select {
+    width: 100%;
+    padding: 12px 20px;
+    background-color: rgba(255, 255, 255, 0.1);
+    color: #000;
+    border-radius: 10px;
+    backdrop-filter: blur(10px);
+    appearance: none;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    font-size: 12px;
+}
+
+select option {
+    color: #000;
+    background-color: #00000010;
+}
+
+select:focus {
+    border: 1px solid #fff;
+    outline: none;
+}
+
+input:focus {
+    border: 1px solid #fff;
+    outline: none;
+}
+
+input::placeholder, select {
+    color: #e0d6f5;
+}
+
+.inicio_btn:hover {
+    text-decoration: underline;
+}
+
+.checkbox {
+    display: flex;
+    align-items: center;
+    font-size: 14px;
+}
+
+.boton-principal {
+    background-color: #21183b;
+    border: none;
+    padding: 12px;
+    border-radius: 10px;
+    font-weight: bold;
+    color: white;
+    cursor: pointer;
+}
+
+.boton-principal:hover {
+    background-color: #21183b50;
+}
+
+.checkbox {
+    display: flex;
+    align-items: center;
+    font-size: 14px;
+    width: 100%;
+}
+
+.checkbox input[type="checkbox"] {
+    width: auto;
+    margin-right: 10px;
+}
+
+.checkbox .chkbx_tyc {
+    margin-left: 5px;
+}
+
+.checkbox a {
+    margin-left: 5px;
+    color: #21183b;
+    text-decoration: none;
+    font-weight: bold;
+}
+.divisor {
+    text-align: center;
+    font-size: 14px;
+    color: #cfcfcf;
+}
+
+.botones-sociales {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.input-container {
+    position: relative;
+    width: 100%;
+}
+
+input {
+    width: 100%;
+    padding: 12px 15px;
+    padding-right: 40px;
+    background: rgba(255, 255, 255, 0.2);
+    border: none;
+    border-radius: 10px;
+    color: #fff;
+    outline: none;
+}
+
+input:focus {
+    border: 1px solid #fff;
+    outline: none;
+}
+
+/* iconos de ojo */
+#eye-icon-password, #eye-icon-confirm { /* corregido el id del segundo ojo */
+    position: absolute;
+    right: 10px;
+    top: 50%;
+    transform: translateY(-50%);
+    cursor: pointer;
+    color: #fff;
+    font-size: 18px;
+}
+
+/* mensaje de error o éxito */
+#password-message {
+    font-size: 14px;
+    margin-top: 5px;
+    margin-bottom: 0;
+}
+
+input.mismatch {
+    border: 1px solid rgb(163, 38, 38);
+}
+
+input.match {
+    border: 1px solid rgb(27, 90, 27);
+}
+
+@media (max-width: 1024px) {
+    html {
+        overflow-y: auto !important;
+    }
+
+    .contenedor {
+        flex-direction: column;
+        position: relative;
+        min-height: 100vh;
+    }
+
+    .lado-izquierdo, .lado-derecho {
+        width: 100%;
+    }
+
+    .lado-izquierdo {
+        position: relative;
+        height: 100vh;
+    }
+
+    .lado-izquierdo video {
+        height: 100vh;
+        object-fit: cover;
+    }
+
+    .logo-bankario, .boton-volver {
+        z-index: 10;
+    }
+
+    .lado-derecho {
+        position: relative;
+        width: 100%;
+        min-height: 100vh;
+        background-color: rgba(0, 0, 0, 0.85);
+        display: flex;
+        justify-content: center;
+        align-items: flex-start;
+        padding: 60px 20px 40px 20px;
+        z-index: 1;
+        margin-top: -100vh;
+    }
+
+    .formulario {
+        width: 95%;
+        max-width: 400px;
+        backdrop-filter: blur(15px);
+        padding: 25px;
+        gap: 12px;
+        margin-top: 3em;
+    }
+
+    .formulario h2 {
+        font-size: 24px;
+    }
+
+    .boton-principal {
+        padding: 14px;
+        font-size: 15px;
+    }
+
+    .input-doble {
+        flex-direction: column;
+        gap: 10px;
+    }
+
+    .input-doble input {
+        width: 100%;
+    }
+}
+
+.input-container {
+    position: relative;
+    display: flex;
+    align-items: center;
+}
+
+.input-container input[type="password"] {
+    width: 100%;
+    padding-right: 35px; /* espacio para el ícono */
+    box-sizing: border-box;
+}
+
+.input-container .fa-eye,
+.input-container .fa-eye-slash {
+    position: absolute;
+    right: 10px;
+    cursor: pointer;
+    color: #fff;
+}
+
+/* estilos para el pop-up de alerta */
+.custom-alert-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5); /* fondo oscuro */
+    backdrop-filter: blur(5px); /* efecto blur en el fondo */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 0.3s ease, visibility 0.3s ease;
+}
+
+.custom-alert-overlay.show {
+    opacity: 1;
+    visibility: visible;
+}
+
+.custom-alert-box {
+    background: rgba(255, 255, 255, 0.1); /* mismo color que el formulario */
+    backdrop-filter: blur(15px); /* glassmorphism */
+    border-radius: 20px;
+    padding: 30px;
+    max-width: 400px;
+    width: 90%;
+    text-align: center;
+    color: #fff;
+    position: relative;
+    box-shadow: 0 4px 30px rgba(0, 0, 0, 0.2);
+    border: 1px solid rgba(255, 255, 255, 0.3);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 20px;
+}
+
+.custom-alert-box p {
+    font-size: 1.1em;
+    margin-bottom: 0;
+}
+
+.custom-alert-box button {
+    background-color: #21183b; /* color del botón principal */
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 10px;
+    cursor: pointer;
+    font-weight: bold;
+    transition: background-color 0.3s ease;
+}
+
+.custom-alert-box button:hover {
+    background-color: #21183b50;
+}
+
+.close-alert-btn {
+    position: absolute;
+    top: 15px;
+    right: 20px;
+    font-size: 24px;
+    cursor: pointer;
+    color: #fff;
+    font-weight: bold;
+    line-height: 1;
+}
+
+.close-alert-btn:hover {
+    color: #ccc;
+}
+
+/* estilos para aplicar blur al cuerpo cuando el pop-up esté activo */
+body.blur-active > *:not(.custom-alert-overlay) {
+    filter: blur(3px); /* aplica el blur a todo lo que no sea el overlay */
+    pointer-events: none; /* deshabilita interacciones con el contenido borroso */
+}

@@ -1,0 +1,791 @@
+/* ===============================================
+   VARIABLES CSS - SISTEMA DE COLORES Y MEDIDAS
+   =============================================== */
+:root {
+    /* Colores principales - Modo día */
+    --primary-color: #2563EB;
+    --secondary-color: #F8FAFC;
+    --accent-color: rgba(37, 99, 235, 0.7);
+    --text-dark: #1F2937;
+    --text-light: #ffffff;
+    --text-muted: #000;
+    
+    /* Colores de estado */
+    --success-color: #10B981;
+    --warning-color: #F59E0B;
+    --info-color: #0EA5E9;
+    --danger-color: #EF4444;
+    
+    /* Efectos glass - Modo día */
+    --glass-bg: rgba(255, 255, 255, 0.85);
+    --glass-border: rgba(255, 255, 255, 0.3);
+    --card-header-bg: rgba(255, 255, 255, 0.9);
+    --border-color: rgba(0, 0, 0, 0.1);
+    
+    /* Dimensiones del layout */
+    --sidebar-width: 280px;
+    --navbar-height: 70px;
+    
+    /* Efectos visuales */
+    --backdrop-blur: 12px;
+    --overlay-color: rgba(0, 0, 0, 0.15);
+    --shadow-light: 0 4px 20px rgba(0, 0, 0, 0.08);
+    --shadow-medium: 0 8px 32px rgba(0, 0, 0, 0.12);
+
+    --logo-filter: invert(1);
+
+    /* Colores para opciones de test */
+    --option-bg: rgba(255, 255, 255, 0.7);
+    --option-border: rgba(255, 255, 255, 0.4);
+    --option-hover-bg: rgba(37, 99, 235, 0.1);
+    --option-selected-bg: var(--primary-color);
+    --option-selected-text: var(--text-light);
+    --option-selected-border: var(--primary-color);
+
+    /* Nuevo: Color de borde dinámico para inputs y opciones no seleccionadas */
+    --dynamic-border-color: black;
+}
+
+/* Variables para modo oscuro */
+[data-theme="dark"] {
+    --primary-color: #6366F1;
+    --secondary-color: #1F2937;
+    --accent-color: rgba(99, 102, 241, 0.7);
+    --text-dark: #F9FAFB; /* Texto claro para modo oscuro */
+    --text-muted: #fff;
+    
+    --glass-bg: rgba(0, 0, 0, 0.8);
+    --glass-border: rgba(255, 255, 255, 0.15);
+    --card-header-bg: rgba(0, 0, 0, 0.5);
+    --border-color: rgba(255, 255, 255, 0.1);
+    
+    --overlay-color: rgba(255, 255, 255, 0.1);
+    --shadow-light: 0 4px 20px rgba(0, 0, 0, 0.3);
+    --shadow-medium: 0 8px 32px rgba(0, 0, 0, 0.4);
+
+    --logo-filter: invert(0);
+
+    /* Colores para opciones de test - Modo oscuro */
+    --option-bg: rgba(0, 0, 0, 0.6);
+    --option-border: rgba(255, 255, 255, 0.2);
+    --option-hover-bg: rgba(99, 102, 241, 0.1);
+    --option-selected-bg: var(--primary-color);
+    --option-selected-text: var(--text-light);
+    --option-selected-border: var(--primary-color);
+
+    /* Nuevo: Color de borde dinámico para inputs y opciones no seleccionadas en modo oscuro */
+    --dynamic-border-color: var(--glass-border); /* Color claro para el borde en modo oscuro */
+}
+
+/* ===============================================
+   EFECTOS HOVER
+   =============================================== */
+.glass-card .row a.d-block {
+    transition: background-color 0.3s ease, transform 0.2s ease;
+    border-radius: 10px;
+    padding: 15px;
+}
+
+.glass-card .row a.d-block:hover {
+    background-color: rgba(116, 147, 212, 0.7);
+    transform: translateY(-3px); 
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+}
+
+.glass-card .row .col-md-4,
+.glass-card .row .col-md-6 {
+    padding: 10px;
+}
+
+/* ===============================================
+   RESET Y CONFIGURACIÓN BASE
+   =============================================== */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background: linear-gradient(135deg, #E2E8F0 0%, #CBD5E1 100%);
+    min-height: 100vh;
+    color: var(--text-dark);
+    transition: all 0.3s ease;
+}
+
+[data-theme="dark"] body {
+    background: linear-gradient(135deg, #2D3748 0%, #1A202C 100%);
+}
+
+/* Scrollbar personalizado */
+body::-webkit-scrollbar {
+    width: 8px;
+}
+
+body::-webkit-scrollbar-track {
+    background: var(--secondary-color);
+}
+
+body::-webkit-scrollbar-thumb {
+    background-color: var(--primary-color);
+    border-radius: 10px;
+}
+
+/* ===============================================
+   LOADER DE CARGA
+   =============================================== */
+.loader_bg {
+    overflow: hidden;
+}
+
+.loader_p {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: #1A202C; 
+    z-index: 9999;
+    opacity: 1;
+    visibility: visible;
+    transition: opacity 0.5s ease, visibility 0.5s ease;
+}
+
+.loader {
+    width: 80px;
+    height: 50px;
+    position: relative;
+}
+
+.loader-text {
+    position: absolute;
+    top: 0;
+    color: #fff;
+    animation: text_713 3.5s ease both infinite;
+    font-size: 0.8rem;
+    letter-spacing: 1px;
+}
+
+.load {
+    background-color: #443570;
+    border-radius: 50px;
+    display: block;
+    height: 16px;
+    width: 16px;
+    bottom: 0;
+    position: absolute;
+    transform: translateX(64px);
+    animation: loading_713 3.5s ease both infinite;
+}
+
+.load::before {
+    position: absolute;
+    content: "";
+    width: 100%;
+    height: 100%;
+    background-color: #594b81;
+    border-radius: inherit;
+    animation: loading2_713 3.5s ease both infinite;
+}
+
+/* Animaciones del loader */
+@keyframes text_713 {
+    0%, 100% { letter-spacing: 1px; transform: translateX(0px); }
+    40% { letter-spacing: 2px; transform: translateX(26px); }
+    80% { letter-spacing: 1px; transform: translateX(32px); }
+    90% { letter-spacing: 2px; transform: translateX(0px); }
+}
+
+@keyframes loading_713 {
+    0%, 100% { width: 16px; transform: translateX(0px); }
+    40% { width: 100%; transform: translateX(0px); }
+    80% { width: 16px; transform: translateX(64px); }
+    90% { width: 100%; transform: translateX(0px); }
+}
+
+@keyframes loading2_713 {
+    0%, 100% { transform: translateX(0px); width: 16px; }
+    40% { transform: translateX(0%); width: 80%; }
+    80% { width: 100%; transform: translateX(0px); }
+    90% { width: 80%; transform: translateX(15px); }
+}
+
+body.loaded .loader_p {
+    display: none;
+}
+
+/* ===============================================
+   NAVEGACIÓN PRINCIPAL
+   =============================================== */
+.glass-nav {
+    background: var(--glass-bg);
+    backdrop-filter: blur(var(--backdrop-blur));
+    -webkit-backdrop-filter: blur(var(--backdrop-blur));
+    border: 1px solid var(--glass-border);
+    border-radius: 0 0 20px 20px;
+    box-shadow: var(--shadow-medium);
+    height: var(--navbar-height);
+    margin: 10px 10px 0;
+    width: calc(100% - 20px);
+    z-index: 1060;
+    transition: all 0.3s ease;
+}
+
+.navbar-brand img {
+    filter: var(--logo-filter);
+    transition: filter 0.3s ease;
+    width: 50px;
+    height: auto;
+}
+
+/* ===============================================
+   SIDEBAR LATERAL
+   =============================================== */
+.glass-sidebar {
+    background: var(--glass-bg);
+    backdrop-filter: blur(var(--backdrop-blur));
+    -webkit-backdrop-filter: blur(var(--backdrop-blur));
+    border: 1px solid var(--glass-border);
+    border-radius: 20px;
+    box-shadow: var(--shadow-medium);
+    position: fixed;
+    top: calc(var(--navbar-height) + 20px);
+    left: 10px;
+    width: var(--sidebar-width);
+    height: calc(100vh - var(--navbar-height) - 30px);
+    z-index: 1000;
+    display: flex;
+    flex-direction: column;
+    transition: all 0.3s ease;
+}
+
+.sidebar-content {
+    flex: 1;
+    padding: 1.5rem 0;
+    overflow-y: auto;
+}
+
+.sidebar-footer {
+    padding: 1.5rem;
+    border-top: 1px solid var(--glass-border);
+}
+
+.sidebar .nav-link {
+    color: var(--text-dark);
+    padding: 0.75rem 1.5rem;
+    margin: 0.25rem 1rem;
+    border-radius: 12px;
+    transition: all 0.3s ease;
+    display: flex;
+    align-items: center;
+    text-decoration: none;
+}
+
+.sidebar .nav-link i {
+    font-size: 1.2rem;
+    margin-right: 0.75rem;
+    width: 20px;
+    text-align: center;
+}
+
+.sidebar .nav-link:hover {
+    background: rgba(37, 99, 235, 0.15);
+    color: var(--primary-color);
+    transform: translateX(5px);
+}
+
+.sidebar .nav-link.active {
+    background: var(--accent-color);
+    color: white;
+    box-shadow: var(--shadow-light);
+}
+
+/* ===============================================
+   CONTENIDO PRINCIPAL
+   =============================================== */
+.main-content {
+    margin-left: calc(var(--sidebar-width) + 20px);
+    margin-top: calc(var(--navbar-height) + 20px);
+    padding: 2rem;
+    min-height: calc(100vh - var(--navbar-height) - 20px);
+}
+
+.titulo-dashboard,
+.texto-bienvenida {
+    color: var(--text-dark) !important;
+    transition: color 0.3s ease;
+}
+
+/* ===============================================
+   COMPONENTES GLASS
+   =============================================== */
+.glass-card {
+    background: var(--glass-bg);
+    backdrop-filter: blur(var(--backdrop-blur));
+    -webkit-backdrop-filter: blur(var(--backdrop-blur));
+    border: 1px solid var(--glass-border);
+    border-radius: 16px;
+    box-shadow: var(--shadow-light);
+    transition: all 0.3s ease;
+    color: var(--text-dark);
+}
+
+.glass-card .card-header {
+    background: var(--card-header-bg);
+    border-bottom: 1px solid var(--glass-border);
+    color: var(--text-dark);
+}
+
+.glass-card:hover {
+    transform: translateY(-5px);
+    box-shadow: var(--shadow-medium);
+}
+
+.glass-panel {
+    background: var(--glass-bg);
+    backdrop-filter: blur(var(--backdrop-blur));
+    -webkit-backdrop-filter: blur(var(--backdrop-blur));
+    border: 1px solid var(--glass-border);
+    border-radius: 12px;
+    box-shadow: var(--shadow-light);
+    transition: all 0.3s ease;
+    color: var(--text-dark);
+}
+
+.glass-input {
+    background: transparent; /* Fondo transparente */
+    backdrop-filter: blur(var(--backdrop-blur));
+    -webkit-backdrop-filter: blur(var(--backdrop-blur));
+    border: 1px solid var(--dynamic-border-color); /* Borde dinámico */
+    border-radius: 0.375rem; /* Bootstrap default border-radius for inputs */
+    color: var(--text-dark);
+    transition: all 0.3s ease;
+}
+
+.glass-input:focus {
+    background: transparent; /* Fondo transparente al enfocar */
+    border-color: var(--primary-color);
+    box-shadow: 0 0 0 0.25rem rgba(37, 99, 235, 0.25);
+    color: var(--text-dark);
+}
+
+/* Placeholder color dinámico */
+.glass-input::placeholder {
+    color: var(--text-dark); /* Usa la variable que cambia con el tema */
+    opacity: 1; /* Asegura que el color sea visible */
+}
+
+/* ===============================================
+   BOTONES
+   =============================================== */
+.btn-glass {
+    background: var(--glass-bg);
+    backdrop-filter: blur(var(--backdrop-blur));
+    -webkit-backdrop-filter: blur(var(--backdrop-blur));
+    border: 1px solid var(--glass-border);
+    border-radius: 12px;
+    color: var(--text-dark);
+    transition: all 0.3s ease;
+    padding: 0.5rem 0.75rem;
+}
+
+.btn-glass:hover {
+    background: rgba(37, 99, 235, 0.2);
+    border-color: var(--primary-color);
+    color: var(--primary-color);
+    transform: translateY(-2px);
+}
+
+.btn-primary {
+    background: var(--primary-color);
+    border-color: var(--primary-color);
+    border-radius: 12px;
+    transition: all 0.3s ease;
+    color: var(--text-light);
+}
+
+.btn-primary:hover {
+    background: #1D4ED8;
+    border-color: #1D4ED8;
+    transform: translateY(-2px);
+    box-shadow: var(--shadow-light);
+}
+
+.btn-outline-primary {
+    color: var(--primary-color);
+    border-color: var(--primary-color);
+    border-radius: 12px;
+    transition: all 0.3s ease;
+}
+
+.btn-outline-primary:hover {
+    background: var(--primary-color);
+    border-color: var(--primary-color);
+    transform: translateY(-2px);
+    color: var(--text-light);
+}
+
+.btn-outline-secondary {
+    color: var(--text-dark);
+    border-color: var(--border-color);
+    border-radius: 12px;
+    transition: all 0.3s ease;
+}
+
+.btn-outline-secondary:hover {
+    background: var(--text-dark);
+    border-color: var(--text-dark);
+    transform: translateY(-2px);
+    color: var(--text-light);
+}
+
+/* Nuevos estilos para botones de ranking y mensajes */
+.btn-info {
+    background-color: var(--info-color);
+    border-color: var(--info-color);
+    color: var(--text-light);
+    border-radius: 12px;
+    transition: all 0.3s ease;
+}
+
+.btn-info:hover {
+    background-color: #0B8BC2;
+    border-color: #0B8BC2;
+    transform: translateY(-2px);
+    box-shadow: var(--shadow-light);
+}
+
+/* ===============================================
+   DROPDOWNS
+   =============================================== */
+.user-dropdown {
+    position: absolute;
+    top: calc(100% + 10px);
+    right: 0;
+    width: 250px;
+    max-height: 400px;
+    overflow-y: auto;
+    z-index: 1050;
+    opacity: 0;
+    visibility: hidden;
+    transform: translateY(-10px);
+    transition: all 0.3s ease;
+}
+
+.user-dropdown.show {
+    opacity: 1;
+    visibility: visible;
+    transform: translateY(0);
+}
+
+/* ===============================================
+   MODALES
+   =============================================== */
+.glass-modal .modal-content {
+    background: var(--glass-bg);
+    backdrop-filter: blur(var(--backdrop-blur));
+    -webkit-backdrop-filter: blur(var(--backdrop-blur));
+    border: 1px solid var(--glass-border);
+    border-radius: 16px;
+    box-shadow: var(--shadow-medium);
+    color: var(--text-dark);
+    transition: all 0.3s ease;
+}
+
+.glass-modal .modal-header,
+.glass-modal .modal-footer {
+    border-color: var(--glass-border) !important;
+}
+
+.glass-modal .modal-title {
+    color: var(--text-dark);
+}
+
+.glass-modal .btn-close {
+    filter: invert(0);
+}
+
+[data-theme="dark"] .glass-modal .btn-close {
+    filter: invert(1);
+}
+
+.modal-content {
+    background-color: var(--glass-bg);
+    border-radius: 12px;
+    border: 1px solid var(--border-color);
+    box-shadow: var(--shadow-medium);
+    color: var(--text-dark);
+    transition: all 0.3s ease;
+}
+
+.modal-header,
+.modal-body,
+.modal-footer {
+    color: var(--text-dark);
+}
+
+.modal-header {
+    border-bottom: 1px solid var(--border-color);
+}
+
+.modal-footer {
+    border-top: 1px solid var(--border-color);
+}
+
+/* ===============================================
+   EFECTOS VISUALES
+   =============================================== */
+.blurred-content {
+    filter: blur(5px); /* ajusta el valor del desenfoque según tu preferencia */
+    pointer-events: none;
+    transition: filter 0.1s ease;
+}
+
+.overlay-active::after {
+    content: '';
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: var(--overlay-color);
+    z-index: 1040;
+    pointer-events: none;
+    transition: background-color 0.1s ease;
+}
+
+.content-section {
+    animation: fadeIn 0.5s ease;
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* ===============================================
+   CLASES DE UTILIDAD
+   =============================================== */
+.text-primary { color: var(--primary-color) !important; }
+.text-success { color: var(--success-color) !important; }
+.text-warning { color: var(--warning-color) !important; }
+.text-info { color: var(--info-color) !important; }
+.text-muted { color: var(--text-muted) !important; }
+.badge.bg-danger {background-color: var(--danger-color) !important;}
+
+/* ===============================================
+   ESTILOS PARA OPCIONES DE TEST
+   =============================================== */
+.option-card {
+    background: var(--option-bg);
+    border: 1px solid var(--dynamic-border-color); /* Borde dinámico para las opciones del test */
+    border-radius: 12px;
+    padding: 1rem;
+    width: 100%;
+    text-align: left;
+    cursor: pointer; /* Cursor pointer para toda la tarjeta */
+    transition: all 0.2s ease-in-out;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    position: relative;
+}
+
+.option-card:hover {
+    background: var(--option-hover-bg);
+    transform: translateY(-2px);
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+}
+
+.option-card.selected {
+    background: var(--option-selected-bg);
+    color: var(--option-selected-text);
+    border-color: var(--option-selected-border); /* Borde de color primario (dinámico) cuando está seleccionado */
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+    transform: translateY(-3px);
+}
+
+.option-card input[type="radio"] {
+    position: absolute;
+    opacity: 0;
+    pointer-events: none; /* Evita que el radio button sea interactivo directamente */
+}
+
+.option-card .option-text {
+    flex-grow: 1;
+    color: var(--text-dark); /* Color de texto por defecto (dinámico) */
+}
+
+.option-card.selected .option-text {
+    color: var(--option-selected-text); /* Color de texto cuando está seleccionado (dinámico) */
+}
+
+/* ===============================================
+   ESTILOS PARA LA TABLA DE RANKING (MODIFICADO)
+   =============================================== */
+.modal-body .table {
+    /* Asegura que el fondo de la tabla sea transparente para que se vea el blur del modal */
+    background-color: transparent; 
+    border-collapse: separate; /* Necesario para border-spacing y border-radius */
+    border-spacing: 0 8px; /* Espacio entre filas */
+    width: 100%;
+    color: var(--text-dark); /* Asegura que el texto use la variable de color de texto */
+}
+
+.modal-body .table th, 
+.modal-body .table td {
+    border: none; /* Elimina los bordes de celdas individuales */
+    padding: 12px 15px;
+    vertical-align: middle;
+    background-color: rgba(255, 255, 255, 0.1); /* Un fondo muy ligero para las celdas */
+    transition: background-color 0.2s ease, transform 0.2s ease;
+}
+
+[data-theme="dark"] .modal-body .table th,
+[data-theme="dark"] .modal-body .table td {
+    /* Fondo ligero para celdas en modo oscuro, usando transparencia de blanco */
+    background-color: rgba(255, 255, 255, 0.1); 
+    color: var(--text-dark); /* Asegura que el texto sea blanco en modo oscuro */
+}
+
+.modal-body .table thead th {
+    background-color: rgba(37, 99, 235, 0.2); /* Fondo ligeramente más opaco para el encabezado */
+    color: var(--text-dark); /* Asegura que el texto del encabezado sea visible */
+    font-weight: bold;
+    border-bottom: 1px solid var(--glass-border); /* Borde sutil en la parte inferior del encabezado */
+}
+
+[data-theme="dark"] .modal-body .table thead th {
+    /* Fondo del encabezado en modo oscuro, usando transparencia de blanco */
+    background-color: rgba(99, 102, 241, 0.2);
+    color: var(--text-dark); /* Asegura que el texto del encabezado sea visible (blanco) */
+}
+
+.modal-body .table tbody tr {
+    background-color: rgba(255, 255, 255, 0.05); /* Fondo muy ligero para las filas */
+    border-radius: 8px; /* Bordes redondeados para las filas */
+    overflow: hidden; /* Asegura que el border-radius se aplique bien */
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05); /* Sombra sutil para cada fila */
+}
+
+[data-theme="dark"] .modal-body .table tbody tr {
+    /* Fondo de las filas en modo oscuro, usando transparencia de blanco */
+    background-color: rgba(255, 255, 255, 0.05);
+}
+
+.modal-body .table-striped tbody tr:nth-of-type(odd) {
+    background-color: rgba(255, 255, 255, 0.1); /* Un poco más de opacidad para las filas impares */
+}
+
+[data-theme="dark"] .modal-body .table-striped tbody tr:nth-of-type(odd) {
+    /* Fondo de las filas impares en modo oscuro, usando transparencia de blanco */
+    background-color: rgba(255, 255, 255, 0.1);
+}
+
+.modal-body .table-hover tbody tr:hover {
+    background-color: rgba(37, 99, 235, 0.15); /* Efecto hover más pronunciado */
+    transform: translateY(-2px); /* Pequeño levantamiento al pasar el ratón */
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+[data-theme="dark"] .modal-body .table-hover tbody tr:hover {
+    background-color: rgba(99, 102, 241, 0.15);
+}
+
+.modal-body .table-striped tbody tr.user-row {
+    background-color: var(--primary-color) !important; /* Mantiene el color primario para la fila del usuario */
+    color: var(--text-light);
+    font-weight: bold;
+    box-shadow: 0 4px 15px rgba(37, 99, 235, 0.3); /* Sombra más fuerte para la fila del usuario */
+}
+
+/* Ajustes para las esquinas de la tabla */
+.modal-body .table thead tr:first-child th:first-child {
+    border-top-left-radius: 12px;
+}
+.modal-body .table thead tr:first-child th:last-child {
+    border-top-right-radius: 12px;
+}
+.modal-body .table tbody tr:last-child td:first-child {
+    border-bottom-left-radius: 12px;
+}
+.modal-body .table tbody tr:last-child td:last-child {
+    border-bottom-right-radius: 12px;
+}
+
+/* ===============================================
+   RESPONSIVE DESIGN
+   =============================================== */
+@media (max-width: 1024px) {
+    .glass-sidebar {
+        transform: translateX(-100%);
+        transition: transform 0.3s ease;
+    }
+
+    .glass-sidebar.show {
+        transform: translateX(0);
+    }
+
+    .main-content {
+        margin-left: 0;
+        padding: 1rem;
+    }
+
+    .glass-nav {
+        margin: 5px;
+        width: calc(100% - 10px);
+        border-radius: 0 0 15px 15px;
+    }
+
+    .user-dropdown {
+        width: 150px;
+        right: 10px;
+    }
+}
+
+@media (max-width: 576px) {
+    .user-dropdown {
+        width: 250px;
+        right: -80px;
+    }
+
+    .main-content {
+        padding: 0.5rem;
+    }
+
+    .glass-nav .container-fluid {
+        padding: 0 1rem;
+    }
+}
+
+.main-content.blurred-content {
+    filter: blur(5px); /* ajusta el valor del desenfoque según tu preferencia */
+    transition: filter 0.3s ease-out;
+}
+
+body.overlay-active::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: rgba(0, 0, 0, 0.3); /* oscurece un poco el fondo */
+    z-index: 1040; /* un z-index justo por debajo del modal para que se vea el desenfoque y el overlay */
+    transition: background-color 0.3s ease-out;
+}
+
+/* asegura que los modales tengan un z-index más alto que el overlay */
+.modal.fade .modal-dialog {
+    z-index: 1050;
+}

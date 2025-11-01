@@ -1,0 +1,331 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BANKario - Tu simulador financiero</title>
+    <link rel="icon" href="multimedia/logo.ico" type="image/x-icon"/>
+    <meta name="description" content="Bankario - Sistema Bancario para simulaciones financieras y gestión de cuentas.">
+    <meta name="keywords" content="banco, finanzas, simulaciones, gestión de cuentas, dashboard, sistema bancario">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-icons/1.10.0/font/bootstrap-icons.min.css">
+    <link rel="stylesheet" href="css/index.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@9/swiper-bundle.min.css"/>
+    <script src="https://cdn.jsdelivr.net/npm/swiper@9/swiper-bundle.min.js"></script>
+</head>
+<body>
+    <div id="loader-screen">
+        <div class="loader-container">
+            <span class="loader"></span>
+            <p class="loader-text">Cargando...</p>
+        </div>
+    </div>
+
+    <nav class="navbar navbar-expand-lg navbar-custom fixed-top">
+        <div class="container">
+            <a class="navbar-brand" href="#home">
+                <div class="navbar-logo">
+                    <img src="multimedia/logo.png" alt="Logo BANKario" class="logo-img">
+                </div>
+            </a>
+
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" >
+                <span class="navbar-toggler-icon"></span>
+            </button>
+
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ms-auto align-items-center">
+                    <li class="nav-item">
+                        <a class="nav-link" href="#home">Inicio</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#features">Características</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#services">Servicios</a>
+                    </li>
+                    <li class="nav-item ms-3">
+                        <a class="btn btn-accent" href="registro.html">Registro</a>
+                    </li>
+                    <li class="nav-item ms-2">
+                        <a class="btn btn-accent-outline" href="iniciar_sesion.html">Iniciar sesión</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <section id="home" class="hero-section">
+        <video class="hero-video" autoplay muted loop>
+            <source src="multimedia/Video_hero.mp4" type="video/mp4">
+            Tu navegador no soporta video HTML5.
+        </video>
+        
+        <div class="hero-overlay"></div>
+        
+        <div class="hero-content">
+            <h1 class="hero-title">BANKario</h1>
+            <p class="hero-subtitle">
+                Plataforma para simular y planificar tus finanzas personales. 
+                Toma decisiones inteligentes con nuestras herramientas de análisis financiero.
+            </p>
+            <a href="iniciar_sesion.html" class="btn-simulate">
+                <i class="bi bi-calculator me-2"></i>
+                Simula ahora
+            </a>
+        </div>
+    </section>
+
+    <section id="features" class="section-padding bg-secondary-custom">
+        <div class="container">
+            <h2 class="section-title lazy-load">¿Por qué elegir BANKario?</h2>
+            <div class="row g-4 lazy-load">
+                <div class="col-lg-4 col-md-6">
+                    <div class="feature-card">
+                        <div class="feature-icon">
+                            <i class="bi bi-graph-up-arrow"></i>
+                        </div>
+                        <h4 class="feature-title">Simulaciones realistas</h4>
+                        <p>Experimenta escenarios financieros para entender el impacto de tus decisiones antes de aplicarlas en la vida real.</p>
+                    </div>
+                </div>
+                
+                <div class="col-lg-4 col-md-6">
+                    <div class="feature-card">
+                        <div class="feature-icon">
+                            <i class="bi bi-pencil-square"></i>
+                        </div>
+                        <h4 class="feature-title">Test de conocimientos</h4>
+                        <p>Evalúa y mejora tu nivel de educación financiera con pruebas interactivas que te ayudarán a identificar tus áreas de oportunidad.</p>
+                    </div>
+                </div>
+                
+                <div class="col-lg-4 col-md-6">
+                    <div class="feature-card">
+                        <div class="feature-icon">
+                            <i class="bi bi-book"></i>
+                        </div>
+                        <h4 class="feature-title">Glosario financiero</h4>
+                        <p>Accede a un glosario completo de términos financieros, desde los conceptos básicos hasta los más avanzados, para dominar el lenguaje de las finanzas.</p>
+                    </div>
+                </div>
+                
+                <div class="col-lg-4 col-md-6">
+                    <div class="feature-card">
+                        <div class="feature-icon">
+                            <i class="bi bi-lightning-charge"></i>
+                        </div>
+                        <h4 class="feature-title">Resultados instantáneos</h4>
+                        <p>Obtén análisis y retroalimentación inmediata en tus simulaciones y tests para un aprendizaje eficiente.</p>
+                    </div>
+                </div>
+                
+                <div class="col-lg-4 col-md-6">
+                    <div class="feature-card">
+                        <div class="feature-icon">
+                            <i class="bi bi-phone"></i>
+                        </div>
+                        <h4 class="feature-title">Multiplataforma</h4>
+                        <p>Usa BANKario desde cualquier dispositivo, ya sea Móvil, Tablet o Escritorio, con sincronización en la nube.</p>
+                    </div>
+                </div>
+                
+                <div class="col-lg-4 col-md-6">
+                    <div class="feature-card">
+                        <div class="feature-icon">
+                            <i class="bi bi-lightbulb"></i>
+                        </div>
+                        <h4 class="feature-title">Aprendizaje continuo</h4>
+                        <p>Accede a recursos que te permitirán expandir tu conocimiento financiero a tu propio ritmo.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="services" class="section-padding">
+        <div class="container">
+            <h2 class="section-title lazy-load">Nuestros servicios</h2>
+            <div class="row align-items-center lazy-load">
+                <div class="col-lg-6 mb-4 mb-lg-0">
+                    <h3 class="mb-4" style="color: var(--primary-color); font-weight: 600;">Simulador de préstamos</h3>
+                    <p class="mb-3">Calcula automáticamente cuotas, intereses y plazos para diferentes tipos de préstamos. Compara opciones y encuentra la mejor alternativa para tu situación financiera.</p>
+                    <ul class="list-unstyled">
+                        <li class="mb-2"><i class="bi bi-check-circle-fill me-2" style="color: var(--success-color);"></i>Simulador de ahorro</li>
+                        <li class="mb-2"><i class="bi bi-check-circle-fill me-2" style="color: var(--success-color);"></i>Simulador de crédito</li>
+                        <li class="mb-2"><i class="bi bi-check-circle-fill me-2" style="color: var(--success-color);"></i>Simulador de inversión</li>
+                        <li class="mb-2"><i class="bi bi-check-circle-fill me-2" style="color: var(--success-color);"></i>Simulador de presupuesto personal</li>
+                    </ul>
+                </div>
+                <div class="col-lg-6">
+                    <div class="text-center p-5" style="background: linear-gradient(45deg, var(--primary-color), var(--accent-color)); border-radius: 20px; color: white;">
+                        <i class="bi bi-calculator" style="font-size: 4rem; margin-bottom: 1rem;"></i>
+                        <h4>Calculadora inteligente</h4>
+                        <p>Herramientas precisas para tus cálculos financieros</p>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="row align-items-center mt-5 lazy-load">
+                <div class="col-lg-6 order-lg-2 mb-4 mb-lg-0">
+                    <h3 class="mb-4" style="color: var(--primary-color); font-weight: 600;">Planificación financiera</h3>
+                    <p class="mb-3">Simula diferentes escenarios financieros para optimizar tus decisiones económicas y alcanzar tus metas.</p>
+                    <ul class="list-unstyled">
+                        <li class="mb-2"><i class="bi bi-check-circle-fill me-2" style="color: var(--success-color);"></i>Análisis de escenarios</li>
+                        <li class="mb-2"><i class="bi bi-check-circle-fill me-2" style="color: var(--success-color);"></i>Proyecciones a largo plazo</li>
+                        <li class="mb-2"><i class="bi bi-check-circle-fill me-2" style="color: var(--success-color);"></i>Estrategias personalizadas</li>
+                        <li class="mb-2"><i class="bi bi-check-circle-fill me-2" style="color: var(--success-color);"></i>Optimización de recursos</li>
+                    </ul>
+                </div>
+                <div class="col-lg-6 order-lg-1">
+                    <div class="text-center p-5" style="background: linear-gradient(45deg, var(--primary-color), var(--success-color)); border-radius: 20px; color: white;">
+                        <i class="bi bi-graph-up" style="font-size: 4rem; margin-bottom: 1rem;"></i>
+                        <h4>Simulaciones financieras</h4>
+                        <p>Evalúa y planifica tu economía con nuestras herramientas</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="testimonios" class="section-padding">
+        <div class="container">
+            <div class="section-title lazy-load">
+                <h2>La satisfacción de nuestros clientes, en sus propias palabras</h2>
+            </div>
+
+            <div class="swiper mySwiper">
+                <div class="swiper-wrapper">
+
+                    <div class="swiper-slide testimonial-card lazy-load">
+                        <img src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?ixlib=rb-4.0.3&auto=format&fit=crop&w=150&q=80" alt="Cliente" class="testimonial-img">
+                        <div class="stars">
+                            <i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i>
+                        </div>
+                        <p>"Gracias a esta plataforma logré tomar mejores decisiones financieras. Me siento más seguro sobre mi futuro económico."</p>
+                        <h5>- Javier Hernández</h5>
+                    </div>
+
+                    <div class="swiper-slide testimonial-card lazy-load">
+                        <img src="https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?ixlib=rb-4.0.3&auto=format&fit=crop&w=150&q=80" alt="Cliente" class="testimonial-img">
+                        <div class="stars">
+                            <i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i>
+                        </div>
+                        <p>"El simulador de préstamos fue clave para planear mi crédito hipotecario. Una herramienta súper útil y fácil de usar."</p>
+                        <h5>- Ronaldo Nazario</h5>
+                    </div>
+
+                    <div class="swiper-slide testimonial-card lazy-load">
+                        <img src="https://images.unsplash.com/photo-1500648767791-00dcc994a43e?ixlib=rb-4.0.3&auto=format&fit=crop&w=150&q=80" alt="Cliente" class="testimonial-img">
+                        <div class="stars">
+                            <i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i>
+                        </div>
+                        <p>"La sección de simulaciones me dio una nueva perspectiva para organizar mis ahorros. Información clara y bien explicada."</p>
+                        <h5>- Ricardo Martín</h5>
+                    </div>
+
+                    <div class="swiper-slide testimonial-card lazy-load">
+                        <img src="https://images.unsplash.com/photo-1524504388940-b1c1722653e1?ixlib=rb-4.0.3&auto=format&fit=crop&w=150&q=80" alt="Cliente" class="testimonial-img">
+                        <div class="stars">
+                            <i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i>
+                        </div>
+                        <p>"Me encanta la claridad con la que explican cada paso. Ideal para quienes no somos expertos en finanzas. Muy recomendada."</p>
+                        <h5>- Ángela A.</h5>
+                    </div>
+
+                    <div class="swiper-slide testimonial-card lazy-load">
+                        <img src="https://images.unsplash.com/photo-1544005313-94ddf0286df2?ixlib=rb-4.0.3&auto=format&fit=crop&w=150&q=80" alt="Cliente" class="testimonial-img">
+                        <div class="stars">
+                            <i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i>
+                        </div>
+                        <p>"Una experiencia educativa y práctica. Desde que empecé a usar la plataforma, administro mejor mis ingresos y gastos."</p>
+                        <h5>- Claudia Sheinbaum</h5>
+                    </div>
+
+                    <div class="swiper-slide testimonial-card lazy-load">
+                        <img src="https://images.unsplash.com/photo-1508214751196-bcfd4ca60f91?ixlib=rb-4.0.3&auto=format&fit=crop&w=150&q=80" alt="Cliente" class="testimonial-img">
+                        <div class="stars">
+                            <i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i>
+                        </div>
+                        <p>"El sitio es intuitivo, visualmente agradable y muy completo. He aprendido a simular sin complicaciones. ¡Gracias!"</p>
+                        <h5>- Paty Chapoy</h5>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="section-padding bg-secondary-custom">
+        <div class="container">
+            <h2 class="section-title lazy-load">¿Listo/a para comenzar?</h2>
+            <div class="row justify-content-center">
+                <div class="col-lg-8 text-center lazy-load">
+                    <p class="lead mb-4">Únete a miles de usuarios que ya están mejorando su salud financiera con BANKario. Es momento de tomar el control de tu futuro económico.</p>
+                    <div class="d-flex flex-column flex-sm-row gap-3 justify-content-center">
+                        <a href="registro.html" class="btn-simulate">
+                            <i class="bi bi-play-circle me-2"></i>
+                            Comenzar simulación
+                        </a>
+                        <button id="btn-info" class="btn btn-outline-primary btn-lg rounded-pill px-4">
+                            <i class="bi bi-info-circle me-2"></i>
+                            Más información
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <div id="info-modal" class="modal-overlay">
+        <div class="modal-content">
+            <h3>¿Por qué usar BANKario?</h3>
+            <p>
+                BANKario es una herramienta diseñada para ayudarte a entender y mejorar tu salud financiera. 
+                Con simulaciones personalizadas y orientación clara, puedes tomar decisiones más informadas 
+                sobre tus ahorros, inversiones y gastos.
+            </p>
+            <button id="btn-ok" class="btn btn-primary mt-3" style="background-color: var(--accent-color); border:1px solid #fff;">OK</button>
+        </div>
+    </div>
+
+    <footer class="footer lazy-load">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-4 mb-4">
+                    <h5>BANKario</h5>
+                    <p>La plataforma más confiable para la simulación y planificación financiera personal.</p>
+                    <div class="d-flex gap-3">
+                        <a href="#"><i class="bi bi-instagram fs-5"></i></a>
+                        <a href="#"><i class="bi bi-youtube fs-5"></i></a>
+                        <a href="#"><i class="bi bi-tiktok fs-5"></i></a>
+                    </div>
+                </div>
+                <div class="col-lg-2 col-md-6 mb-4">
+                    <h5>Servicios</h5>
+                    <ul class="list-unstyled">
+                        <li><a href="iniciar_sesion.html">Simulaciones</a></li>
+                        <li><a href="iniciar_sesion.html">Test de conocimientos</a></li>
+                        <li><a href="iniciar_sesion.html">Glosario de términos</a></li>
+                    </ul>
+                </div>
+                <div class="col-lg-2 col-md-6 mb-4">
+                    <h5>Legal</h5>
+                    <ul class="list-unstyled">
+                        <li><a href="terminos_y_condiciones.html">Términos de uso</a></li>
+                    </ul>
+                </div>
+            </div>
+            <hr class="my-4" style="border-color: #374151;">
+            <div class="row justify-content-center">
+                <div class="col-md-6 text-center">
+                    <p class="mb-0">&copy; 2025 BANKario. Todos los derechos reservados.</p>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/js/bootstrap.bundle.min.js"></script>
+    <script src="js/index.js"></script>
+</body>
+</html>

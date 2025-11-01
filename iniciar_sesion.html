@@ -1,0 +1,201 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Iniciar Sesión - BANKario</title>
+    <link rel="stylesheet" href="css/iniciar_sesion.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="icon" href="multimedia/logo.ico" type="image/x-icon" />
+</head>
+<body class="loader_bg">
+  <div class="loader_p">
+        <div class="loader">
+            <span class="loader-text">Cargando</span>
+            <span class="load"></span>
+        </div>
+  </div>
+    <div class="contenedor">
+        <div class="lado-izquierdo">
+            <div class="formulario">
+                <h2>Iniciar sesión</h2>
+                <p>¿No tienes una cuenta? <a href="registro.html" class="inicio_btn">Regístrate</a></p>
+                <form id="loginForm" action="/login" method="post">
+                    <input type="email" placeholder="Correo electrónico" name="correo" required id="correo" minlength="6" maxlength="100">
+                    <div class="input-container">
+                        <input type="password" id="password" name="contrasena" placeholder="Contraseña" required minlength="6" maxlength="35">
+                        <span id="eye-icon-password" class="fa fa-eye" onclick="togglePasswordVisibility('password')"></span>
+                    </div>
+                    <button type="submit" class="boton-principal">Iniciar sesión</button>
+                </form>
+            </div>
+        </div>
+
+        <div class="lado-derecho">
+            <img src="multimedia/logo.png" alt="BANKario Logo" class="logo-bankario">
+            <video autoplay loop muted class="bg-video">
+                <source src="multimedia/registro_video.mp4" type="video/mp4">
+                tu navegador no soporta videos HTML5.
+            </video>
+            <a href="index.html" class="boton-volver">
+                <i class="fas fa-arrow-left"></i> Volver
+            </a>
+        </div>
+    </div>
+
+    <div id="error-message-overlay" class="error-message-overlay">
+        <div class="error-message-box">
+            <p id="error-message-text"></p>
+        </div>
+    </div>
+
+    <div id="custom-alert-overlay" class="custom-alert-overlay">
+        <div id="custom-alert-box" class="custom-alert-box">
+            <span class="close-alert-btn" id="close-alert-btn">&times;</span>
+            <p id="custom-alert-message"></p>
+            <button id="custom-alert-ok-btn">ok</button>
+        </div>
+    </div>
+
+<script>
+    // toggle de visibilidad de contraseña
+    function togglePasswordVisibility(id) {
+        const input = document.getElementById(id);
+        const eyeIcon = document.getElementById(`eye-icon-${id}`);
+        if (input.type === "password") {
+            input.type = "text";
+            eyeIcon.classList.remove('fa-eye');
+            eyeIcon.classList.add('fa-eye-slash');
+        } else {
+            input.type = "password";
+            eyeIcon.classList.remove('fa-eye-slash');
+            eyeIcon.classList.add('fa-eye');
+        }
+    }
+
+    // ocultar loader al cargar
+    window.addEventListener("load", function(){
+        document.body.classList.add("loaded");
+    });
+
+    const bgVideo = document.querySelector('.bg-video');
+  
+    // vuelve a reproducir el video si el navegador lo detiene al regresar
+    document.addEventListener('visibilitychange', () => {
+        if (document.visibilityState === 'visible' && bgVideo.paused) {
+            bgVideo.play().catch((e) => {
+                console.warn('no se pudo reproducir el video automáticamente:', e);
+            });
+        }
+    });
+
+    // sección para el pop-up de alerta personalizado (copiado de registro.js)
+    const customAlertOverlay = document.getElementById('custom-alert-overlay');
+    const customAlertBox = document.getElementById('custom-alert-box');
+    const customAlertMessage = document.getElementById('custom-alert-message');
+    const customAlertOkBtn = document.getElementById('custom-alert-ok-btn');
+    const closeAlertBtn = document.getElementById('close-alert-btn');
+    const loaderP = document.querySelector('.loader_p');
+
+    // elementos del mensaje de error glassmorphism
+    const errorMessageOverlay = document.getElementById('error-message-overlay');
+    const errorMessageText = document.getElementById('error-message-text');
+
+    function showAlert(message) {
+        customAlertMessage.textContent = message;
+        customAlertOverlay.classList.add('show');
+        document.body.classList.add('blur-active');
+    }
+
+    function hideAlert() {
+        customAlertOverlay.classList.remove('show');
+        document.body.classList.remove('blur-active');
+    }
+
+    customAlertOkBtn.addEventListener('click', hideAlert);
+    closeAlertBtn.addEventListener('click', hideAlert);
+    customAlertOverlay.addEventListener('click', (event) => {
+        if (event.target === customAlertOverlay) {
+            hideAlert();
+        }
+    });
+
+    // función para mostrar el mensaje de error glassmorphism
+    function showGlassmorphismError(message) {
+        errorMessageText.textContent = message;
+        errorMessageOverlay.classList.add('show');
+        setTimeout(() => {
+            errorMessageOverlay.classList.remove('show');
+        }, 3000); // el mensaje desaparece después de 3 segundos
+    }
+
+    // manejador de envío del formulario de inicio de sesión
+    document.getElementById('loginForm').addEventListener('submit', function(event) {
+        event.preventDefault(); // evita el envío por defecto para la validación js
+
+        const correoInput = document.getElementById('correo');
+        const passwordInput = document.getElementById('password');
+
+        const correo = correoInput.value.trim();
+        const password = passwordInput.value.trim();
+
+        const correoValidoRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,6}$/;
+
+        // validaciones en el lado del cliente
+        if (!correoValidoRegex.test(correo)) {
+            showAlert('por favor, ingresa un correo electrónico válido.');
+            correoInput.focus();
+            return;
+        }
+        if (password.length < 8 || password.length > 35) {
+            showAlert('la contraseña debe tener entre 8 y 35 caracteres.');
+            passwordInput.focus();
+            return;
+        }
+
+        // si todas las validaciones pasan, muestra el loader y envía el formulario
+        loaderP.style.display = 'grid';
+        document.body.classList.remove('loaded');
+        document.body.style.overflow = 'hidden';
+
+        // envía el formulario a flask
+        fetch('/login', {
+            method: 'POST',
+            body: new FormData(this)
+        })
+        .then(response => response.json())
+        .then(data => {
+            loaderP.style.display = 'none'; // oculta el loader
+            document.body.classList.add('loaded');
+            document.body.style.overflow = 'auto'; // restaura el scroll
+
+            if (data.success) {
+                window.location.href = data.redirect;
+            } else {
+                showGlassmorphismError(data.message);
+            }
+        })
+        .catch(error => {
+            console.error('error:', error);
+            loaderP.style.display = 'none'; // oculta el loader
+            document.body.classList.add('loaded');
+            document.body.style.overflow = 'auto'; // restaura el scroll
+            showGlassmorphismError('ocurrió un error inesperado. por favor, inténtalo de nuevo.');
+        });
+    });z
+
+    // revisa si hay mensajes flash de flask al cargar la página
+    document.addEventListener('DOMContentLoaded', function() {
+        const flashMessages = JSON.parse('{{ get_flashed_messages() | tojson }}');
+        if (flashMessages && flashMessages.length > 0) {
+            // asumiendo que solo quieres mostrar el último mensaje de error flash en el glassmorphism
+            const errorMessage = flashMessages.find(msg => msg.includes('incorrect') || msg.includes('registrado'));
+            if (errorMessage) {
+                showGlassmorphismError(errorMessage);
+            }
+        }
+    });
+
+</script>
+</body>
+</html>
