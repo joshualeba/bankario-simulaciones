@@ -177,4 +177,59 @@ document.addEventListener('DOMContentLoaded', () => {
             });
         });
     }
+
+    // --- LÓGICA PARA EL MODAL DE RECOMENDACIONES ---
+
+    const recommendationsBtn = document.getElementById('recommendationsBtn');
+    const recommendationsModalElement = document.getElementById('recommendationsModal');
+    let recommendationsModal;
+
+    if (recommendationsModalElement) {
+        recommendationsModal = new bootstrap.Modal(recommendationsModalElement);
+
+        // Abrir el modal de recomendaciones
+        if (recommendationsBtn) {
+            recommendationsBtn.addEventListener('click', () => {
+                recommendationsModal.show();
+            });
+        }
+
+        // Lógica para los enlaces de búsqueda dentro del modal
+        recommendationsModalElement.addEventListener('click', (event) => {
+            if (event.target.classList.contains('glossary-link')) {
+                event.preventDefault(); // Evita que el enlace "#" navegue
+                
+                const termToSearch = event.target.dataset.term;
+                
+                if (glossarySearchInput && termToSearch) {
+                    // 1. Poner el término en la barra de búsqueda
+                    glossarySearchInput.value = termToSearch;
+                    
+                    // 2. Disparar el evento 'keyup' para activar el filtro existente
+                    const keyupEvent = new Event('keyup');
+                    glossarySearchInput.dispatchEvent(keyupEvent);
+                    
+                    // 3. Cerrar el modal
+                    recommendationsModal.hide();
+                    
+                    // 4. Hacer scroll hasta la barra de búsqueda (útil en móviles)
+                    glossarySearchInput.scrollIntoView({ 
+                        behavior: 'smooth', 
+                        block: 'center' 
+                    });
+                    
+                    // 5. Poner el foco en la barra de búsqueda
+                    glossarySearchInput.focus();
+                }
+            }
+        });
+
+        // Aplicar efecto blur cuando el modal de recomendaciones se muestra/oculta
+        recommendationsModalElement.addEventListener('show.bs.modal', () => {
+            toggleModalBlurEffect(true);
+        });
+        recommendationsModalElement.addEventListener('hide.bs.modal', () => {
+            toggleModalBlurEffect(false);
+        });
+    }
 });

@@ -146,7 +146,7 @@ CREATE TABLE Empleados (
 GO
 
 
--- ========= SECCIÓN 2: INSERCIÓN DE DATOS (INSERTS) =========
+-- ========= SECCIÓN 2: INSERCIÓN DE DATOS (CATÁLOGOS Y TEST) =========
 
 -- Datos iniciales para el test
 INSERT INTO Tipo_Preguntas (nombre) VALUES ('multiple_choice'), ('true_false'), ('fill_in_the_blank');
@@ -213,7 +213,7 @@ INSERT INTO opciones_respuesta (pregunta_id, texto_opcion, es_correcta) VALUES
 ((SELECT id FROM preguntas_test WHERE pregunta = '¿Cuál es un beneficio clave de diversificar tus inversiones?'), 'Aumenta la liquidez de tus activos.', 0),
 ((SELECT id FROM preguntas_test WHERE pregunta = '¿Cuál es un beneficio clave de diversificar tus inversiones?'), 'Elimina la necesidad de investigación de mercado.', 0);
 
--- Datos de negocio
+-- Datos de negocio (Catálogos)
 INSERT INTO Estados (nombre) VALUES ('Monterrey'), ('Querétaro'), ('Guadalajara');
 INSERT INTO Ciudades (nombre, id_Estado) VALUES
 ('Monterrey Centro', 1), ('San Nicolás', 1), ('Guadalupe', 1),
@@ -224,53 +224,7 @@ INSERT INTO Generos (nombre) VALUES ('Hombre'), ('Mujer'), ('Otros');
 INSERT INTO Estatus (nombre) VALUES ('Activo'), ('Inactivo'), ('Suspendido'), ('En proceso'), ('Cancelado'), ('Pendiente'), ('Finalizado'), ('Archivado'), ('Revisado'), ('En espera');
 INSERT INTO Puestos (nombre) VALUES ('Gerente'), ('Cajero'), ('Atención al cliente'), ('Vendedor'), ('Supervisor'), ('Contador'), ('Auxiliar administrativo'), ('Analista'), ('Director'), ('Jefe de sucursal');
 
--- Datos de ejemplo para personas, usuarios, clientes y empleados
-INSERT INTO DatosP (nombre, apellidoP, apellidoM, fecha_nacimiento, telefono) VALUES
-('Paola Montserrat', 'Bautista', 'Sandoval', '1985-01-01', 8112345678),
-('Moises', 'Becerril', 'Alvarez', '1982-02-02', 8123456789),
-('Joshua Moises', 'Cervantes', 'Arredondo', '1990-03-03', 8134567890),
-('Christian Giovanni', 'Contreras', 'Zozaya', '1988-04-04', 8145678901),
-('Diego Antonio', 'Garcia', 'Garcia', '1979-05-05', 8156789012),
-('Arianna Valentina', 'Giannoccaro', 'Quiñonez', '1992-06-06', 8167890123),
-('Artemio', 'Hurtado', 'Hernandez', '1987-07-07', 8178901234),
-('Cristian', 'Hurtado', 'Lucas', '1991-08-08', 8189012345),
-('Diego', 'Jimenez', 'Vargas', '1983-09-09', 8190123456),
-('Emiliano', 'Ledesma', 'Ledesma', '1980-10-10', 8101234567);
-
-INSERT INTO usuarios (id_datosP, correo_electronico, contrasena) VALUES
-(1, 'paola.bautista@example.com', 'pass123'),
-(2, 'moises.becerril@example.com', 'pass123'),
-(3, 'joshua.cervantes@example.com', 'pass123'),
-(4, 'christian.contreras@example.com', 'pass123'),
-(5, 'diego.garcia@example.com', 'pass123'),
-(6, 'arianna.giannoccaro@example.com', 'pass123'),
-(7, 'artemio.hurtado@example.com', 'pass123'),
-(8, 'cristian.hurtado@example.com', 'pass123'),
-(9, 'diego.jimenez@example.com', 'pass123'),
-(10, 'emiliano.ledesma@example.com', 'pass123');
-
-INSERT INTO Clientes (id_usuario, id_Sucursal, id_Genero) VALUES
-(1, 1, 2), (2, 2, 1), (3, 3, 1), (4, 4, 1), (5, 5, 1),
-(6, 6, 2), (7, 7, 1), (8, 8, 1), (9, 9, 1), (10, 1, 1);
-
-INSERT INTO Empleados (nombre, apellidoPaterno, apellidoMaterno, id_Puesto, id_Sucursal, id_Estatus, id_genero) VALUES
-('Andres Joshua', 'Leon', 'Barranco', 1, 1, 1, 1),
-('Eduardo Daniel', 'Licea', 'Gonzalez', 2, 2, 1, 1),
-('Jorge Armando', 'Lopez', 'Morales', 3, 3, 1, 1),
-('Santiago', 'Lugo', 'Sanchez', 4, 4, 1, 1),
-('Saul Alejandro', 'Maldonado', 'Ladrillero', 5, 5, 1, 1),
-('Fabiola', 'Martinez', 'Rauda', 6, 6, 1, 2),
-('Coral', 'Martinez', 'Silvestre', 7, 7, 1, 2),
-('Tania', 'Mejia', 'Moreno', 8, 8, 1, 2),
-('Ricardo', 'Mendez', 'Rodriguez', 9, 9, 1, 1),
-('Marlon Raul', 'Mendieta', 'Valadez', 10, 1, 1, 1);
-
-INSERT INTO resultados_test (usuario_id, puntuacion, total_preguntas, puntuacion_total, tiempo_resolucion_segundos) VALUES
-(1, 8, 10, 80, 120.50), (2, 7, 10, 70, 130.25), (3, 9, 10, 90, 110.75),
-(4, 6, 10, 60, 140.00), (5, 10, 10, 100, 105.30), (6, 7, 10, 70, 125.00),
-(7, 8, 10, 80, 115.90), (8, 5, 10, 50, 150.10), (9, 9, 10, 90, 100.00),
-(10, 6, 10, 60, 135.45);
-GO
+-- (Fin de los inserts de datos de prueba)
 
 
 -- ========= SECCIÓN 3: PROCEDIMIENTOS ALMACENADOS =========
@@ -483,169 +437,3 @@ BEGIN
     DELETE FROM resultados_test WHERE usuario_id IN (SELECT id FROM deleted);
 END;
 GO
-
-
--- ========= SECCIÓN 5: PRUEBAS Y EJECUCIONES =========
-
--- Ejemplo de creación de un nuevo usuario
-EXEC sp_crear_nuevo_usuario
-    @nombre_persona = N'Jorgito', @apellidop = N'Mendez', @apellidom = N'Ruiz',
-    @telefono = 5530123456, @fecha_nacimiento = '2000-01-01',
-    @email_persona = N'jorgito@gmail.com', @contrasena_segura = N'segura123';
-GO
-
--- Ejemplo de consulta de información
-EXEC sp_ver_info_usuario @id_de_usuario = 1;
-GO
-
--- Ejemplo de guardado de test
-EXEC sp_guardar_test_completado
-    @id_usuario_del_test = 1, @respuestas_correctas = 8, @cantidad_total_preguntas = 10,
-    @puntuacion_final_con_tiempo = 80, @tiempo_segundos = 120.5;
-GO
-
--- Ejemplo de actualización de sesión
-EXEC sp_actualizar_fecha_ultima_sesion @id_usuario_que_entro = 1;
-GO
-
-------------------------------------------------------------------------------------
---------------------------fragmentacion---------------------------------------------
-------------------------------------------------------------------------------------
-------------------------------------------------------------------------------------
---------------------------sucursales------------------------------------------------
-------------------------------------------------------------------------------------
--- Sucursales en Monterrey
-select * from Sucursales
-where id_Ciudad in (
-    select id from Ciudades where id_Estado = 1
-)
-
--- Sucursales en Querétaro
-select * from Sucursales
-where id_Ciudad in (
-    select id from Ciudades where id_Estado = 2
-)
-
--- Sucursales en Guadalajara
-select * from Sucursales
-where id_Ciudad in (
-    select id from Ciudades where id_Estado = 3
-)
-
-
-------------------------------------------------------------------------------------
---------------------------Clientes-------------------------------------------------
-------------------------------------------------------------------------------------
-
--- Clientes en Monterrey
-select * from Clientes
-where id_Sucursal in (
-    select id from Sucursales where id_Ciudad in (
-        select id from Ciudades where id_Estado = 1
-    )
-)
-
--- Clientes en Querétaro
-select * from Clientes
-where id_Sucursal in (
-    select id from Sucursales where id_Ciudad in (
-        select id from Ciudades where id_Estado = 2
-    )
-)
-
-
--- Clientes en Guadalajara
-select * from Clientes
-where id_Sucursal in (
-    select id from Sucursales where id_Ciudad in (
-        select id from Ciudades where id_Estado = 3
-    )
-)
-
-
-------------------------------------------------------------------------------------
---------------------------Empleados-------------------------------------------------
-------------------------------------------------------------------------------------
-
--- Empleados en Monterrey
-select * from Empleados
-where id_Sucursal in (
-    select id FROM Sucursales where id_Ciudad in (
-        select id FROM Ciudades where id_Estado = 1
-    )
-)
-
-
--- Empleados en Querétaro
-select * from Empleados
-where id_Sucursal in (
-    select id from Sucursales where id_Ciudad in (
-        select id from Ciudades where id_Estado = 2
-    )
-)
-
--- Empleados en Guadalajara
-select * from Empleados
-where id_Sucursal in (
-    select id from Sucursales where id_Ciudad in (
-        select id from Ciudades where id_Estado = 3
-    )
-)
-
-------------------------------------------------------------------------------------
---------------------------Usuarios(Problema)----------------------------------------
-------------------------------------------------------------------------------------
-
-select * from Usuarios
-where id_datosP in (
-	select id from DatosP where id in (
-		select id_usuario from Clientes where id_Sucursal in (
-			select id from Sucursales where id_Ciudad in (
-				select id from Ciudades where id_Estado = 3
-			)
-		)
-	)
-)
-------------------------------------------------------------------------------------
--------------------------Estados----------------------------------------------------
-------------------------------------------------------------------------------------
-
--- Fragmento: Estados del norte
-select * from Estados where id = 1 
-
--- Fragmento: Estados del centro
-select * from Estados where id = 2
-
--- Fragmento: Estados del occidente
-select * from Estados where id = 3
-
-------------------------------------------------------------------------------------
-----------------------------------resultados_test----------------------------------
------------------------------------------------------------------------------------
-
-select * from resultados_test
-where usuario_id in (
-    select id from usuarios
-    where id_datosP in (
-        select id from DatosP where id in (
-            select id_usuario from Clientes where id_Sucursal in (
-                select id from Sucursales where id_Ciudad in (
-                    select id from Ciudades where id_Estado = 3
-                )
-            )
-        )
-    )
-)
-
-
-INSERT INTO resultados_test (usuario_id, puntuacion, total_preguntas, puntuacion_total, tiempo_resolucion_segundos) VALUES
-(1, 8, 10, 80, 120.50),
-(2, 7, 10, 70, 130.25),
-(3, 9, 10, 90, 110.75),
-(4, 6, 10, 60, 140.00),
-(5, 10, 10, 100, 105.30),
-(6, 7, 10, 70, 125.00),
-(7, 8, 10, 80, 115.90),
-(8, 5, 10, 50, 150.10),
-(9, 9, 10, 90, 100.00),
-(10, 6, 10, 60, 135.45)

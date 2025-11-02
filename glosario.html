@@ -162,11 +162,19 @@
                     Encuentra rápidamente la definición de cualquier término financiero. Utiliza la barra de búsqueda para filtrar los resultados.
                 </p>
 
+                <div class="recommendations-button-container">
+                    <button id="recommendationsBtn" class="btn btn-primary btn-lg rounded-pill shadow-lg">
+                        <i class="bi bi-lightbulb-fill me-2"></i>
+                        Ver consejos de gestión
+                    </button>
+                </div>
+                <div class="search-bar-container mb-5">
+
                 <!-- Sección: Barra de búsqueda -->
                 <div class="search-bar-container mb-5">
                     <input type="text" id="glossarySearchInput" class="form-control glass-input form-control-lg" placeholder="Buscar término financiero...">
                     <i class="bi bi-funnel-fill" id="filteringIndicator" title="Filtrando resultados"></i>
-                </div>
+                </div>   
 
                 <!-- Sección: Lista de términos del glosario -->
                 <div id="glossaryTermsContainer">
@@ -460,7 +468,99 @@
         </div>
     </div>
 
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/js/bootstrap.bundle.min.js"></script>
-    <script src="js/glosario.js"></script>
+    <div class="modal fade" id="recommendationsModal" tabindex="-1" aria-labelledby="recommendationsModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-lg">
+        <div class="modal-content glass-modal">
+            <div class="modal-header border-0">
+                <h5 class="modal-title" id="recommendationsModalLabel"><i class="bi bi-lightbulb-fill me-2"></i>Recomendaciones de gestión</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Cerrar"></button>
+            </div>
+            <div class="modal-body">
+                <p class="text-muted text-center">Consejos prácticos para mejorar tu salud financiera.</p>
+                <hr class="mb-4">
+
+                <div class="row row-cols-1 row-cols-lg-2 g-4 recommendation-grid">
+
+                    <div class="col">
+                        <div class="recommendation-card">
+                            <div class="rec-icon text-success">
+                                <i class="bi bi-journal-check"></i>
+                            </div>
+                            <div class="rec-content">
+                                <strong>Crea un presupuesto</strong>
+                                <p>Define tus ingresos y gastos. Asigna una parte fija al ahorro. Usa el <a href="{{ url_for('simulador_presupuesto_personal') }}">simulador</a> para empezar.</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col">
+                        <div class="recommendation-card">
+                            <div class="rec-icon text-info">
+                                <i class="bi bi-shield-lock-fill"></i>
+                            </div>
+                            <div class="rec-content">
+                                <strong>Fondo de emergencia</strong>
+                                <p>Ahorra de 3 a 6 meses de tus gastos fijos. Este dinero debe ser accesible (aprende sobre <a href="#" class="glossary-link" data-term="liquidez">liquidez</a>).</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col">
+                        <div class="recommendation-card">
+                            <div class="rec-icon text-danger">
+                                <i class="bi bi-credit-card-2-off-fill"></i>
+                            </div>
+                            <div class="rec-content">
+                                <strong>Paga tus deudas</strong>
+                                <p>Prioriza las deudas con mayor <a href="#" class="glossary-link" data-term="tasa de interes">tasa de interés</a>. Usa la <a href="{{ url_for('calculadora_deuda') }}">calculadora de deuda</a> para crear un plan.</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col">
+                        <div class="recommendation-card">
+                            <div class="rec-icon text-warning">
+                                <i class="bi bi-pie-chart-fill"></i>
+                            </div>
+                            <div class="rec-content">
+                                <strong>Diversifica tus inversiones</strong>
+                                <p>No pongas todo en un solo lugar (revisa <a href="#" class="glossary-link" data-term="diversificacion">diversificación</a>). Reparte entre <a href="#" class="glossary-link" data-term="accion">acciones</a> o <a href="#" class="glossary-link" data-term="bono">bonos</a>.</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col">
+                        <div class="recommendation-card">
+                            <div class="rec-icon text-primary">
+                                <i class="bi bi-bullseye"></i>
+                            </div>
+                            <div class="rec-content">
+                                <strong>Define metas claras</strong>
+                                <p>Tener un objetivo claro (un <a href="{{ url_for('simulador_ahorro') }}">viaje</a> o tu <a href="{{ url_for('simulador_retiro_jubilacion') }}">jubilación</a>) te ayuda a mantener la disciplina.</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col">
+                        <div class="recommendation-card">
+                            <div class="rec-icon text-success">
+                                <i class="bi bi-piggy-bank-fill"></i>
+                            </div>
+                            <div class="rec-content">
+                                <strong>Págate a ti primero</strong>
+                                <p>Considera tu <a href="#" class="glossary-link" data-term="ahorro">ahorro</a> como un gasto fijo más. Automatízalo al recibir tus ingresos.</p>
+                            </div>
+                        </div>
+                    </div>
+
+                </div> </div>
+            <div class="modal-footer border-0">
+                <button type="button" class="btn btn-primary" data-bs-dismiss="modal">¡Entendido!</button>
+            </div>
+        </div>
+    </div>
+</div>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/js/bootstrap.bundle.min.js"></script>
+<script src="js/glosario.js"></script>
 </body>
 </html>

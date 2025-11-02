@@ -81,12 +81,7 @@ document.addEventListener('DOMContentLoaded', () => {
     function toggleDropdown(button, dropdown) {
         const isShown = dropdown.classList.contains('show');
 
-        // Cierra cualquier otro dropdown abierto (solo el de usuario queda)
-        if (button === userBtn && userDropdown.classList.contains('show')) {
-            userDropdown.classList.remove('show');
-            userBtn.setAttribute('aria-expanded', 'false');
-        }
-
+        // Simplemente alterna la clase del dropdown actual
         dropdown.classList.toggle('show');
         button.setAttribute('aria-expanded', !isShown);
 

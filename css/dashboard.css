@@ -730,6 +730,12 @@ body.loaded .loader_p {
     .glass-sidebar {
         transform: translateX(-100%);
         transition: transform 0.3s ease;
+        width: 100%;
+        left: 0;
+        top: calc(var(--navbar-height) + 20px); 
+        height: calc(100vh - var(--navbar-height) - 30px);
+        border-radius: 0;
+        z-index: 1050;
     }
 
     .glass-sidebar.show {
@@ -748,17 +754,12 @@ body.loaded .loader_p {
     }
 
     .user-dropdown {
-        width: 150px;
+        width: 250px;
         right: 10px;
     }
 }
 
 @media (max-width: 576px) {
-    .user-dropdown {
-        width: 250px;
-        right: -80px;
-    }
-
     .main-content {
         padding: 0.5rem;
     }
@@ -769,7 +770,7 @@ body.loaded .loader_p {
 }
 
 .main-content.blurred-content {
-    filter: blur(5px); /* ajusta el valor del desenfoque según tu preferencia */
+    filter: blur(10px);
     transition: filter 0.3s ease-out;
 }
 
@@ -780,12 +781,120 @@ body.overlay-active::after {
     left: 0;
     right: 0;
     bottom: 0;
-    background-color: rgba(0, 0, 0, 0.3); /* oscurece un poco el fondo */
-    z-index: 1040; /* un z-index justo por debajo del modal para que se vea el desenfoque y el overlay */
+    background-color: rgba(0, 0, 0, 0.5);
+    z-index: 1040;
     transition: background-color 0.3s ease-out;
 }
 
 /* asegura que los modales tengan un z-index más alto que el overlay */
 .modal.fade .modal-dialog {
     z-index: 1050;
+}
+
+/* ===============================================
+   ESTILOS PARA BOTÓN Y MODAL DE RECOMENDACIONES
+   =============================================== */
+.recommendations-button-container {
+    text-align: center;
+    margin-bottom: 2rem; /* Espacio antes de la barra de búsqueda */
+}
+
+#recommendationsBtn {
+    transition: all 0.3s ease;
+    background-color: var(--success-color); /* Un color diferente para destacar */
+    border-color: var(--success-color);
+}
+
+#recommendationsBtn:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 6px 20px rgba(16, 185, 129, 0.4);
+    background-color: #0F996B;
+    border-color: #0F996B;
+}
+
+[data-theme="dark"] #recommendationsBtn {
+     background-color: var(--success-color);
+     border-color: var(--success-color);
+}
+
+[data-theme="dark"] #recommendationsBtn:hover {
+    background-color: #0F996B;
+    border-color: #0F996B;
+}
+
+/* Damos un fondo al cuerpo del modal para que las tarjetas contrasten */
+#recommendationsModal .modal-body {
+    background-color: var(--secondary-color);
+}
+[data-theme="dark"] #recommendationsModal .modal-body {
+     background-color: #1a202c; /* Un fondo más oscuro que el modal glass */
+}
+
+.recommendation-grid {
+    padding-top: 1rem;
+}
+
+.recommendation-card {
+    display: flex;
+    align-items: flex-start;
+    gap: 1rem;
+    background: var(--glass-bg); /* Tarjeta con efecto glass dentro del modal */
+    padding: 1rem;
+    border-radius: 12px;
+    border: 1px solid var(--glass-border);
+    height: 100%;
+    box-shadow: var(--shadow-light);
+}
+
+.rec-icon {
+    font-size: 2rem;
+    line-height: 1;
+    margin-top: 0.25rem;
+}
+
+.rec-content {
+    flex: 1;
+}
+
+.rec-content strong {
+    color: var(--primary-color);
+    font-size: 1.1rem;
+    display: block;
+    margin-bottom: 0.25rem;
+}
+
+.rec-content p {
+    color: var(--text-dark);
+    margin-bottom: 0;
+    font-size: 0.95rem;
+    line-height: 1.6;
+}
+
+.rec-content a.glossary-link {
+    color: var(--primary-color);
+    text-decoration: underline;
+    font-weight: 600;
+    cursor: pointer;
+}
+
+.rec-content a.glossary-link:hover {
+    color: #1D4ED8;
+}
+
+/* --- Estilos modo oscuro para las tarjetas --- */
+
+[data-theme="dark"] .rec-content strong {
+     color: var(--info-color);
+}
+
+[data-theme="dark"] .rec-content p {
+    color: var(--text-dark);
+}
+
+[data-theme="dark"] .rec-content a.glossary-link {
+    color: var(--info-color);
+}
+
+[data-theme="dark"] .rec-content a.glossary-link:hover {
+    color: #0EA5E9;
 }
