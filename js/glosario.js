@@ -1,4 +1,5 @@
 document.addEventListener('DOMContentLoaded', () => {
+
     // Sección: Loader
     const loader = document.querySelector('.loader_p');
     if (loader) {
@@ -6,7 +7,7 @@ document.addEventListener('DOMContentLoaded', () => {
             loader.style.opacity = '0';
             setTimeout(() => {
                 loader.style.display = 'none';
-                document.body.classList.remove('loader_bg'); // Quita el overflow hidden del body
+                document.body.classList.remove('loader_bg');
             }, 500);
         }, 1000);
     }
@@ -46,10 +47,9 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
-    // Sección: Lógica para dropdowns y efecto borroso (similar a simulacion_ahorro.js)
+    // Sección: Lógica para dropdowns y efecto borroso
     const userBtn = document.getElementById('userBtn');
     const userDropdown = document.getElementById('userDropdown');
-
     const mainContent = document.querySelector('.main-content');
     const body = document.body;
 
@@ -69,29 +69,16 @@ document.addEventListener('DOMContentLoaded', () => {
         if (mainContent) {
             if (show) {
                 mainContent.classList.add('blurred-content');
-                body.classList.add('overlay-active');
             } else {
                 mainContent.classList.remove('blurred-content');
-                body.classList.remove('overlay-active');
             }
         }
     }
 
     function toggleDropdown(button, dropdown) {
-        const isShown = dropdown.classList.contains('show');
-
-        // Cierra cualquier otro dropdown abierto (si hubiera más)
-        // En este caso, solo el de usuario
-        if (button === userBtn && userDropdown.classList.contains('show')) {
-            userDropdown.classList.remove('show');
-            userBtn.setAttribute('aria-expanded', 'false');
-        }
-
-        dropdown.classList.toggle('show');
-        button.setAttribute('aria-expanded', !isShown);
-
-        const anyDropdownOpen = userDropdown.classList.contains('show');
-        applyBlurEffect(anyDropdownOpen);
+        const isShown = dropdown.classList.toggle('show');
+        button.setAttribute('aria-expanded', isShown);
+        applyBlurEffect(isShown);
     }
 
     if (userBtn && userDropdown) {
@@ -101,7 +88,6 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
-    // Cerrar dropdowns y quitar el desenfoque al hacer clic fuera
     document.addEventListener('click', (event) => {
         let dropdownOpen = false;
         if (userDropdown && userDropdown.classList.contains('show')) {
@@ -136,23 +122,22 @@ document.addEventListener('DOMContentLoaded', () => {
         logoutBtn.addEventListener('click', () => {
             userDropdown.classList.remove('show');
             userBtn.setAttribute('aria-expanded', 'false');
-            applyBlurEffect(false); // Quita el desenfoque
-            logoutModal.show(); // Muestra el modal
+            applyBlurEffect(false);
+            logoutModal.show();
         });
     }
 
     if (confirmLogoutBtn) {
         confirmLogoutBtn.addEventListener('click', () => {
-            console.log('Cerrando sesión...');
-            window.location.href = "/logout"; // Redirige a la página de logout en Flask
-            logoutModal.hide(); // Oculta el modal
+            window.location.href = "/logout";
+            logoutModal.hide();
         });
     }
 
     // Sección: Lógica de búsqueda del glosario
     const glossarySearchInput = document.getElementById('glossarySearchInput');
     const glossaryTermsContainer = document.getElementById('glossaryTermsContainer');
-    const filteringIndicator = document.getElementById('filteringIndicator'); // Nuevo elemento
+    const filteringIndicator = document.getElementById('filteringIndicator');
 
     if (glossarySearchInput && glossaryTermsContainer && filteringIndicator) {
         glossarySearchInput.addEventListener('keyup', () => {
@@ -160,26 +145,25 @@ document.addEventListener('DOMContentLoaded', () => {
             const terms = glossaryTermsContainer.querySelectorAll('.glossary-item');
 
             if (searchTerm.length > 0) {
-                filteringIndicator.style.display = 'block'; // Muestra el indicador
+                filteringIndicator.style.display = 'block';
             } else {
-                filteringIndicator.style.display = 'none'; // Oculta el indicador
+                filteringIndicator.style.display = 'none';
             }
 
             terms.forEach(term => {
-                const termText = term.dataset.term.toLowerCase(); // Usamos data-term para el nombre del término
-                const definitionText = term.querySelector('p').textContent.toLowerCase(); // Texto de la definición
+                const termText = term.dataset.term.toLowerCase();
+                const definitionText = term.querySelector('p').textContent.toLowerCase();
 
                 if (termText.includes(searchTerm) || definitionText.includes(searchTerm)) {
-                    term.style.display = 'block'; // Muestra el término
+                    term.style.display = 'block';
                 } else {
-                    term.style.display = 'none'; // Oculta el término
+                    term.style.display = 'none';
                 }
             });
         });
     }
 
-    // --- LÓGICA PARA EL MODAL DE RECOMENDACIONES ---
-
+    // Sección: Lógica para el modal de recomendaciones
     const recommendationsBtn = document.getElementById('recommendationsBtn');
     const recommendationsModalElement = document.getElementById('recommendationsModal');
     let recommendationsModal;
@@ -187,49 +171,49 @@ document.addEventListener('DOMContentLoaded', () => {
     if (recommendationsModalElement) {
         recommendationsModal = new bootstrap.Modal(recommendationsModalElement);
 
-        // Abrir el modal de recomendaciones
         if (recommendationsBtn) {
             recommendationsBtn.addEventListener('click', () => {
                 recommendationsModal.show();
             });
         }
 
-        // Lógica para los enlaces de búsqueda dentro del modal
         recommendationsModalElement.addEventListener('click', (event) => {
             if (event.target.classList.contains('glossary-link')) {
-                event.preventDefault(); // Evita que el enlace "#" navegue
+                event.preventDefault(); 
                 
                 const termToSearch = event.target.dataset.term;
                 
                 if (glossarySearchInput && termToSearch) {
-                    // 1. Poner el término en la barra de búsqueda
                     glossarySearchInput.value = termToSearch;
                     
-                    // 2. Disparar el evento 'keyup' para activar el filtro existente
                     const keyupEvent = new Event('keyup');
                     glossarySearchInput.dispatchEvent(keyupEvent);
                     
-                    // 3. Cerrar el modal
                     recommendationsModal.hide();
                     
-                    // 4. Hacer scroll hasta la barra de búsqueda (útil en móviles)
                     glossarySearchInput.scrollIntoView({ 
                         behavior: 'smooth', 
                         block: 'center' 
                     });
                     
-                    // 5. Poner el foco en la barra de búsqueda
                     glossarySearchInput.focus();
                 }
             }
         });
 
-        // Aplicar efecto blur cuando el modal de recomendaciones se muestra/oculta
         recommendationsModalElement.addEventListener('show.bs.modal', () => {
             toggleModalBlurEffect(true);
         });
         recommendationsModalElement.addEventListener('hide.bs.modal', () => {
             toggleModalBlurEffect(false);
+        });
+    }
+
+    // sección: lógica del botón de regresar del navegador
+    const browserBackBtn = document.getElementById('browserBackBtn');
+    if (browserBackBtn) {
+        browserBackBtn.addEventListener('click', () => {
+            window.history.back();
         });
     }
 });

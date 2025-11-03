@@ -1,4 +1,5 @@
 document.addEventListener('DOMContentLoaded', () => {
+
     // Sección: Loader
     const loader = document.querySelector('.loader_p');
     if (loader) {
@@ -49,7 +50,6 @@ document.addEventListener('DOMContentLoaded', () => {
     // Sección: Lógica para dropdowns y efecto borroso
     const userBtn = document.getElementById('userBtn');
     const userDropdown = document.getElementById('userDropdown');
-
     const mainContent = document.querySelector('.main-content');
     const sidebar = document.getElementById('sidebar');
     const body = document.body;
@@ -80,8 +80,6 @@ document.addEventListener('DOMContentLoaded', () => {
 
     function toggleDropdown(button, dropdown) {
         const isShown = dropdown.classList.contains('show');
-
-        // Simplemente alterna la clase del dropdown actual
         dropdown.classList.toggle('show');
         button.setAttribute('aria-expanded', !isShown);
 
@@ -124,7 +122,7 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     });
 
-    // Sección: Lógica del botón de hamburguesa para el sidebar responsivo
+    // Sección: Lógica del sidebar responsivo
     const sidebarToggle = document.getElementById('sidebarToggle');
     if (sidebarToggle && sidebar) {
         sidebarToggle.addEventListener('click', () => {
@@ -139,46 +137,6 @@ document.addEventListener('DOMContentLoaded', () => {
     // Sección: Lógica de navegación de secciones
     const navLinks = document.querySelectorAll('.sidebar .nav-link');
     const contentSections = document.querySelectorAll('.content-section');
-
-    navLinks.forEach(link => {
-        link.addEventListener('click', (event) => {
-            const targetSectionId = link.dataset.section;
-            
-            // Si el enlace es para el glosario, redirige a la nueva página
-            if (targetSectionId === 'glosario') {
-                event.preventDefault(); // Evita el comportamiento por defecto del ancla
-                window.location.href = "/glosario";
-                return; // Termina la función aquí para no ejecutar el resto
-            }
-
-            event.preventDefault();
-
-            userDropdown.classList.remove('show');
-            userBtn.setAttribute('aria-expanded', 'false');
-            applyBlurEffect(false);
-
-            navLinks.forEach(nav => nav.classList.remove('active'));
-            contentSections.forEach(section => section.classList.add('d-none'));
-
-            link.classList.add('active');
-
-            const targetSection = document.getElementById(targetSectionId + '-section');
-            if (targetSection) {
-                targetSection.classList.remove('d-none');
-            }
-
-            if (window.innerWidth < 992) {
-                sidebar.classList.remove('show');
-                body.classList.remove('sidebar-open');
-            }
-
-            // Si la sección es el test, cargar las preguntas
-            if (targetSectionId === 'test-conocimientos') {
-                loadTest();
-            }
-        });
-    });
-
     const allSectionLinks = document.querySelectorAll('[data-section]');
     const sidebarLinks = document.querySelectorAll('.sidebar .nav-link');
 
@@ -198,7 +156,6 @@ document.addEventListener('DOMContentLoaded', () => {
             }
         });
 
-        // Si la sección es el test, cargar las preguntas
         if (sectionId === 'test-conocimientos') {
             loadTest();
         }
@@ -207,7 +164,6 @@ document.addEventListener('DOMContentLoaded', () => {
     allSectionLinks.forEach(link => {
         link.addEventListener('click', function(event) {
             const sectionId = this.getAttribute('data-section');
-            // Si el enlace es para el glosario, redirige a la nueva página
             if (sectionId === 'glosario') {
                 event.preventDefault();
                 window.location.href = "/glosario";
@@ -234,9 +190,9 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
-    showSection('inicio'); // Por defecto, muestra la sección de inicio al cargar
+    showSection('inicio');
 
-    // Sección: Lógica del modal de cerrar sesión
+    // Sección: Lógica de modales (Cerrar sesión y perfil)
     const logoutBtn = document.getElementById('logoutBtn');
     const confirmLogoutBtn = document.getElementById('confirmLogout');
     let logoutModal;
@@ -270,7 +226,6 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
-    // Sección: Lógica para los otros modales (perfil y contraseña)
     const editarPerfilModalElement = document.getElementById('editarPerfilModal');
     const cambiarContrasenaModalElement = document.getElementById('cambiarContrasenaModal');
 
@@ -299,7 +254,7 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     });
 
-    // Sección: Lógica para mostrar/ocultar contraseña y validación
+    // Sección: Lógica de formulario (Contraseña y perfil)
     document.querySelectorAll('.toggle-password').forEach(button => {
         button.addEventListener('click', function() {
             const targetId = this.dataset.target;
@@ -429,17 +384,17 @@ document.addEventListener('DOMContentLoaded', () => {
     // Sección: Lógica del test de conocimientos financieros
     let questions = [];
     let currentQuestionIndex = 0;
-    let userAnswers = {}; // Almacena las respuestas del usuario (ID de opción o texto)
-    let correctAnswersCount = 0; // Conteo de respuestas correctas
-    let totalPoints = 0; // Puntuación total con bonificación de tiempo
+    let userAnswers = {};
+    let correctAnswersCount = 0;
+    let totalPoints = 0;
 
-    let testStartTime = 0; // Tiempo de inicio del test completo
-    let questionStartTime = 0; // Tiempo de inicio de la pregunta actual
-    let timerInterval; // Para el temporizador de la pregunta
+    let testStartTime = 0;
+    let questionStartTime = 0;
+    let timerInterval;
 
-    const MAX_TIME_PER_QUESTION = 30; // Segundos
-    const BASE_POINTS_PER_CORRECT_ANSWER = 5000; // Puntos base por respuesta correcta
-    const TIME_BONUS_PER_SECOND = 100; // Puntos extra por segundo ahorrado
+    const MAX_TIME_PER_QUESTION = 30;
+    const BASE_POINTS_PER_CORRECT_ANSWER = 5000;
+    const TIME_BONUS_PER_SECOND = 100;
 
     const questionTextElement = document.getElementById('questionText');
     const optionsContainer = document.getElementById('optionsContainer');
@@ -449,14 +404,14 @@ document.addEventListener('DOMContentLoaded', () => {
     const nextQuestionBtn = document.getElementById('nextQuestionBtn');
     const submitTestBtn = document.getElementById('submitTestBtn');
     const progressBar = document.querySelector('.progress-bar');
-    const testContainer = document.getElementById('testContainer'); // Contenedor del test en progreso
-    const testResult = document.getElementById('testResult'); // Sección de resultados inmediatos
-    const testCompletedSection = document.getElementById('testCompletedSection'); // Sección de test ya completado
+    const testContainer = document.getElementById('testContainer');
+    const testResult = document.getElementById('testResult');
+    const testCompletedSection = document.getElementById('testCompletedSection');
 
-    const scoreDisplay = document.getElementById('scoreDisplay'); // Respuestas correctas en testResult
-    const totalQuestionsDisplay = document.getElementById('totalQuestionsDisplay'); // Total preguntas en testResult
-    const totalPointsDisplay = document.getElementById('totalPointsDisplay'); // Puntuación total en testResult
-    const resultMessage = document.getElementById('resultMessage'); // Mensaje en testResult
+    const scoreDisplay = document.getElementById('scoreDisplay');
+    const totalQuestionsDisplay = document.getElementById('totalQuestionsDisplay');
+    const totalPointsDisplay = document.getElementById('totalPointsDisplay');
+    const resultMessage = document.getElementById('resultMessage');
 
     const completedCorrectAnswers = document.getElementById('completedCorrectAnswers');
     const completedTotalQuestions = document.getElementById('completedTotalQuestions');
@@ -476,8 +431,8 @@ document.addEventListener('DOMContentLoaded', () => {
     const viewRankingBtnCompleted = document.getElementById('viewRankingBtnCompleted');
     const viewRankingBtnModal = document.getElementById('viewRankingBtnModal');
 
-    const rankingModalElement = document.getElementById('rankingModal'); // Referencia al elemento del modal
-    const rankingModal = new bootstrap.Modal(rankingModalElement); // Instancia del modal
+    const rankingModalElement = document.getElementById('rankingModal');
+    const rankingModal = new bootstrap.Modal(rankingModalElement);
     const rankingTableBody = document.getElementById('rankingTableBody');
     const userRankingInfo = document.getElementById('userRankingInfo');
     const userPositionDisplay = document.getElementById('userPositionDisplay');
@@ -485,7 +440,6 @@ document.addEventListener('DOMContentLoaded', () => {
     const userTimeRanking = document.getElementById('userTimeRanking');
     const userCorrectRanking = document.getElementById('userCorrectRanking');
 
-    // Sección: Lógica para el efecto blur del ranking modal
     if (rankingModalElement) {
         rankingModalElement.addEventListener('show.bs.modal', () => {
             toggleModalBlurEffect(true);
@@ -494,7 +448,6 @@ document.addEventListener('DOMContentLoaded', () => {
             toggleModalBlurEffect(false);
         });
     }
-
 
     async function fetchQuestions() {
         try {
@@ -505,7 +458,6 @@ document.addEventListener('DOMContentLoaded', () => {
             const data = await response.json();
 
             if (data.test_completado) {
-                // el usuario ya completó el test
                 testContainer.classList.add('d-none');
                 testResult.classList.add('d-none');
                 testCompletedSection.classList.remove('d-none');
@@ -516,7 +468,6 @@ document.addEventListener('DOMContentLoaded', () => {
                 setResultMessage(data.puntuacion_total, data.total, completedResultMessage);
 
             } else {
-                // el usuario no ha completado el test, mostrar el test
                 questions = data.preguntas;
                 if (questions.length === 0) {
                     questionTextElement.textContent = 'no hay preguntas disponibles.';
@@ -525,12 +476,12 @@ document.addEventListener('DOMContentLoaded', () => {
                     submitTestBtn.disabled = true;
                     return;
                 }
-                shuffleArray(questions); // mezcla las preguntas
+                shuffleArray(questions);
                 currentQuestionIndex = 0;
                 userAnswers = {};
                 correctAnswersCount = 0;
                 totalPoints = 0;
-                testStartTime = Date.now(); // inicia el temporizador del test completo
+                testStartTime = Date.now();
                 
                 testCompletedSection.classList.add('d-none');
                 testResult.classList.add('d-none');
@@ -543,7 +494,7 @@ document.addEventListener('DOMContentLoaded', () => {
             questionTextElement.textContent = 'error al cargar las preguntas.';
             testContainer.classList.add('d-none');
             testResult.classList.add('d-none');
-            testCompletedSection.classList.remove('d-none'); // Muestra un mensaje de error o similar
+            testCompletedSection.classList.remove('d-none');
             completedResultMessage.textContent = 'error al cargar el test. por favor, inténtalo de nuevo más tarde.';
         }
     }
@@ -556,7 +507,7 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     function startQuestionTimer() {
-        clearInterval(timerInterval); // limpia cualquier temporizador anterior
+        clearInterval(timerInterval);
         questionStartTime = Date.now();
         let timeLeft = MAX_TIME_PER_QUESTION;
         timeRemainingSpan.textContent = timeLeft;
@@ -567,12 +518,10 @@ document.addEventListener('DOMContentLoaded', () => {
             timeRemainingSpan.textContent = timeLeft;
             if (timeLeft <= 0) {
                 clearInterval(timerInterval);
-                // si el tiempo se acaba, la respuesta se considera incorrecta y se avanza
                 feedbackMessage.textContent = '¡tiempo agotado! la respuesta es: ' + getCorrectAnswerText(questions[currentQuestionIndex]);
                 feedbackMessage.classList.remove('text-success');
                 feedbackMessage.classList.add('text-danger');
                 
-                // deshabilita la interacción después de que el tiempo se agote
                 disableQuestionInteraction();
                 checkAnswerBtn.classList.add('d-none');
                 if (currentQuestionIndex < questions.length - 1) {
@@ -602,14 +551,13 @@ document.addEventListener('DOMContentLoaded', () => {
         nextQuestionBtn.classList.add('d-none');
         submitTestBtn.classList.add('d-none');
 
-        // oculta/muestra el botón anterior
         prevQuestionBtn.style.visibility = currentQuestionIndex > 0 ? 'visible' : 'hidden';
 
         if (currentQuestion.tipo_pregunta === 'multiple_choice' || currentQuestion.tipo_pregunta === 'true_false') {
             currentQuestion.opciones.forEach(opcion => {
                 const optionCard = document.createElement('div');
                 optionCard.classList.add('option-card');
-                optionCard.dataset.optionId = opcion.id; // almacena el id de la opción
+                optionCard.dataset.optionId = opcion.id;
 
                 const input = document.createElement('input');
                 input.type = 'radio';
@@ -619,30 +567,25 @@ document.addEventListener('DOMContentLoaded', () => {
                 
                 const label = document.createElement('label');
                 label.htmlFor = `option_${opcion.id}`;
-                label.classList.add('option-text'); // clase para el texto de la opción
+                label.classList.add('option-text');
                 label.textContent = opcion.texto;
 
                 optionCard.appendChild(input);
                 optionCard.appendChild(label);
                 optionsContainer.appendChild(optionCard);
 
-                // restaura la selección del usuario si existe
                 if (userAnswers[currentQuestion.id] && String(userAnswers[currentQuestion.id].answer) === String(opcion.id)) {
                     input.checked = true;
                     optionCard.classList.add('selected');
                 }
 
-                // agrega el evento click a la tarjeta de opción
                 optionCard.addEventListener('click', () => {
-                    // deselecciona todas las tarjetas de opción para esta pregunta
                     optionsContainer.querySelectorAll('.option-card').forEach(card => {
                         card.classList.remove('selected');
                         card.querySelector('input[type="radio"]').checked = false;
                     });
-                    // selecciona la tarjeta actual
                     optionCard.classList.add('selected');
                     input.checked = true;
-                    // no guardamos userAnswers aquí, solo cuando se comprueba
                 });
             });
         } else if (currentQuestion.tipo_pregunta === 'fill_in_the_blank') {
@@ -653,12 +596,11 @@ document.addEventListener('DOMContentLoaded', () => {
             input.placeholder = 'escribe tu respuesta aquí';
             optionsContainer.appendChild(input);
 
-            // restaura la entrada del usuario si existe
             if (userAnswers[currentQuestion.id]) {
                 input.value = userAnswers[currentQuestion.id].answer;
             }
         }
-        startQuestionTimer(); // inicia el temporizador para la nueva pregunta
+        startQuestionTimer();
     }
 
     function updateProgressBar() {
@@ -671,7 +613,7 @@ document.addEventListener('DOMContentLoaded', () => {
     function disableQuestionInteraction() {
         if (questions[currentQuestionIndex].tipo_pregunta === 'multiple_choice' || questions[currentQuestionIndex].tipo_pregunta === 'true_false') {
             optionsContainer.querySelectorAll('.option-card').forEach(card => {
-                card.style.pointerEvents = 'none'; // deshabilita clics en las tarjetas
+                card.style.pointerEvents = 'none';
                 card.querySelector('input[type="radio"]').disabled = true;
             });
         } else if (questions[currentQuestionIndex].tipo_pregunta === 'fill_in_the_blank') {
@@ -681,7 +623,7 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     checkAnswerBtn.addEventListener('click', () => {
-        stopQuestionTimer(); // detiene el temporizador al comprobar la respuesta
+        stopQuestionTimer();
         const currentQuestion = questions[currentQuestionIndex];
         let userAnswer = null;
         let timeTakenForQuestion = (Date.now() - questionStartTime) / 1000;
@@ -691,7 +633,7 @@ document.addEventListener('DOMContentLoaded', () => {
             if (!selectedOptionCard) {
                 feedbackMessage.textContent = 'por favor, selecciona una opción.';
                 feedbackMessage.classList.add('text-danger');
-                startQuestionTimer(); // reinicia el temporizador si no hay selección
+                startQuestionTimer();
                 return;
             }
             userAnswer = selectedOptionCard.dataset.optionId;
@@ -700,13 +642,13 @@ document.addEventListener('DOMContentLoaded', () => {
             if (!inputField || inputField.value.trim() === '') {
                 feedbackMessage.textContent = 'por favor, escribe tu respuesta.';
                 feedbackMessage.classList.add('text-danger');
-                startQuestionTimer(); // reinicia el temporizador si no hay respuesta
+                startQuestionTimer();
                 return;
             }
             userAnswer = inputField.value.trim();
         }
 
-        disableQuestionInteraction(); // deshabilita la interacción después de comprobar
+        disableQuestionInteraction();
 
         const isCorrect = evaluateAnswer(currentQuestion, userAnswer);
         let currentQuestionPoints = 0;
@@ -715,7 +657,7 @@ document.addEventListener('DOMContentLoaded', () => {
             feedbackMessage.textContent = '¡correcto!';
             feedbackMessage.classList.remove('text-danger');
             feedbackMessage.classList.add('text-success');
-            correctAnswersCount++; // incrementa el conteo de respuestas correctas
+            correctAnswersCount++;
 
             currentQuestionPoints += BASE_POINTS_PER_CORRECT_ANSWER;
             let timeSaved = MAX_TIME_PER_QUESTION - timeTakenForQuestion;
@@ -728,9 +670,8 @@ document.addEventListener('DOMContentLoaded', () => {
             feedbackMessage.classList.add('text-danger');
         }
 
-        totalPoints += currentQuestionPoints; // suma los puntos de la pregunta a la puntuación total
+        totalPoints += currentQuestionPoints;
 
-        // guarda la respuesta del usuario junto con el estado de corrección y puntos
         userAnswers[currentQuestion.id] = {
             answer: userAnswer,
             isCorrect: isCorrect,
@@ -783,14 +724,14 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 
     submitTestBtn.addEventListener('click', async () => {
-        stopQuestionTimer(); // asegura que el temporizador se detenga al finalizar el test
+        stopQuestionTimer();
 
         const confirmModal = new bootstrap.Modal(document.getElementById('confirmSubmitModal'));
         document.getElementById('confirmSubmitModalBody').textContent = '¿estás seguro de que quieres finalizar el test?';
         document.getElementById('confirmSubmitBtn').onclick = async () => {
             confirmModal.hide();
             try {
-                const totalTimeTaken = (Date.now() - testStartTime) / 1000; // tiempo total del test
+                const totalTimeTaken = (Date.now() - testStartTime) / 1000;
 
                 const response = await fetch('/api/submit_test', {
                     method: 'POST',
@@ -807,27 +748,23 @@ document.addEventListener('DOMContentLoaded', () => {
                 const result = await response.json();
 
                 if (result.success) {
-                    // actualiza la interfaz de resultados
-                    scoreDisplay.textContent = result.score; // respuestas correctas
+                    scoreDisplay.textContent = result.score;
                     totalQuestionsDisplay.textContent = result.total;
-                    totalPointsDisplay.textContent = result.puntuacion_total; // puntuación con tiempo
+                    totalPointsDisplay.textContent = result.puntuacion_total;
                     setResultMessage(result.puntuacion_total, result.total, resultMessage);
 
                     testContainer.classList.add('d-none');
                     testResult.classList.remove('d-none');
 
-                    // muestra el modal de resultados
                     finalScoreModal.textContent = result.score;
                     totalQuestionsModal.textContent = result.total;
                     finalTotalPointsModal.textContent = result.puntuacion_total;
                     setResultMessage(result.puntuacion_total, result.total, resultMessageModal);
                     testResultModal.show();
 
-                    // después de enviar el test, el botón de "volver a intentar" ya no debe aparecer
-                    // y la sección del test debe mostrar el mensaje de completado
                     testContainer.classList.add('d-none');
-                    testResult.classList.add('d-none'); // oculta el resultado inmediato
-                    testCompletedSection.classList.remove('d-none'); // muestra el mensaje de completado
+                    testResult.classList.add('d-none');
+                    testCompletedSection.classList.remove('d-none');
 
                     completedCorrectAnswers.textContent = result.score;
                     completedTotalQuestions.textContent = result.total;
@@ -850,16 +787,15 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 
     function setResultMessage(points, totalQuestions, element) {
-        if (points >= (totalQuestions * BASE_POINTS_PER_CORRECT_ANSWER * 0.9)) { // Ejemplo: 90% de la puntuación base máxima
+        if (points >= (totalQuestions * BASE_POINTS_PER_CORRECT_ANSWER * 0.9)) {
             element.textContent = '¡Excelente! ¡Eres un/a experto/a financiero/a!';
-        } else if (points >= (totalQuestions * BASE_POINTS_PER_CORRECT_ANSWER * 0.6)) { // Ejemplo: 60%
+        } else if (points >= (totalQuestions * BASE_POINTS_PER_CORRECT_ANSWER * 0.6)) {
             element.textContent = '¡Bien hecho! tienes un buen conocimiento. sigue practicando.';
         } else {
             element.textContent = 'Puedes mejorar. ¡No te rindas, sigue aprendiendo!';
         }
     }
 
-    // Añadir el modal de confirmación para submitTestBtn
     if (!document.getElementById('confirmSubmitModal')) {
         const confirmSubmitModalHtml = `
             <div class="modal fade" id="confirmSubmitModal" tabindex="-1" aria-labelledby="confirmSubmitModalLabel" aria-hidden="true">
@@ -883,10 +819,10 @@ document.addEventListener('DOMContentLoaded', () => {
         document.body.insertAdjacentHTML('beforeend', confirmSubmitModalHtml);
     }
 
-    // Event listeners para los botones de "Ver ranking"
+    // Sección: Lógica de Ranking
     if (viewRankingBtn) {
         viewRankingBtn.addEventListener('click', () => {
-            testResultModal.hide(); // Oculta el modal de resultados si está abierto
+            testResultModal.hide();
             showRanking();
         });
     }
@@ -897,12 +833,11 @@ document.addEventListener('DOMContentLoaded', () => {
     }
     if (viewRankingBtnModal) {
         viewRankingBtnModal.addEventListener('click', () => {
-            testResultModal.hide(); // Oculta el modal de resultados si está abierto
+            testResultModal.hide();
             showRanking();
         });
     }
 
-    // Función para mostrar el ranking
     async function showRanking() {
         try {
             const response = await fetch('/api/ranking');
@@ -911,18 +846,17 @@ document.addEventListener('DOMContentLoaded', () => {
             }
             const data = await response.json();
 
-            rankingTableBody.innerHTML = ''; // Limpia la tabla
-            userRankingInfo.classList.add('d-none'); // Oculta la info del usuario por defecto
+            rankingTableBody.innerHTML = '';
+            userRankingInfo.classList.add('d-none');
 
             if (data.ranking && data.ranking.length > 0) {
                 data.ranking.forEach(entry => {
                     const row = rankingTableBody.insertRow();
-                    // Obtén el nombre completo del usuario de la sesión para la comparación
                     const sessionUserName = `{{ usuario.nombres }} {{ usuario.apellidos }}`;
                     const entryUserName = `${entry.nombres} ${entry.apellidos}`;
 
                     if (entryUserName === sessionUserName) {
-                        row.classList.add('user-row'); // Resalta la fila del usuario actual
+                        row.classList.add('user-row');
                     }
                     row.innerHTML = `
                         <td>${entry.posicion}</td>
@@ -937,7 +871,6 @@ document.addEventListener('DOMContentLoaded', () => {
                 row.innerHTML = `<td colspan="5" class="text-center">no hay datos en el ranking todavía.</td>`;
             }
 
-            // Muestra la información del usuario si no está en el top 10
             if (data.user_result && data.user_position !== -1) {
                 userRankingInfo.classList.remove('d-none');
                 userPositionDisplay.textContent = data.user_position;
@@ -946,7 +879,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 userCorrectRanking.textContent = data.user_result.respuestas_correctas;
             }
 
-            rankingModal.show(); // Muestra el modal del ranking
+            rankingModal.show();
         } catch (error) {
             console.error('error al cargar el ranking:', error);
             const errorModal = new bootstrap.Modal(document.getElementById('errorMessageModal'));
@@ -955,14 +888,12 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     }
 
-    // Función para cargar el test al seleccionar la sección
+    // Sección: Carga inicial del test
     function loadTest() {
         fetchQuestions();
-        // Asegúrate de que los botones de navegación estén en su estado inicial
         prevQuestionBtn.style.visibility = 'hidden';
         nextQuestionBtn.classList.add('d-none');
         submitTestBtn.classList.add('d-none');
         checkAnswerBtn.classList.remove('d-none');
     }
-
 });

@@ -1,17 +1,18 @@
 document.addEventListener('DOMContentLoaded', () => {
-    // LOADER
+    
+    // Sección: LOADER
     const loader = document.querySelector('.loader_p');
     if (loader) {
         setTimeout(() => {
             loader.style.opacity = '0';
             setTimeout(() => {
                 loader.style.display = 'none';
-                document.body.classList.remove('loader_bg'); // quita el overflow hidden del body
+                document.body.classList.remove('loader_bg');
             }, 500);
         }, 1000);
     }
 
-    // TOGGLE PARA MODO OSCURO
+    // Sección: TOGGLE PARA MODO OSCURO
     const themeToggle = document.getElementById('themeToggle');
     const themeIcon = document.getElementById('themeIcon');
     const htmlElement = document.documentElement;
@@ -46,12 +47,9 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
-    // LÓGICA PARA DROPDOWNS Y EFECTO BORROSO
-    const notificationBtn = document.getElementById('notificationBtn');
-    const notificationDropdown = document.getElementById('notificationDropdown');
+    // Sección: LÓGICA PARA DROPDOWNS Y EFECTO BORROSO
     const userBtn = document.getElementById('userBtn');
     const userDropdown = document.getElementById('userDropdown');
-
     const mainContent = document.querySelector('.main-content');
     const body = document.body;
 
@@ -59,10 +57,10 @@ document.addEventListener('DOMContentLoaded', () => {
         if (mainContent) {
             if (isActive) {
                 mainContent.classList.add('blurred-content');
-                body.classList.add('overlay-active'); // añade la clase para el overlay
+                body.classList.add('overlay-active'); 
             } else {
                 mainContent.classList.remove('blurred-content');
-                body.classList.remove('overlay-active'); // remueve la clase del body
+                body.classList.remove('overlay-active'); 
             }
         }
     }
@@ -80,30 +78,9 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     function toggleDropdown(button, dropdown) {
-        const isShown = dropdown.classList.contains('show');
-
-        // cierra otros dropdowns si están abiertos
-        if (button === notificationBtn && userDropdown.classList.contains('show')) {
-            userDropdown.classList.remove('show');
-            userBtn.setAttribute('aria-expanded', 'false');
-        } else if (button === userBtn && notificationDropdown.classList.contains('show')) {
-            notificationDropdown.classList.remove('show');
-            notificationBtn.setAttribute('aria-expanded', 'false');
-        }
-
-        dropdown.classList.toggle('show');
-        button.setAttribute('aria-expanded', !isShown);
-
-        // aplica/remueve el desenfoque si algún dropdown está abierto
-        const anyDropdownOpen = notificationDropdown.classList.contains('show') || userDropdown.classList.contains('show');
-        applyBlurEffect(anyDropdownOpen);
-    }
-
-    if (notificationBtn && notificationDropdown) {
-        notificationBtn.addEventListener('click', (event) => {
-            event.stopPropagation();
-            toggleDropdown(notificationBtn, notificationDropdown);
-        });
+        const isShown = dropdown.classList.toggle('show');
+        button.setAttribute('aria-expanded', isShown);
+        applyBlurEffect(isShown);
     }
 
     if (userBtn && userDropdown) {
@@ -113,18 +90,8 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
-    // cerrar dropdowns y quitar el desenfoque al hacer clic fuera
     document.addEventListener('click', (event) => {
         let dropdownOpen = false;
-        if (notificationDropdown && notificationDropdown.classList.contains('show')) {
-            if (!notificationDropdown.contains(event.target) && !notificationBtn.contains(event.target)) {
-                notificationDropdown.classList.remove('show');
-                notificationBtn.setAttribute('aria-expanded', 'false');
-            } else {
-                dropdownOpen = true;
-            }
-        }
-
         if (userDropdown && userDropdown.classList.contains('show')) {
             if (!userDropdown.contains(event.target) && !userBtn.contains(event.target)) {
                 userDropdown.classList.remove('show');
@@ -133,14 +100,12 @@ document.addEventListener('DOMContentLoaded', () => {
                 dropdownOpen = true;
             }
         }
-
-        // aplica/remueve desenfoque según si algún dropdown sigue abierto
         if (!dropdownOpen) {
             applyBlurEffect(false);
         }
     });
 
-    // LÓGICA DEL MODAL DE CERRAR SESIÓN
+    // Sección: LÓGICA DEL MODAL DE CERRAR SESIÓN
     const logoutBtn = document.getElementById('logoutBtn');
     const confirmLogoutBtn = document.getElementById('confirmLogout');
     let logoutModal;
@@ -156,21 +121,19 @@ document.addEventListener('DOMContentLoaded', () => {
 
     if (logoutBtn && logoutModal) {
         logoutBtn.addEventListener('click', () => {
-            // cierra dropdowns antes de mostrar el modal
-            notificationDropdown.classList.remove('show');
-            notificationBtn.setAttribute('aria-expanded', 'false');
-            userDropdown.classList.remove('show');
-            userBtn.setAttribute('aria-expanded', 'false');
-            applyBlurEffect(false); // quita el desenfoque
-            logoutModal.show(); // muestra el modal
+            if (userDropdown) {
+                userDropdown.classList.remove('show');
+                userBtn.setAttribute('aria-expanded', 'false');
+            }
+            applyBlurEffect(false);
+            logoutModal.show();
         });
     }
 
     if (confirmLogoutBtn) {
         confirmLogoutBtn.addEventListener('click', () => {
-            console.log('cerrando sesión...');
-            window.location.href = "dashboard.html"; // redirige a la página principal
-            logoutModal.hide(); // oculta el modal
+            window.location.href = "/logout";
+            logoutModal.hide();
         });
     }
 
@@ -180,7 +143,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const resultsModal = new bootstrap.Modal(document.getElementById('resultsModal'));
 
     investmentSimulationForm.addEventListener('submit', (event) => {
-        event.preventDefault(); // Evitar el envío del formulario por defecto
+        event.preventDefault();
 
         const initialAmountInput = document.getElementById('initialAmount');
         const monthlyContributionInput = document.getElementById('monthlyContribution');
@@ -190,11 +153,10 @@ document.addEventListener('DOMContentLoaded', () => {
         const initialAmount = parseFloat(initialAmountInput.value);
         const monthlyContribution = parseFloat(monthlyContributionInput.value);
         const annualReturnRate = parseFloat(annualReturnRateInput.value);
-        const investmentTerm = parseInt(investmentTermInput.value); // Plazo en años
+        const investmentTerm = parseInt(investmentTermInput.value);
 
         let isValid = true;
 
-        // Validación de campos
         if (isNaN(initialAmount) || initialAmount < 0) {
             initialAmountInput.classList.add('is-invalid');
             initialAmountInput.nextElementSibling.textContent = 'Ingresa un monto inicial válido (mayor o igual a 0).';
@@ -228,11 +190,9 @@ document.addEventListener('DOMContentLoaded', () => {
         }
 
         if (!isValid) {
-            return; // Detiene la simulación si hay errores de validación
+            return;
         }
 
-        // Cálculo de inversión con aportaciones mensuales (interés compuesto)
-        // Convertir tasa anual a mensual y plazo en años a meses
         const monthlyReturnRate = (annualReturnRate / 100) / 12;
         const totalMonths = investmentTerm * 12;
 
@@ -241,14 +201,13 @@ document.addEventListener('DOMContentLoaded', () => {
 
         for (let i = 0; i < totalMonths; i++) {
             futureValue = futureValue * (1 + monthlyReturnRate) + monthlyContribution;
-            if (i < totalMonths -1) { // No sumar la última contribución como parte del capital inicial invertido
+            if (i < totalMonths -1) {
                 totalContributions += monthlyContribution;
             }
         }
 
         const totalGain = futureValue - totalContributions;
         
-        // Formatear y mostrar los valores en el modal
         document.getElementById('modalInitialAmount').textContent = formatCurrency(initialAmount);
         document.getElementById('modalMonthlyContribution').textContent = formatCurrency(monthlyContribution);
         document.getElementById('modalAnnualReturnRate').textContent = `${annualReturnRate}% anual`;
@@ -256,10 +215,9 @@ document.addEventListener('DOMContentLoaded', () => {
         document.getElementById('modalFinalAmount').textContent = `Monto final: ${formatCurrency(futureValue)}`;
         document.getElementById('modalTotalGain').textContent = `Ganancia total: ${formatCurrency(totalGain)}`;
 
-        resultsModal.show(); // Muestra el modal de resultados
+        resultsModal.show();
     });
 
-    // Función para formatear moneda
     function formatCurrency(amount) {
         return new Intl.NumberFormat('es-MX', {
             style: 'currency',
@@ -269,6 +227,13 @@ document.addEventListener('DOMContentLoaded', () => {
         }).format(amount);
     }
 
-    // Inicializar mostrando la sección de simulación de inversión
     document.getElementById('simulacion-inversion-section').classList.remove('d-none');
+
+    // sección: lógica del botón de regresar del navegador
+    const browserBackBtn = document.getElementById('browserBackBtn');
+    if (browserBackBtn) {
+        browserBackBtn.addEventListener('click', () => {
+            window.history.back();
+        });
+    }
 });

@@ -1,17 +1,18 @@
 document.addEventListener('DOMContentLoaded', () => {
-    // LOADER
+
+    // Sección: LOADER
     const loader = document.querySelector('.loader_p');
     if (loader) {
         setTimeout(() => {
             loader.style.opacity = '0';
             setTimeout(() => {
                 loader.style.display = 'none';
-                document.body.classList.remove('loader_bg'); // quita el overflow hidden del body
+                document.body.classList.remove('loader_bg');
             }, 500);
         }, 1000);
     }
 
-    // TOGGLE PARA MODO OSCURO
+    // Sección: TOGGLE PARA MODO OSCURO
     const themeToggle = document.getElementById('themeToggle');
     const themeIcon = document.getElementById('themeIcon');
     const htmlElement = document.documentElement;
@@ -46,12 +47,9 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
-    // LÓGICA PARA DROPDOWNS Y EFECTO BORROSO
-    const notificationBtn = document.getElementById('notificationBtn');
-    const notificationDropdown = document.getElementById('notificationDropdown');
+    // Sección: LÓGICA PARA DROPDOWNS Y EFECTO BORROSO
     const userBtn = document.getElementById('userBtn');
     const userDropdown = document.getElementById('userDropdown');
-
     const mainContent = document.querySelector('.main-content');
     const body = document.body;
 
@@ -59,10 +57,10 @@ document.addEventListener('DOMContentLoaded', () => {
         if (mainContent) {
             if (isActive) {
                 mainContent.classList.add('blurred-content');
-                body.classList.add('overlay-active'); // añade la clase para el overlay
+                body.classList.add('overlay-active');
             } else {
                 mainContent.classList.remove('blurred-content');
-                body.classList.remove('overlay-active'); // remueve la clase del body
+                body.classList.remove('overlay-active');
             }
         }
     }
@@ -80,30 +78,9 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     function toggleDropdown(button, dropdown) {
-        const isShown = dropdown.classList.contains('show');
-
-        // cierra otros dropdowns si están abiertos
-        if (button === notificationBtn && userDropdown.classList.contains('show')) {
-            userDropdown.classList.remove('show');
-            userBtn.setAttribute('aria-expanded', 'false');
-        } else if (button === userBtn && notificationDropdown.classList.contains('show')) {
-            notificationDropdown.classList.remove('show');
-            notificationBtn.setAttribute('aria-expanded', 'false');
-        }
-
-        dropdown.classList.toggle('show');
-        button.setAttribute('aria-expanded', !isShown);
-
-        // aplica/remueve el desenfoque si algún dropdown está abierto
-        const anyDropdownOpen = notificationDropdown.classList.contains('show') || userDropdown.classList.contains('show');
-        applyBlurEffect(anyDropdownOpen);
-    }
-
-    if (notificationBtn && notificationDropdown) {
-        notificationBtn.addEventListener('click', (event) => {
-            event.stopPropagation();
-            toggleDropdown(notificationBtn, notificationDropdown);
-        });
+        const isShown = dropdown.classList.toggle('show');
+        button.setAttribute('aria-expanded', isShown);
+        applyBlurEffect(isShown);
     }
 
     if (userBtn && userDropdown) {
@@ -113,18 +90,8 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
-    // cerrar dropdowns y quitar el desenfoque al hacer clic fuera
     document.addEventListener('click', (event) => {
         let dropdownOpen = false;
-        if (notificationDropdown && notificationDropdown.classList.contains('show')) {
-            if (!notificationDropdown.contains(event.target) && !notificationBtn.contains(event.target)) {
-                notificationDropdown.classList.remove('show');
-                notificationBtn.setAttribute('aria-expanded', 'false');
-            } else {
-                dropdownOpen = true;
-            }
-        }
-
         if (userDropdown && userDropdown.classList.contains('show')) {
             if (!userDropdown.contains(event.target) && !userBtn.contains(event.target)) {
                 userDropdown.classList.remove('show');
@@ -134,13 +101,12 @@ document.addEventListener('DOMContentLoaded', () => {
             }
         }
 
-        // aplica/remueve desenfoque según si algún dropdown sigue abierto
         if (!dropdownOpen) {
             applyBlurEffect(false);
         }
     });
 
-    // LÓGICA DEL MODAL DE CERRAR SESIÓN
+    // Sección: LÓGICA DEL MODAL DE CERRAR SESIÓN
     const logoutBtn = document.getElementById('logoutBtn');
     const confirmLogoutBtn = document.getElementById('confirmLogout');
     let logoutModal;
@@ -156,21 +122,19 @@ document.addEventListener('DOMContentLoaded', () => {
 
     if (logoutBtn && logoutModal) {
         logoutBtn.addEventListener('click', () => {
-            // cierra dropdowns antes de mostrar el modal
-            notificationDropdown.classList.remove('show');
-            notificationBtn.setAttribute('aria-expanded', 'false');
-            userDropdown.classList.remove('show');
-            userBtn.setAttribute('aria-expanded', 'false');
-            applyBlurEffect(false); // quita el desenfoque
-            logoutModal.show(); // muestra el modal
+            if (userDropdown) {
+                userDropdown.classList.remove('show');
+                userBtn.setAttribute('aria-expanded', 'false');
+            }
+            applyBlurEffect(false);
+            logoutModal.show();
         });
     }
 
     if (confirmLogoutBtn) {
         confirmLogoutBtn.addEventListener('click', () => {
-            console.log('cerrando sesión...');
-            window.location.href = "dashboard.html"; // redirige a la página principal
-            logoutModal.hide(); // oculta el modal
+            window.location.href = "/logout";
+            logoutModal.hide();
         });
     }
 
@@ -188,24 +152,19 @@ document.addEventListener('DOMContentLoaded', () => {
 
     metaCards.forEach(card => {
         card.addEventListener('click', () => {
-            // Quita la selección de todas las tarjetas
             metaCards.forEach(mc => mc.classList.remove('selected'));
-            // Selecciona la tarjeta actual
             card.classList.add('selected');
 
             selectedMeta = card.dataset.meta;
             formTitle.textContent = `Simulación de Ahorro para ${card.querySelector('h5').textContent}`;
 
-            // Oculta todas las secciones de detalles de meta
             document.querySelectorAll('.meta-details').forEach(detail => detail.classList.add('d-none'));
 
-            // Muestra la sección de detalles correspondiente
             const detailsSection = document.getElementById(`${selectedMeta}-details`);
             if (detailsSection) {
                 detailsSection.classList.remove('d-none');
             }
 
-            // Muestra la sección del formulario y oculta la selección de meta
             metaSelectionSection.classList.add('d-none');
             simulationFormSection.classList.remove('d-none');
         });
@@ -216,14 +175,13 @@ document.addEventListener('DOMContentLoaded', () => {
         metaSelectionSection.classList.remove('d-none');
         metaCards.forEach(card => card.classList.remove('selected'));
         document.querySelectorAll('.meta-details').forEach(detail => detail.classList.add('d-none'));
-        savingSimulationForm.reset(); // Limpia el formulario
-        // Opcional: limpiar mensajes de validación
+        savingSimulationForm.reset();
         savingSimulationForm.querySelectorAll('.is-invalid').forEach(el => el.classList.remove('is-invalid'));
         savingSimulationForm.querySelectorAll('.invalid-feedback').forEach(el => el.textContent = '');
     });
 
     savingSimulationForm.addEventListener('submit', (event) => {
-        event.preventDefault(); // Evitar el envío del formulario por defecto
+        event.preventDefault();
 
         const currentAmountInput = document.getElementById('currentAmount');
         const goalAmountInput = document.getElementById('goalAmount');
@@ -235,7 +193,6 @@ document.addEventListener('DOMContentLoaded', () => {
 
         let isValid = true;
 
-        // Validación de campos
         if (isNaN(currentAmount) || currentAmount < 0) {
             currentAmountInput.classList.add('is-invalid');
             currentAmountInput.nextElementSibling.textContent = 'Ingresa una cantidad inicial válida (mayor o igual a 0).';
@@ -261,19 +218,15 @@ document.addEventListener('DOMContentLoaded', () => {
         }
 
         if (!isValid) {
-            return; // Detiene la simulación si hay errores de validación
+            return;
         }
 
         if (currentAmount >= goalAmount) {
-            // Si ya se alcanzó la meta
             document.getElementById('modalResultText').textContent = `¡Felicidades! Ya alcanzaste tu meta de ${formatCurrency(goalAmount)}.`;
         } else if (monthlyContribution === 0) {
-            // Si no hay aporte mensual y la meta no se ha alcanzado
             document.getElementById('modalResultText').textContent = `Para alcanzar tu meta de ${formatCurrency(goalAmount)}, necesitas aportar más de ${formatCurrency(currentAmount)} mensualmente.`;
         } else {
-            // Calcular el monto restante a ahorrar
             const remainingAmount = goalAmount - currentAmount;
-            // Calcular los meses necesarios
             const monthsNeeded = Math.ceil(remainingAmount / monthlyContribution);
 
             let resultText = '';
@@ -293,15 +246,13 @@ document.addEventListener('DOMContentLoaded', () => {
             document.getElementById('modalResultText').textContent = resultText;
         }
         
-        // Formatear y mostrar los valores en el modal
         document.getElementById('modalGoalAmount').textContent = formatCurrency(goalAmount);
         document.getElementById('modalMonthlyContribution').textContent = formatCurrency(monthlyContribution);
         document.getElementById('modalCurrentAmount').textContent = formatCurrency(currentAmount);
 
-        resultsModal.show(); // Muestra el modal de resultados
+        resultsModal.show();
     });
 
-    // Función para formatear moneda
     function formatCurrency(amount) {
         return new Intl.NumberFormat('es-MX', {
             style: 'currency',
@@ -311,6 +262,13 @@ document.addEventListener('DOMContentLoaded', () => {
         }).format(amount);
     }
 
-    // Inicializar mostrando la sección de selección de meta
     document.getElementById('simulacion-ahorro-section').classList.remove('d-none');
+
+    // sección: lógica del botón de regresar del navegador
+    const browserBackBtn = document.getElementById('browserBackBtn');
+    if (browserBackBtn) {
+        browserBackBtn.addEventListener('click', () => {
+            window.history.back();
+        });
+    }
 });

@@ -65,11 +65,9 @@
         <div class="hero-overlay"></div>
         
         <div class="hero-content">
-            <h1 class="hero-title">BANKario</h1>
-            <p class="hero-subtitle">
-                Plataforma para simular y planificar tus finanzas personales. 
-                Toma decisiones inteligentes con nuestras herramientas de análisis financiero.
-            </p>
+            <h1 class="hero-title">
+                BANKario te ayuda a <span id="typed-text"></span>
+            </h1>
             <a href="iniciar_sesion.html" class="btn-simulate">
                 <i class="bi bi-calculator me-2"></i>
                 Simula ahora
@@ -289,6 +287,57 @@
         </div>
     </div>
 
+    <div id="terms-modal" class="modal-overlay">
+        <div class="modal-content" id="terms-modal-content">
+            <h3 style="margin-bottom: 1rem;">Términos y condiciones</h3>
+            
+            <div id="terms-modal-body">
+                <p class="mb-4" style="font-size: 0.8em; opacity: 0.7;">Última actualización: 6 de julio de 2025</p>
+                <h4 class="mb-3">1. Aceptación de los términos</h4>
+                <p>Al acceder y utilizar la plataforma "bankario" (en adelante, "la plataforma"), usted acepta y se compromete a cumplir estos términos y condiciones de uso ("términos"). si no está de acuerdo con estos términos, no debe utilizar la plataforma. nos reservamos el derecho de modificar estos términos en cualquier momento. la continuación del uso de la plataforma después de dichas modificaciones constituirá su aceptación de los nuevos términos.</p>
+                
+                <h4 class="mb-3">2. Descripción del servicio</h4>
+                <p>BANKario es una plataforma diseñada para ofrecer simulaciones y herramientas de análisis financiero con fines educativos y de planificación personal. no proporcionamos asesoramiento financiero profesional, legal, fiscal o de inversión. la información y las simulaciones generadas en la plataforma son solo para fines ilustrativos y no deben considerarse como una recomendación para tomar decisiones financieras reales.</p>
+                
+                <h4 class="mb-3">3. Registro y cuentas de usuario</h4>
+                <ul class="list-unstyled mb-4">
+                    <li class="mb-2" style="position: relative; padding-left: 25px;"><i class="bi bi-check-circle-fill me-2" style="color: var(--success-color); position: absolute; left: 0; top: 5px;"></i> Para acceder a ciertas funcionalidades de la plataforma, deberá registrarse y crear una cuenta. usted es responsable de mantener la confidencialidad de su contraseña y de todas las actividades que ocurran bajo su cuenta.</li>
+                    <li class="mb-2" style="position: relative; padding-left: 25px;"><i class="bi bi-check-circle-fill me-2" style="color: var(--success-color); position: absolute; left: 0; top: 5px;"></i> Usted se compromete a proporcionar información precisa, completa y actualizada durante el proceso de registro y a mantenerla así.</li>
+                    <li class="mb-2" style="position: relative; padding-left: 25px;"><i class="bi bi-check-circle-fill me-2" style="color: var(--success-color); position: absolute; left: 0; top: 5px;"></i> Nos reservamos el derecho de suspender o cancelar su cuenta si la información proporcionada es falsa, inexacta o incompleta, o si incumple estos términos.</li>
+                </ul>
+                
+                <h4 class="mb-3">4. Uso aceptable de la plataforma</h4>
+                <p>Usted se compromete a utilizar la plataforma solo para fines lícitos y de acuerdo con estos términos. usted no debe:</p>
+                <ul class="list-unstyled mb-4">
+                    <li class="mb-2" style="position: relative; padding-left: 25px;"><i class="bi bi-x-circle-fill me-2" style="color: #dc3545; position: absolute; left: 0; top: 5px;"></i> Utilizar la plataforma de cualquier manera que pueda dañar, deshabilitar, sobrecargar o deteriorar el servidor o la red de bankario.</li>
+                    <li class="mb-2" style="position: relative; padding-left: 25px;"><i class="bi bi-x-circle-fill me-2" style="color: #dc3545; position: absolute; left: 0; top: 5px;"></i> Intentar obtener acceso no autorizado a cualquier parte de la plataforma, otras cuentas, sistemas informáticos o redes conectadas a cualquier servidor de bankario.</li>
+                    <li class="mb-2" style="position: relative; padding-left: 25px;"><i class="bi bi-x-circle-fill me-2" style="color: #dc3545; position: absolute; left: 0; top: 5px;"></i> Utilizar la plataforma para cualquier actividad fraudulenta o ilegal.</li>
+                    <li class="mb-2" style="position: relative; padding-left: 25px;"><i class="bi bi-x-circle-fill me-2" style="color: #dc3545; position: absolute; left: 0; top: 5px;"></i> Cargar o transmitir cualquier virus, gusano, defecto, troyano o cualquier elemento de naturaleza destructiva.</li>
+                </ul>
+                
+                <h4 class="mb-3">5. Propiedad intelectual</h4>
+                <p>Todos los contenidos de la plataforma, incluyendo, entre otros, textos, gráficos, logotipos, iconos, imágenes, clips de audio, descargas digitales y software, son propiedad de bankario o de sus proveedores de contenido y están protegidos por leyes de derechos de autor y otras leyes de propiedad intelectual.</p>
+                
+                <h4 class="mb-3">6. Exención de garantías</h4>
+                <p>La plataforma se proporciona "tal cual" y "según disponibilidad", sin garantías de ningún tipo, ya sean expresas o implícitas. bankario no garantiza que la plataforma será ininterrumpida, libre de errores o segura, ni que los resultados obtenidos del uso de la plataforma serán precisos o confiables.</p>
+                
+                <h4 class="mb-3">7. Limitación de responsabilidad</h4>
+                <p>En ningún caso bankario, sus directores, empleados o agentes serán responsables de cualquier daño directo, indirecto, incidental, especial, consecuente o punitivo, incluyendo, entre otros, pérdida de beneficios, datos o uso, ya sea en una acción contractual, de negligencia o cualquier otra acción torticera, que surja de o en conexión con el uso o rendimiento de la plataforma.</p>
+                
+                <h4 class="mb-3">8. Indemnización</h4>
+                <p>Usted acepta indemnizar y eximir de responsabilidad a bankario, sus afiliados, directores, agentes y empleados de cualquier reclamo o demanda, incluidos los honorarios de abogados, realizados por cualquier tercero debido a o que surja de su uso de la plataforma, su violación de estos términos o su violación de cualquier derecho de otro.</p>
+                
+                <h4 class="mb-3">9. Ley aplicable</h4>
+                <p>Estos términos se regirán e interpretarán de acuerdo con las leyes de méxico, sin tener en cuenta sus principios de conflicto de leyes.</p>
+                
+                <h4 class="mb-3">10. Contacto</h4>
+                <p>Si tiene alguna pregunta sobre estos términos, puede contactarnos a través de bankariosimulaciones@gmail.com</p>
+            </div>
+            
+            <button id="btn-terms-ok" class="btn btn-primary mt-3" style="background-color: var(--accent-color); border:1px solid #fff;">Entendido</button>
+        </div>
+    </div>
+
     <footer class="footer lazy-load">
         <div class="container">
             <div class="row">
@@ -312,7 +361,7 @@
                 <div class="col-lg-2 col-md-6 mb-4">
                     <h5>Legal</h5>
                     <ul class="list-unstyled">
-                        <li><a href="terminos_y_condiciones.html">Términos de uso</a></li>
+                        <li><a href="#" id="termsLink">Términos de uso</a></li>
                     </ul>
                 </div>
             </div>
@@ -327,5 +376,6 @@
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/js/bootstrap.bundle.min.js"></script>
     <script src="js/index.js"></script>
+    <script src="https://unpkg.com/typed.js@2.0.16/dist/typed.umd.js"></script>
 </body>
 </html>

@@ -7,7 +7,7 @@
     <link rel="icon" href="multimedia/logo.ico" type="image/x-icon"/>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/css/bootstrap.min.css" rel="stylesheet">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-icons/1.10.0/font/bootstrap-icons.min.css" rel="stylesheet">
-    <link href="css/calculadora_deuda.css" rel="stylesheet">
+    <link href="css/simulador_comun.css" rel="stylesheet">
 </head>
 <body class="loader_bg">
     <div class="loader_p">
@@ -17,52 +17,26 @@
         </div>
     </div>
 
-    <nav class="navbar navbar-expand-lg fixed-top glass-nav">
+    <nav class="navbar fixed-top glass-nav">
         <div class="container-fluid px-4">
             <a class="navbar-brand d-flex align-items-center" href="{{ url_for('dashboard') }}">
                 <img src="multimedia/logo.png" alt="logo bankario" class="me-2" width="40" height="40">
             </a>
             
             <div class="d-flex align-items-center gap-3">
-                <a href="{{ url_for('dashboard') }}" class="btn btn-glass">
-                    <i class="bi bi-arrow-left-circle-fill me-2"></i>Regresar
-                </a>
+                
+                <button class="btn btn-glass" id="browserBackBtn">
+                    <i class="bi bi-arrow-left-circle-fill me-2"></i>
+                    <span class="d-none d-sm-inline">Regresar</span>
+                </button>
 
                 <button class="btn btn-glass" id="themeToggle" aria-label="toggle theme">
                     <i class="bi bi-sun-fill" id="themeIcon"></i>
                 </button>
                 
                 <div class="position-relative">
-                    <div class="notification-dropdown glass-panel" id="notificationDropdown">
-                        <div class="p-3">
-                            <h6 class="mb-3">Notificaciones</h6>
-                            <div class="notification-item">
-                                <i class="bi bi-check-circle text-success"></i>
-                                <div>
-                                    <small class="text-muted">Hace 2 min</small>
-                                    <p class="mb-0">Transferencia completada exitosamente</p>
-                                </div>
-                            </div>
-                            <div class="notification-item">
-                                <i class="bi bi-exclamation-triangle text-warning"></i>
-                                <div>
-                                    <small class="text-muted">Hace 1 hora</small>
-                                    <p class="mb-0">Límite de retiro próximo a alcanzar</p>
-                                </div>
-                            </div>
-                            <div class="notification-item">
-                                <i class="bi bi-info-circle text-primary"></i>
-                                <div>
-                                    <small class="text-muted">Hace 3 horas</small>
-                                    <p class="mb-0">Nueva función disponible en simulaciones</p>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                
-                <div class="position-relative">
                     <button class="btn btn-glass d-flex align-items-center" id="userBtn" aria-expanded="false" aria-controls="userDropdown">
+                        <i class="bi bi-person-fill d-md-none"></i>
                         <span class="d-none d-md-inline">{{ usuario.nombres.split(' ')[0] }} {{ usuario.apellidos.split(' ')[0] }}</span>
                     </button>
                     
@@ -74,6 +48,9 @@
                             </div>
                             <hr>
                             <div class="d-grid gap-2">
+                                <button class="btn btn-outline-danger btn-sm" id="logoutBtn">
+                                    <i class="bi bi-box-arrow-right me-2"></i>Cerrar sesión
+                                </button>
                             </div>
                         </div>
                     </div>

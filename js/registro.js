@@ -1,30 +1,37 @@
-// cuando la página haya terminado de cargar, se agrega la clase "loaded" al body
+/* ===============================================
+   SECCIÓN: ELEMENTOS GLOBALES Y LOADER
+   =============================================== */
+const loaderP = document.querySelector('.loader_p');
+const bgVideo = document.querySelector('.bg-video');
+const logoBankario = document.querySelector('.logo-bankario');
+
 window.addEventListener('load', () => {
     document.body.classList.add('loaded');
+    if (loaderP) {
+        loaderP.style.display = 'none';
+    }
 });
 
-const bgVideo = document.querySelector('.bg-video');
-
-// vuelve a reproducir el video si el navegador lo detiene al regresar
+/* ===============================================
+   SECCIÓN: VIDEO Y NAVEGACIÓN
+   =============================================== */
 document.addEventListener('visibilitychange', () => {
-    if (document.visibilityState === 'visible' && bgVideo.paused) {
+    if (document.visibilityState === 'visible' && bgVideo && bgVideo.paused) {
         bgVideo.play().catch((e) => {
             console.warn('no se pudo reproducir el video automáticamente:', e);
         });
     }
 });
 
-// redirigir al index
-const logoBankario = document.querySelector('.logo-bankario'); // asegura que la clase del logo sea esta
-
-if (logoBankario) { // verifica si el logo existe antes de añadir el evento
+if (logoBankario) {
   logoBankario.addEventListener('click', function() {
     window.location.href = 'index.html';
   });
 }
 
-
-// funciones para mostrar u ocultar la contraseña
+/* ===============================================
+   SECCIÓN: VALIDACIÓN DE CONTRASEÑA
+   =============================================== */
 function togglePasswordVisibility(inputId) {
     var passwordField = document.getElementById(inputId);
     var eyeIcon = document.getElementById('eye-icon-' + inputId);
@@ -41,11 +48,17 @@ function togglePasswordVisibility(inputId) {
 }
 
 function mostrarRequisitos() {
-    document.getElementById("password-requisitos").style.display = "block";
+    const requisitos = document.getElementById("password-requisitos");
+    if (requisitos) {
+        requisitos.style.display = "block";
+    }
 }
 
 function ocultarRequisitos() {
-    document.getElementById("password-requisitos").style.display = "none";
+    const requisitos = document.getElementById("password-requisitos");
+    if (requisitos) {
+        requisitos.style.display = "none";
+    }
 }
 
 function validarRequisitos(password) {
@@ -67,57 +80,94 @@ function checkPasswords() {
     const confirm = document.getElementById("confirm-password").value;
     const message = document.getElementById("password-message");
 
-    validarRequisitos(password); // solo actualiza los requisitos visuales de la contraseña
+    validarRequisitos(password);
 
-    // validar coincidencia de contraseñas sólo si ya se escribió algo en ambos campos
     if (password.length > 0 && confirm.length > 0) {
         if (password !== confirm) {
             message.textContent = "Las contraseñas no coinciden.";
         } else {
-            message.textContent = ""; // vacía el mensaje si coinciden
+            message.textContent = "";
         }
     } else {
-        message.textContent = ""; // vacía el mensaje si aún no hay contenido suficiente
+        message.textContent = "";
     }
 }
 
-// se mantienen los listeners para la validación visual de las contraseñas
 document.getElementById("password").addEventListener("input", checkPasswords);
 document.getElementById("confirm-password").addEventListener("input", checkPasswords);
 
-// sección para el pop-up de alerta personalizado
+/* ===============================================
+   SECCIÓN: MODAL DE ALERTA GENÉRICO
+   =============================================== */
 const customAlertOverlay = document.getElementById('custom-alert-overlay');
-const customAlertBox = document.getElementById('custom-alert-box');
 const customAlertMessage = document.getElementById('custom-alert-message');
 const customAlertOkBtn = document.getElementById('custom-alert-ok-btn');
 const closeAlertBtn = document.getElementById('close-alert-btn');
-const loaderP = document.querySelector('.loader_p'); // selecciona el loader
 
 function showAlert(message) {
     customAlertMessage.textContent = message;
     customAlertOverlay.classList.add('show');
-    document.body.classList.add('blur-active'); // aplica el blur al cuerpo
+    document.body.classList.add('blur-active');
 }
 
 function hideAlert() {
     customAlertOverlay.classList.remove('show');
-    document.body.classList.remove('blur-active'); // remueve el blur del cuerpo
+    document.body.classList.remove('blur-active');
 }
 
-// eventos para cerrar la alerta
 customAlertOkBtn.addEventListener('click', hideAlert);
 closeAlertBtn.addEventListener('click', hideAlert);
 customAlertOverlay.addEventListener('click', (event) => {
-    // cierra si se hace clic fuera del contenido del pop-up
     if (event.target === customAlertOverlay) {
         hideAlert();
     }
 });
 
+/* ===============================================
+   SECCIÓN: MODAL DE TÉRMINOS Y CONDICIONES
+   =============================================== */
+const termsLink = document.getElementById('termsLink');
+const termsModalOverlay = document.getElementById('termsModalOverlay');
+const closeTermsBtn = document.getElementById('closeTermsBtn');
+const acceptTermsBtn = document.getElementById('acceptTermsBtn');
 
-// manejador de envío del formulario
+function showTermsModal(event) {
+    event.preventDefault();
+    if (termsModalOverlay) {
+        termsModalOverlay.classList.add('show');
+        document.body.classList.add('blur-active');
+    }
+}
+
+function hideTermsModal() {
+    if (termsModalOverlay) {
+        termsModalOverlay.classList.remove('show');
+        document.body.classList.remove('blur-active');
+    }
+}
+
+if (termsLink) {
+    termsLink.addEventListener('click', showTermsModal);
+}
+if (closeTermsBtn) {
+    closeTermsBtn.addEventListener('click', hideTermsModal);
+}
+if (acceptTermsBtn) {
+    acceptTermsBtn.addEventListener('click', hideTermsModal);
+}
+if (termsModalOverlay) {
+    termsModalOverlay.addEventListener('click', (event) => {
+        if (event.target === termsModalOverlay) {
+            hideTermsModal();
+        }
+    });
+}
+
+/* ===============================================
+   SECCIÓN: LÓGICA DE ENVÍO DE FORMULARIO
+   =============================================== */
 document.getElementById('registroForm').addEventListener('submit', function(event) {
-    event.preventDefault(); // evita el envío por defecto para la validación js
+    event.preventDefault();
 
     const nombresInput = this.querySelector('input[name="nombres"]');
     const apellidosInput = this.querySelector('input[name="apellidos"]');
@@ -134,45 +184,42 @@ document.getElementById('registroForm').addEventListener('submit', function(even
 
     const correoValidoRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,6}$/;
 
-    // validaciones
     if (!nombres || nombres.length < 2 || nombres.length > 30 || !/^[A-Za-zÁÉÍÓÚáéíóúÑñ\s]+$/.test(nombres)) {
         showAlert('Por favor, ingresa un nombre válido (solo letras y espacios, entre 2 y 25 caracteres).');
         nombresInput.focus();
-        return; // detiene la ejecución aquí, no muestra el loader
+        return;
     }
     if (!apellidos || apellidos.length < 2 || apellidos.length > 30 || !/^[A-Za-zÁÉÍÓÚáéíóúÑñ\s]+$/.test(apellidos)) {
         showAlert('Por favor, ingresa apellidos válidos (solo letras y espacios, entre 2 y 25 caracteres).');
         apellidosInput.focus();
-        return; // detiene la ejecución aquí, no muestra el loader
+        return;
     }
     if (!correoValidoRegex.test(correo)) {
         showAlert('Por favor, ingresa un correo electrónico válido.');
         correoInput.focus();
-        return; // detiene la ejecución aquí, no muestra el loader
+        return;
     }
     if (!validarRequisitos(password)) {
         showAlert('La contraseña no cumple con todos los requisitos (mayúscula, carácter especial, 8-25 caracteres).');
         passwordInput.focus();
-        mostrarRequisitos(); // asegura que los requisitos sean visibles
-        return; // detiene la ejecución aquí, no muestra el loader
+        mostrarRequisitos();
+        return;
     }
     if (password !== confirmPassword) {
         showAlert('Las contraseñas no coinciden.');
         confirmPasswordInput.focus();
-        return; // detiene la ejecución aquí, no muestra el loader
+        return;
     }
     if (!tycCheckbox.checked) {
         showAlert('Debes aceptar los términos y condiciones.');
-        return; // detiene la ejecución aquí, no muestra el loader
+        return;
     }
 
-    // si todas las validaciones pasan, *ahora sí* muestra el loader y envía el formulario
-    loaderP.style.display = 'grid'; // muestra el loader
-    document.body.classList.remove('loaded'); // para que el loader se vea de nuevo si ya estaba "cargado"
-    document.body.style.overflow = 'hidden'; // evita el scroll mientras carga
+    loaderP.style.display = 'grid';
+    document.body.classList.remove('loaded');
+    document.body.style.overflow = 'hidden';
 
-    // usa setTimeout para asegurar que el loader se muestra antes de enviar realmente el formulario
     setTimeout(() => {
-        this.submit(); // envía el formulario a flask
-    }, 500); // un pequeño retraso para que el usuario vea el loader
+        this.submit();
+    }, 500);
 });

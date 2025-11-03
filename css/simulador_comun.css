@@ -9,7 +9,7 @@
     --text-dark: #1F2937;
     --text-light: #ffffff;
     --text-muted: #000;
-    --input-border-day: #1F2937; /* Borde oscuro para inputs en modo día */
+    --input-border-day: #1F2937;
     
     /* Colores de estado */
     --success-color: #10B981;
@@ -96,7 +96,6 @@ body {
     background: linear-gradient(135deg, #2D3748 0%, #1A202C 100%);
 }
 
-/* Scrollbar personalizado */
 body::-webkit-scrollbar {
     width: 8px;
 }
@@ -170,7 +169,6 @@ body::-webkit-scrollbar-thumb {
     animation: loading2_713 3.5s ease both infinite;
 }
 
-/* Animaciones del loader */
 @keyframes text_713 {
     0%, 100% { letter-spacing: 1px; transform: translateX(0px); }
     40% { letter-spacing: 2px; transform: translateX(26px); }
@@ -275,8 +273,8 @@ body.loaded .loader_p {
     background: var(--glass-bg);
     backdrop-filter: blur(var(--backdrop-blur));
     -webkit-backdrop-filter: blur(var(--backdrop-blur));
-    border: 1px solid var(--input-border-day); /* Borde oscuro para inputs en modo día */
-    border-radius: 0.375rem; /* Bootstrap default border-radius for inputs */
+    border: 1px solid var(--input-border-day);
+    border-radius: 0.375rem;
     color: var(--text-dark);
     transition: all 0.3s ease;
 }
@@ -288,10 +286,19 @@ body.loaded .loader_p {
     color: var(--text-dark);
 }
 
-/* Placeholder color for dark theme */
 [data-theme="dark"] .glass-input::placeholder {
     color: #ffffff;
-    opacity: 0.7; /* Para que no sea un blanco puro y tenga un poco de transparencia */
+    opacity: 0.7;
+}
+
+.glass-panel h5,
+.glass-panel p {
+    color: #000000 !important; 
+}
+
+[data-theme="dark"] .glass-panel h5,
+[data-theme="dark"] .glass-panel p {
+    color: #FFFFFF !important; 
 }
 
 /* ===============================================
@@ -361,28 +368,6 @@ body.loaded .loader_p {
 /* ===============================================
    DROPDOWNS Y NOTIFICACIONES
    =============================================== */
-.notification-dropdown,
-.user-dropdown {
-    position: absolute;
-    top: calc(100% + 10px);
-    right: 0;
-    width: 250px;
-    max-height: 400px;
-    overflow-y: auto;
-    z-index: 1050;
-    opacity: 0;
-    visibility: hidden;
-    transform: translateY(-10px);
-    transition: all 0.3s ease;
-}
-
-.notification-dropdown.show,
-.user-dropdown.show {
-    opacity: 1;
-    visibility: visible;
-    transform: translateY(0);
-}
-
 .notification-item {
     display: flex;
     align-items: flex-start;
@@ -405,6 +390,26 @@ body.loaded .loader_p {
 
 .notification-item p {
     color: var(--text-dark);
+}
+
+.user-dropdown {
+    position: absolute;
+    top: calc(100% + 10px);
+    right: 0;
+    width: 250px;
+    max-height: 400px;
+    overflow-y: auto;
+    z-index: 1050;
+    opacity: 0;
+    visibility: hidden;
+    transform: translateY(-10px);
+    transition: all 0.3s ease;
+}
+
+.user-dropdown.show {
+    opacity: 1;
+    visibility: visible;
+    transform: translateY(0);
 }
 
 /* ===============================================
@@ -461,6 +466,24 @@ body.loaded .loader_p {
     border-top: 1px solid var(--border-color);
 }
 
+#logoutModal .modal-content {
+    background: #ffffff;
+    backdrop-filter: none;
+    -webkit-backdrop-filter: none;
+    border: 1px solid #dee2e6;
+}
+
+[data-theme="dark"] #logoutModal .modal-content {
+    background: #000000; 
+    backdrop-filter: none;
+    -webkit-backdrop-filter: none;
+    border: 1px solid #4b5563;
+}
+
+.modal.fade .modal-dialog {
+    z-index: 1050;
+}
+
 /* ===============================================
    EFECTOS VISUALES
    =============================================== */
@@ -509,27 +532,27 @@ body.loaded .loader_p {
 .badge.bg-danger {background-color: var(--danger-color) !important;}
 
 /* ===============================================
-   ESTILOS ESPECÍFICOS DEL SIMULADOR DE CRÉDITO
+   ESTILOS ESPECÍFICOS DEL SIMULADOR DE AHORRO
    =============================================== */
-.credit-card {
+.meta-card {
     cursor: pointer;
     transition: all 0.3s ease;
     min-height: 200px;
 }
 
-.credit-card:hover {
+.meta-card:hover {
     transform: translateY(-8px);
     box-shadow: var(--shadow-medium);
     border-color: var(--primary-color);
 }
 
-.credit-card.selected {
+.meta-card.selected {
     border: 2px solid var(--primary-color);
     box-shadow: 0 0 0 0.25rem rgba(37, 99, 235, 0.25);
     transform: translateY(-5px);
 }
 
-.credit-details {
+.meta-details {
     border-top: 1px solid var(--border-color);
     padding-top: 2rem !important;
     margin-top: 2rem !important;
@@ -539,6 +562,11 @@ body.loaded .loader_p {
    RESPONSIVE DESIGN (Ajustado para no sidebar)
    =============================================== */
 @media (max-width: 1024px) {
+    .user-dropdown {
+        width: 250px;
+        right: 10px;
+    }
+
     .main-content {
         padding: 1rem;
     }
@@ -548,21 +576,9 @@ body.loaded .loader_p {
         width: calc(100% - 10px);
         border-radius: 0 0 15px 15px;
     }
-
-    .notification-dropdown,
-    .user-dropdown {
-        width: 150px;
-        right: 10px;
-    }
 }
 
 @media (max-width: 576px) {
-    .notification-dropdown,
-    .user-dropdown {
-        width: 250px;
-        right: -80px;
-    }
-
     .main-content {
         padding: 0.5rem;
     }
@@ -587,9 +603,4 @@ body.overlay-active::after {
     background-color: rgba(0, 0, 0, 0.3);
     z-index: 1040;
     transition: background-color 0.3s ease-out;
-}
-
-/* asegura que los modales tengan un z-index más alto que el overlay */
-.modal.fade .modal-dialog {
-    z-index: 1050;
 }
