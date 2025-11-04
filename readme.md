@@ -1,144 +1,138 @@
-# Bankario - Simulador Financiero
+<p align="center">
+  <img src="multimedia/logo.png" width="200" alt="Bankario Logo">
+</p>
 
-![Screenshot del Dashboard de Bankario](multimedia/home_img.png)
+<h1 align="center">
+  Bankario
+</h1>
 
-Bankario es una plataforma web educativa e interactiva diseñada para ayudar a los usuarios a mejorar su salud financiera. Permite a los usuarios registrarse, gestionar su perfil y utilizar un conjunto de simuladores (ahorro, crédito, inversión, etc.) para tomar decisiones informadas en un entorno seguro y sin riesgo.
-
-La plataforma incluye un sistema completo de autenticación, gestión de perfiles de usuario (CRUD), simuladores interactivos, un test de conocimientos con ranking y un glosario financiero.
-
----
-
-## 🛠️ Tecnologías utilizadas
-
-* **Backend:**
-    * Python
-    * Flask (Framework web)
-    * Flask-SQLAlchemy (ORM)
-* **Frontend:**
-    * HTML5
-    * CSS3 (con variables, animaciones y diseño responsivo "Glassmorphism")
-    * JavaScript (ES6+)
-    * Bootstrap 5
-* **Base de datos:**
-    * Microsoft SQL Server
-    * `pyodbc` (usado como dialecto de SQLAlchemy)
+<p align="center">
+  <strong>Una plataforma web de simulación financiera desarrollada con Flask y SQL Server.</strong>
+  <br>
+  <br>
+  <img src="https://img.shields.io/badge/Python-3.10%2B-3776AB?style=for-the-badge&logo=python" alt="Python Version">
+  <img src="https://img.shields.io/badge/Flask-2.x-000000?style=for-the-badge&logo=flask" alt="Flask Version">
+  <img src="https://img.shields.io/badge/Database-SQL_Server-CC2927?style=for-the-badge&logo=microsoft-sql-server" alt="Database">
+</p>
 
 ---
 
-## ⚙️ Guía de instalación local (paso a paso)
+## Acerca del proyecto
 
-Esta guía te llevará desde cero hasta tener el proyecto funcionando en tu máquina local.
+**Bankario** es una aplicación web educativa e interactiva diseñada para ayudar a los usuarios a mejorar su salud financiera. El sistema permite a los usuarios registrarse, gestionar su perfil y utilizar un conjunto de simuladores para tomar decisiones informadas sobre créditos, ahorros, inversiones y jubilación, todo en un entorno seguro y sin riesgo.
 
-### Paso 0: Prerrequisitos (Software necesario)
+El proyecto está construido con **Flask** en el backend, utiliza **SQLAlchemy** como ORM para la gestión de la base de datos y presenta una interfaz de usuario moderna con **Bootstrap 5** y efectos "Glassmorphism".
 
-Antes de empezar, asegúrate de tener instalado el siguiente software:
+### Características principales
 
-1.  **Python:** (versión 3.10 o superior). [Descargar Python](https://www.python.org/downloads/).
-2.  **Git:** Para clonar el repositorio. [Descargar Git](https://git-scm.com/downloads).
-3.  **SQL Server:** Se recomienda la edición gratuita "Express" o "Developer". [Descargar SQL Server](https://www.microsoft.com/es-es/sql-server/sql-server-downloads).
-4.  **SSMS (SQL Server Management Studio):** La herramienta gráfica para gestionar tu base de datos. [Descargar SSMS](https://learn.microsoft.com/es-es/sql/ssms/download-sql-server-management-studio-ssms).
-5.  **Microsoft ODBC Driver 18 for SQL Server:** **¡Crítico!** Es el controlador que Python necesita para conectarse a SQL Server. [Descargar ODBC Driver 18](https://learn.microsoft.com/es-es/sql/connect/odbc/download-odbc-driver-for-sql-server).
+* **Sistema de autenticación completo**: Registro, inicio de sesión y cierre de sesión seguro.
+* **Gestión de perfiles (CRUD)**: Los usuarios pueden ver, actualizar su información personal (nombre, apellido) y cambiar su contraseña.
+* **Dashboard interactivo**: Un panel central para navegar por todas las herramientas y un selector de tema (modo claro/oscuro).
+* **Múltiples simuladores financieros**:
+    * Simulador de ahorro
+    * Simulador de crédito
+    * Simulador de inversión
+    * Presupuesto personal
+    * Retiro/Jubilación
+    * Calculadora de deuda
+* **Test de conocimientos**: Un cuestionario interactivo con temporizador, puntuación y un ranking de usuarios.
+* **Glosario financiero**: Una página dedicada con un buscador para definir términos financieros clave.
 
-### Paso 1: Clonar el repositorio
+---
 
-Abre una terminal (como Git Bash o la terminal de Windows) y clona el proyecto en tu computadora.
+## Guía de instalación y despliegue
 
-```bash
-# Navega a la carpeta donde quieras guardar tu proyecto
-cd C:\Users\TuUsuario\Documents\Proyectos
+Sigue estos pasos para configurar y ejecutar el proyecto en tu entorno de desarrollo local.
 
-# Clona el repositorio
-git clone [https://github.com/joshualeba/bankario-simulaciones.git](https://github.com/joshualeba/bankario-simulaciones.git)
+### **1. Prerrequisitos**
 
-# Entra en la carpeta del proyecto
-cd bankario-simulaciones
-Paso 2: Configurar la base de datos 🗃️
-Abre SQL Server Management Studio (SSMS).
+Asegúrate de tener instalado lo siguiente en tu sistema:
+* [Python](https://www.python.org/downloads/) (versión 3.10 o superior)
+* [Git](https://git-scm.com/downloads/)
+* [Microsoft SQL Server](https://www.microsoft.com/es-es/sql-server/sql-server-downloads) (Edición Express o Developer)
+* [SQL Server Management Studio (SSMS)](https://learn.microsoft.com/es-es/sql/ssms/download-sql-server-management-studio-ssms)
+* [Microsoft ODBC Driver 18 for SQL Server](https://learn.microsoft.com/es-es/sql/connect/odbc/download-odbc-driver-for-sql-server) (¡**Importante**! El driver es necesario para la conexión).
 
-Conéctate a tu servidor de base de datos local (usualmente se llama . o (local)).
+### **2. Pasos de instalación**
 
-En el "Explorador de objetos", haz clic derecho en "Bases de datos" y selecciona "Nueva base de datos...".
+1.  **Clona el repositorio**
+    Abre tu terminal y ejecuta el siguiente comando para descargar el proyecto:
+    ```sh
+    git clone [https://github.com/joshualeba/bankario-simulaciones.git](https://github.com/joshualeba/bankario-simulaciones.git)
+    ```
+    *(Nota: Reemplaza la URL si tu repositorio está en otra ubicación).*
 
-Nombra la base de datos exactamente así: bankario_db_v2 (este nombre se usa en el archivo app.py). Haz clic en "Aceptar".
+2.  **Navega al directorio del proyecto**
+    ```sh
+    cd bankario-simulaciones
+    ```
 
-Abre el archivo bankario_db_1.sql que está en el repositorio.
+3.  **Crea y activa un entorno virtual**
+    Es una buena práctica para aislar las dependencias del proyecto.
+    ```sh
+    # Crear el entorno virtual
+    python -m venv venv
 
-Copia todo el contenido del archivo SQL.
+    # Activar el entorno (Windows)
+    .\venv\Scripts\activate
+    ```
+    *(Si estás en macOS/Linux, usa: `source venv/bin/activate`)*
 
-En SSMS, asegúrate de que la base de datos bankario_db_v2 esté seleccionada en el menú desplegable (arriba a la izquierda).
+4.  **Crea el archivo `requirements.txt`**
+    Crea un archivo llamado `requirements.txt` en la raíz del proyecto y pega el siguiente contenido:
+    ```
+    Flask
+    Flask-SQLAlchemy
+    pyodbc
+    werkzeug
+    email_validator
+    urllib3
+    re
+    ```
 
-Pega el script en una nueva ventana de consulta ("Nueva consulta" o "New Query") y presiona Ejecutar.
+5.  **Instala las dependencias de Python**
+    ```sh
+    pip install -r requirements.txt
+    ```
 
-Esto creará todas las tablas, relaciones y datos de prueba (como las preguntas del test) que la aplicación necesita.
+6.  **Configura la base de datos**
+    * Abre **SSMS** y conéctate a tu servidor SQL local (normalmente `.` o `(local)`).
+    * En el "Explorador de objetos", haz clic derecho en **"Bases de datos"** > **"Nueva base de datos..."**.
+    * Nombra la base de datos `bankario_db_v2` (este es el nombre esperado en `app.py`).
+    * Abre el archivo `bankario_db_1.sql` en SSMS o tu editor de texto.
+    * Copia todo el contenido del script.
+    * Pégalo en una "Nueva consulta" en SSMS (asegúrate de que la base de datos `bankario_db_v2` esté seleccionada) y **ejecútalo**.
+    * Esto creará todas las tablas, procedimientos y datos iniciales del test.
 
-Paso 3: Configurar el entorno de Python 🐍
-Se recomienda usar un entorno virtual para no instalar los paquetes globalmente.
+7.  **Verifica la configuración de `app.py`**
+    Abre `app.py` y asegúrate de que estas líneas (cerca de la línea 20) coincidan con tu configuración. La configuración por defecto ya está lista para una conexión local estándar:
+    ```python
+    DB_SERVER = '.'
+    DB_DATABASE = 'bankario_db_v2'
+    DB_DRIVER = '{ODBC Driver 18 for SQL Server}'
+    
+    params = urllib.parse.quote_plus(
+        f"DRIVER={DB_DRIVER};"
+        f"SERVER={DB_SERVER};"
+        f"DATABASE={DB_DATABASE};"
+        f"trusted_connection=yes;"
+        f"TrustServerCertificate=yes;"  # <-- Esta línea es vital
+    )
+    ```
 
-Bash
+8.  **Inicia el servidor de desarrollo**
+    ```sh
+    flask run --debug
+    ```
 
-# Desde la raíz de tu proyecto (la carpeta bankario-simulaciones)
-# Crea un entorno virtual llamado 'venv'
-python -m venv venv
+¡Y listo! La aplicación estará corriendo en `http://127.0.0.1:5000`.
 
-# Activa el entorno virtual
-# En Windows (CMD o PowerShell):
-.\venv\Scripts\activate
-Verás (venv) al inicio de la línea de tu terminal, indicando que el entorno está activo.
+### Datos de prueba
 
-Paso 4: Instalar las dependencias 📦
-Crea un archivo llamado requirements.txt en la raíz de tu proyecto.
+El script de la base de datos **no** crea usuarios de prueba. Deberás crear tu primera cuenta usando el formulario de **"Registro"** en la aplicación.
 
-Copia y pega el siguiente contenido en ese archivo:
+---
 
-Flask
-Flask-SQLAlchemy
-pyodbc
-werkzeug
-email_validator
-urllib3
-re
-En tu terminal (con el entorno venv activado), instala todas las dependencias:
+## Licencia
 
-Bash
-
-pip install -r requirements.txt
-Paso 5: Configurar la conexión en app.py 🔌
-El último paso es asegurarte de que tu aplicación Flask sepa cómo conectarse a la base de datos que creaste.
-
-Abre el archivo app.py en tu editor de código.
-
-Busca la sección de configuración de SQLAlchemy (cerca de la línea 20).
-
-Asegúrate de que coincida con tu configuración local. La configuración por defecto del repositorio ya está corregida y debería funcionar si seguiste los pasos anteriores:
-
-Python
-
-# ...
-# configuración de la conexión a la base de datos para sql server
-DB_SERVER = '.' # Servidor local. ¡Déjalo así!
-DB_DATABASE = 'bankario_db_v2' # El nombre de tu BD del Paso 2
-DB_DRIVER = '{ODBC Driver 18 for SQL Server}' # Driver del Paso 0
-
-# codifica el driver para la url
-params = urllib.parse.quote_plus(
-    f"DRIVER={DB_DRIVER};"
-    f"SERVER={DB_SERVER};"
-    f"DATABASE={DB_DATABASE};"
-    f"trusted_connection=yes;"
-    # Esta línea es crucial para evitar errores de certificado en local:
-    f"TrustServerCertificate=yes;"
-)
-
-app.config['SQLALCHEMY_DATABASE_URI'] = f"mssql+pyodbc:///?odbc_connect={params}"
-# ...
-Paso 6: ¡Ejecutar la aplicación! 🚀
-¡Todo listo! En tu terminal (con el entorno venv activado), ejecuta la aplicación:
-
-Bash
-
-flask run --debug
-Verás una salida indicando que el servidor está corriendo, usualmente en:
-
-* Running on http://127.0.0.1:5000
-
-Abre esa dirección http://127.0.0.1:5000 en tu navegador web. ¡Deberías ver la página de inicio de Bankario!
+Este proyecto está bajo la Licencia MIT.
