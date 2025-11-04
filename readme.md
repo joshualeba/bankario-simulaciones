@@ -96,7 +96,7 @@ Asegúrate de tener instalado lo siguiente en tu sistema:
     ```
 
 6.  **Configura la base de datos**
-    * Abre **SSMS** y conéctate a tu servidor SQL local (normalmente `.` o `(local)`).
+    * Abre **SSMS** (SQL Server Management Studio) y conéctate a tu servidor SQL local (debéras nombrarlo '.').
     * En el "Explorador de objetos", haz clic derecho en **"Bases de datos"** > **"Nueva base de datos..."**.
     * Nombra la base de datos `bankario_db_v2` (este es el nombre esperado en `app.py`).
     * Abre el archivo `bankario_db_1.sql` en SSMS o tu editor de texto.
