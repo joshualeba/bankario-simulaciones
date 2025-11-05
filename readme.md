@@ -58,7 +58,7 @@ Asegúrate de tener instalado lo siguiente en tu sistema:
 1.  **Clona el repositorio**
     Abre tu terminal y ejecuta el siguiente comando para descargar el proyecto:
     ```sh
-    git clone [https://github.com/joshualeba/bankario-simulaciones.git](https://github.com/joshualeba/bankario-simulaciones.git)
+    git clone https://github.com/joshualeba/bankario-simulaciones.git
     ```
     *(Nota: Reemplaza la URL si tu repositorio está en otra ubicación).*
 
