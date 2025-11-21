@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bankario - SOFIPOs</title>
+    <link rel="icon" href="multimedia/logo.ico" type="image/x-icon"/>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-icons/1.10.0/font/bootstrap-icons.min.css" rel="stylesheet">
+    <link href="css/dashboard.css" rel="stylesheet">
+    <link href="css/simulador_comun.css" rel="stylesheet">
+    <style>
+        .chart-container {
+            position: relative;
+            height: 400px;
+            width: 100%;
+        }
+        .nicap-badge {
+            font-size: 0.8rem;
+            padding: 5px 10px;
+            border-radius: 20px;
+        }
+        .nicap-1 { background-color: var(--success-color); color: white; }
+        .nicap-2 { background-color: var(--warning-color); color: white; }
+        /* Ajuste para que el navbar no choque con el contenido si el CSS varía ligeramente */
+        body { padding-top: 80px; }
+    </style>
+</head>
+<body class="loader_bg">
+    <div class="loader_p">
+        <div class="loader">    
+            <span class="loader-text">Cargando</span>
+            <span class="load"></span>
+        </div>
+    </div>
+
+    <nav class="navbar fixed-top glass-nav">
+        <div class="container-fluid px-4">
+            <a class="navbar-brand d-flex align-items-center" href="{{ url_for('dashboard') }}">
+                <img src="multimedia/logo.png" alt="logo bankario" class="me-2" width="40" height="40">
+            </a>
+            
+            <div class="d-flex align-items-center gap-3">
+                
+                <button class="btn btn-glass" id="browserBackBtn">
+                    <i class="bi bi-arrow-left-circle-fill me-2"></i>
+                    <span class="d-none d-sm-inline">Regresar</span>
+                </button>
+
+                <button class="btn btn-glass" id="themeToggle" aria-label="toggle theme">
+                    <i class="bi bi-sun-fill" id="themeIcon"></i>
+                </button>
+                
+                <div class="position-relative">
+                    <button class="btn btn-glass d-flex align-items-center" id="userBtn" aria-expanded="false" aria-controls="userDropdown">
+                        <i class="bi bi-person-fill d-md-none"></i>
+                        <span class="d-none d-md-inline">{{ usuario.nombres.split(' ')[0] }} {{ usuario.apellidos.split(' ')[0] }}</span>
+                    </button>
+                    
+                    <div class="user-dropdown glass-panel" id="userDropdown">
+                        <div class="p-3">
+                            <div class="text-center mb-3">
+                                <h6 class="mb-1">{{ usuario.nombres }} {{ usuario.apellidos }}</h6>
+                                <small class="mb-1">{{ usuario.correo }}</small>
+                            </div>
+                            <hr>
+                            <div class="d-grid gap-2">
+                                <button class="btn btn-outline-danger btn-sm" id="logoutBtn">
+                                    <i class="bi bi-box-arrow-right me-2"></i>Cerrar sesión
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <main class="main-content" style="margin-top: 0; margin-left: 0;">
+        <section class="content-section">
+            <div class="glass-card p-4 fade-in">
+                <h2 class="mb-4 titulo-dashboard text-center">Comparador de rendimientos SOFIPOs</h2>
+                <p class="lead text-muted text-center mb-5">Analiza las mejores tasas del mercado en tiempo real y visualiza su crecimiento.</p>
+
+                <div class="glass-panel p-4 mb-5">
+                    <h4 class="text-center mb-4">Rendimiento anual estimado (%)</h4>
+                    <div class="chart-container">
+                        <canvas id="sofiposChart"></canvas>
+                    </div>
+                </div>
+
+                <h3 class="titulo-dashboard mb-4">Detalle de entidades</h3>
+                <div id="sofipos-cards-container" class="row g-4">
+                    </div>
+            </div>
+        </section>
+    </main>
+
+    <div class="modal fade" id="logoutModal" tabindex="-1" aria-labelledby="logoutModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content glass-modal">
+                <div class="modal-header border-0">
+                    <h5 class="modal-title" id="logoutModalLabel">Cerrar sesión</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Cerrar"></button>
+                </div>
+                <div class="modal-body">
+                    <p>¿Estás seguro/a de que deseas cerrar sesión?</p>
+                </div>
+                <div class="modal-footer border-0">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                    <button type="button" class="btn btn-danger" id="confirmLogout">Cerrar sesión</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="js/sofipos.js"></script> 
+</body>
+</html>

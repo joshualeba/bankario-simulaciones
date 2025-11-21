@@ -437,3 +437,5 @@ BEGIN
     DELETE FROM resultados_test WHERE usuario_id IN (SELECT id FROM deleted);
 END;
 GO
+
+DROP TRIGGER IF EXISTS tr_marcar_test_completado;

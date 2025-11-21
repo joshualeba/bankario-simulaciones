@@ -128,6 +128,193 @@ class ResultadosTest(db.Model):
     
     usuario = db.relationship('Usuarios', back_populates='resultados', lazy=True)
 
+class Sofipos(db.Model):
+    __tablename__ = 'sofipos'
+    id = db.Column(db.Integer, primary_key=True, autoincrement=True)
+    nombre = db.Column(db.String(100), nullable=False)
+    tasa_anual = db.Column(db.Numeric(5, 2), nullable=False)
+    plazo_dias = db.Column(db.Integer, nullable=False)
+    nicap = db.Column(db.Integer, nullable=False)
+    logo_url = db.Column(db.String(255))
+    url_web = db.Column(db.String(255))
+
+    # 1. Agrega el Modelo ORM al inicio junto con los otros
+    class DiagnosticosFinancieros(db.Model):
+        __tablename__ = 'diagnosticos_financieros'
+        id = db.Column(db.Integer, primary_key=True, autoincrement=True)
+        usuario_id = db.Column(db.Integer, db.ForeignKey('usuarios.id'), nullable=False)
+        ingresos_mensuales = db.Column(db.Numeric(10,2))
+        gastos_mensuales = db.Column(db.Numeric(10,2))
+        deuda_total = db.Column(db.Numeric(10,2))
+        ahorro_actual = db.Column(db.Numeric(10,2))
+        puntaje_salud = db.Column(db.Integer)
+        nivel_endeudamiento = db.Column(db.Numeric(5,2))
+        recomendacion_clave = db.Column(db.String(255))
+        fecha_diagnostico = db.Column(db.DateTime, default=datetime.utcnow)
+
+# 2. Ruta para procesar el diagnóstico
+@app.route('/api/calcular_salud', methods=['POST'])
+def calcular_salud():
+    if 'usuario_autenticado' not in session:
+        return jsonify(success=False, message='No autorizado'), 401
+
+    data = request.json
+    try:
+        ingresos = float(data.get('ingresos', 0))
+        gastos = float(data.get('gastos', 0))
+        deuda = float(data.get('deuda', 0))
+        ahorro = float(data.get('ahorro', 0))
+    except ValueError:
+        return jsonify(success=False, message="Datos inválidos"), 400
+
+    if ingresos <= 0:
+        return jsonify(success=False, message="Los ingresos deben ser mayores a 0 para calcular."), 400
+
+    # --- LÓGICA FINANCIERA AVANZADA ---
+    puntaje = 100
+    analisis = [] # Aquí guardaremos los consejos detallados
+
+    # 1. ANÁLISIS DE GASTOS FIJOS (Ideal: < 50% de ingresos)
+    ratio_gastos = (gastos / ingresos) * 100
+    if ratio_gastos > 60:
+        puntaje -= 25
+        analisis.append({
+            "tipo": "gasto",
+            "estado": "mal",
+            "titulo": "Gastos fijos altos",
+            "texto": f"Tus gastos fijos consumen el {ratio_gastos:.0f}% de tu ingreso. Lo ideal es mantenerlos bajo el 50% para tener margen de maniobra."
+        })
+    elif ratio_gastos > 50:
+        puntaje -= 10
+        analisis.append({
+            "tipo": "gasto",
+            "estado": "regular",
+            "titulo": "Gastos al límite",
+            "texto": "Estás justo en el límite recomendado (50%) de gastos fijos. Intenta no adquirir más compromisos mensuales."
+        })
+    else:
+        analisis.append({
+            "tipo": "gasto",
+            "estado": "bien",
+            "titulo": "Gastos controlados",
+            "texto": "¡Excelente! Tus gastos fijos son sostenibles. Tienes gran capacidad para ahorrar o invertir."
+        })
+
+    # 2. ANÁLISIS DE DEUDA (Ideal: < 30% de ingresos)
+    ratio_deuda = (deuda / ingresos) * 100
+    if ratio_deuda > 40:
+        puntaje -= 35
+        analisis.append({
+            "tipo": "deuda",
+            "estado": "mal",
+            "titulo": "Sobrenedudamiento crítico",
+            "texto": f"Destinas el {ratio_deuda:.0f}% de tu dinero a pagar deudas. Esto es peligroso. Prioriza pagar las deudas con mayor tasa de interés (Método Avalancha)."
+        })
+    elif ratio_deuda > 30:
+        puntaje -= 15
+        analisis.append({
+            "tipo": "deuda",
+            "estado": "regular",
+            "titulo": "Deuda elevada",
+            "texto": "Tu nivel de deuda es manejable pero alto. Evita usar tarjetas de crédito hasta bajar este porcentaje."
+        })
+    else:
+        analisis.append({
+            "tipo": "deuda",
+            "estado": "bien",
+            "titulo": "Deuda saludable",
+            "texto": "Tu nivel de endeudamiento es bajo. Esto te da una excelente calificación crediticia potencial."
+        })
+
+    # 3. FONDO DE EMERGENCIA (Ideal: > 3 meses de gastos)
+    meses_cubiertos = ahorro / gastos if gastos > 0 else 0
+    if meses_cubiertos < 1:
+        puntaje -= 25
+        analisis.append({
+            "tipo": "ahorro",
+            "estado": "mal",
+            "titulo": "Vulnerable ante emergencias",
+            "texto": "Tienes menos de un mes de gastos cubierto. Si pierdes tus ingresos hoy, estarías en problemas inmediatos. Tu prioridad #1 debe ser ahorrar."
+        })
+    elif meses_cubiertos < 3:
+        puntaje -= 10
+        analisis.append({
+            "tipo": "ahorro",
+            "estado": "regular",
+            "titulo": "Fondo en construcción",
+            "texto": f"Tienes cubiertos {meses_cubiertos:.1f} meses de gastos. Vas bien, pero intenta llegar a 3 meses mínimo para mayor seguridad."
+        })
+    else:
+        analisis.append({
+            "tipo": "ahorro",
+            "estado": "bien",
+            "titulo": "Blindaje financiero Ccompleto",
+            "texto": "¡Felicidades! Tienes un fondo de emergencia sólido. Ahora podrías empezar a pensar en inversiones de mayor riesgo y rendimiento."
+        })
+
+    # Asegurar rango y mensaje general
+    puntaje = max(0, min(100, puntaje))
+    
+    if puntaje >= 80:
+        msg_general = "¡Tus finanzas están en excelente forma!"
+        color_general = "success"
+    elif puntaje >= 50:
+        msg_general = "Tienes estabilidad, pero hay áreas de riesgo."
+        color_general = "warning"
+    else:
+        msg_general = "Tu salud financiera requiere atención urgente."
+        color_general = "danger"
+
+    return jsonify(
+        success=True, 
+        puntaje=puntaje, 
+        mensaje_general=msg_general,
+        analisis_detallado=analisis
+    )
+
+@app.route('/sofipos')
+def sofipos_view():
+    if 'usuario_autenticado' not in session or not session['usuario_autenticado']:
+        flash('por favor, inicia sesión.', 'info')
+        return redirect(url_for('mostrar_formulario_inicio_sesion'))
+    
+    usuario_data = {
+        'nombres': session.get('nombres', 'usuario'),
+        'apellidos': session.get('apellidos', ''),
+        'correo': session.get('correo', 'correo@ejemplo.com')
+    }
+    return render_template('sofipos.html', usuario=usuario_data)
+
+@app.route('/api/sofipos_data', methods=['GET'])
+def get_sofipos_data():
+    try:
+        sofipos_list = Sofipos.query.order_by(Sofipos.tasa_anual.desc()).all()
+        data = []
+        for s in sofipos_list:
+            data.append({
+                'nombre': s.nombre,
+                'tasa': float(s.tasa_anual),
+                'plazo': s.plazo_dias,
+                'nicap': s.nicap,
+                'logo': s.logo_url,
+                'url': s.url_web
+            })
+        return jsonify(success=True, data=data)
+    except Exception as e:
+        return jsonify(success=False, message=str(e))
+    
+@app.route('/diagnostico')
+def diagnostico():
+    if 'usuario_autenticado' not in session or not session['usuario_autenticado']:
+        flash('Por favor, inicia sesión para ver tu diagnóstico.', 'info')
+        return redirect(url_for('mostrar_formulario_inicio_sesion'))
+    
+    usuario_data = {
+        'nombres': session.get('nombres', 'Usuario'),
+        'apellidos': session.get('apellidos', ''),
+        'correo': session.get('correo', '')
+    }
+    return render_template('diagnostico.html', usuario=usuario_data)
 
 # --- ELIMINADO: get_db_connection() ---
 # sqlalchemy maneja las conexiones automáticamente
@@ -173,9 +360,9 @@ def registrar_usuario():
             nuevos_datos = DatosP(
                 nombre=nombres,
                 apellidoP=apellidos,
-                apellidoM='', # tu sp enviaba esto
-                telefono=None, # tu sp enviaba esto
-                fecha_nacimiento=datetime.now() # tu sp enviaba esto
+                apellidoM='', # sp enviaba esto
+                telefono=None, # sp enviaba esto
+                fecha_nacimiento=datetime.now() # sp enviaba esto
             )
             db.session.add(nuevos_datos)
             
