@@ -439,3 +439,65 @@ END;
 GO
 
 DROP TRIGGER IF EXISTS tr_marcar_test_completado;
+
+-- Primero, asegúrate de crear la tabla si SQL Alchemy no lo hizo automáticamente aún
+IF NOT EXISTS (SELECT * FROM sysobjects WHERE name='sofipos' AND xtype='U')
+CREATE TABLE sofipos (
+    id INT PRIMARY KEY IDENTITY(1,1),
+    nombre NVARCHAR(100) NOT NULL,
+    tasa_anual DECIMAL(5, 2) NOT NULL,
+    plazo_dias INT NOT NULL,
+    nicap INT NOT NULL,
+    logo_url NVARCHAR(255),
+    url_web NVARCHAR(255)
+);
+GO
+
+-- 1. Limpiamos la tabla por si ya tiene datos
+TRUNCATE TABLE sofipos;
+GO
+
+-- 2. Insertamos los datos SIN la columna de imagen (logo_url)
+INSERT INTO sofipos (nombre, tasa_anual, plazo_dias, nicap, url_web)
+VALUES 
+-- SOFIPOs y Neobancos
+('Nu México', 14.75, 1, 1, 'https://nu.com.mx'),
+('Finsus', 15.01, 365, 1, 'https://finsus.mx'),
+('SuperTasas', 13.50, 364, 1, 'https://supertasas.com'),
+('Klar', 16.00, 30, 1, 'https://www.klar.mx'),
+('Kubo Financiero', 13.80, 365, 1, 'https://www.kubofinanciero.com'),
+('CAME', 10.50, 360, 1, 'https://www.came.org.mx'),
+('Financiera Monte de Piedad', 11.00, 365, 1, 'https://www.montepiedad.com.mx'),
+('Libertad Soluciones', 9.50, 365, 1, 'https://www.libertad.com.mx'),
+('Unagra', 8.00, 365, 1, 'https://www.unagra.com.mx'),
+('Ualá', 15.00, 1, 1, 'https://www.uala.mx'),
+('Stori Cuenta', 15.00, 1, 1, 'https://www.storicard.com'),
+
+-- Bancos Tradicionales y Gubernamentales
+('Hey Banco (Banregio)', 13.00, 7, 1, 'https://heybanco.com'),
+('Cetesdirecto (Cetes)', 11.00, 28, 1, 'https://www.cetesdirecto.com'),
+('BBVA México', 3.00, 365, 1, 'https://www.bbva.mx'),
+('Citibanamex', 3.50, 365, 1, 'https://www.banamex.com'),
+('Banorte', 4.00, 365, 1, 'https://www.banorte.com'),
+('Santander', 3.50, 365, 1, 'https://www.santander.com.mx'),
+('HSBC México', 3.00, 365, 1, 'https://www.hsbc.com.mx'),
+('Scotiabank', 3.20, 365, 1, 'https://www.scotiabank.com.mx'),
+('Banco Azteca', 5.00, 365, 1, 'https://www.bancoazteca.com.mx'),
+('Bancoppel', 4.50, 365, 1, 'https://www.bancoppel.com');
+GO
+
+IF NOT EXISTS (SELECT * FROM sysobjects WHERE name='diagnosticos_financieros' AND xtype='U')
+CREATE TABLE diagnosticos_financieros (
+    id INT PRIMARY KEY IDENTITY(1,1),
+    usuario_id INT NOT NULL,
+    ingresos_mensuales DECIMAL(10,2),
+    gastos_mensuales DECIMAL(10,2),
+    deuda_total DECIMAL(10,2),
+    ahorro_actual DECIMAL(10,2),
+    puntaje_salud INT,
+    nivel_endeudamiento DECIMAL(5,2),
+    recomendacion_clave NVARCHAR(255),
+    fecha_diagnostico DATETIME DEFAULT GETDATE(),
+    FOREIGN KEY (usuario_id) REFERENCES usuarios(id) ON DELETE CASCADE
+);
+GO
