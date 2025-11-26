@@ -4,6 +4,7 @@ from app import Tipo_Preguntas, Dificultades, Categorias, PreguntasTest, Opcione
 def seed_database():
     with app.app_context():
         print("Iniciando la carga de datos (Semilla)...")
+        db.create_all()
         
         # 1. CREAR CATALOGOS (Si no existen)
         
