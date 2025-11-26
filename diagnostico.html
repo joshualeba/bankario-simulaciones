@@ -146,317 +146,162 @@
         <div class="modal-content glass-modal">
             <div class="modal-header border-0">
                 <h5 class="modal-title fw-bold" id="messageModalTitle">Aviso</h5>
-                {% extends "templates/base.html" %}
+                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+            </div>
+            <div class="modal-body text-center p-4">
+                <i id="messageIcon" class="bi bi-info-circle display-1 mb-3"></i>
+                <p id="messageText" class="fs-5">Mensaje...</p>
+            </div>
+            <div class="modal-footer border-0 justify-content-center">
+                <button type="button" class="btn btn-primary px-4" data-bs-dismiss="modal">Aceptar</button>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
 
-                {% block title %}Bankario - Diagnóstico 360°{% endblock %}
+{% block extra_js %}
+<script>
+    document.addEventListener('DOMContentLoaded', () => {
 
-                {% block extra_css %}
-                <link href="css/dashboard.css" rel="stylesheet">
-                <link href="css/simulador_comun.css" rel="stylesheet">
-                <style>
-                    /* --- CSS CORREGIDO PARA SCROLL Y CENTRADO --- */
-                    html,
-                    body {
-                        overflow-y: auto !important;
-                        height: auto !important;
-                        min-height: 100vh;
-                    }
+        // 1. Inicialización UI
+        const loader = document.querySelector('.loader_p');
+        if (loader) setTimeout(() => { loader.style.display = 'none'; }, 500);
 
-                    body {
-                        padding-top: 90px !important;
-                        /* Espacio para Navbar fijo */
-                    }
+        // Theme toggle logic
+        const themeToggle = document.getElementById('themeToggle');
+        const themeIcon = document.getElementById('themeIcon');
+        const html = document.documentElement;
 
-                    .main-content {
-                        margin-left: 0 !important;
-                        /* Quita margen del sidebar */
-                        margin-top: 0 !important;
-                        padding: 2rem;
-                        width: 100%;
-                        display: flex;
-                        justify-content: center;
-                        /* Centra la tarjeta */
-                    }
+        const savedTheme = localStorage.getItem('theme') || 'light';
+        html.setAttribute('data-theme', savedTheme);
+        if (themeIcon) themeIcon.className = savedTheme === 'dark' ? 'bi bi-moon-fill' : 'bi bi-sun-fill';
 
-                    .content-section {
-                        width: 100%;
-                        max-width: 1100px;
-                        /* Ancho máximo elegante */
-                    }
+        if (themeToggle) {
+            themeToggle.addEventListener('click', () => {
+                const current = html.getAttribute('data-theme');
+                const next = current === 'dark' ? 'light' : 'dark';
+                html.setAttribute('data-theme', next);
+                localStorage.setItem('theme', next);
+                themeIcon.className = next === 'dark' ? 'bi bi-moon-fill' : 'bi bi-sun-fill';
+            });
+        }
 
-                    .score-circle {
-                        transition: border-color 0.8s ease;
-                    }
+        // 2. Modal Helper
+        const messageModal = new bootstrap.Modal(document.getElementById('messageModal'));
+        function showMessage(titulo, texto, tipo) {
+            document.getElementById('messageModalTitle').innerText = titulo;
+            document.getElementById('messageText').innerText = texto;
+            const icon = document.getElementById('messageIcon');
+            icon.className = 'display-1 mb-3 bi';
 
-                    @media (max-width: 768px) {
-                        body {
-                            padding-top: 110px !important;
-                        }
+            if (tipo === 'error') icon.classList.add('bi-x-circle', 'text-danger');
+            else if (tipo === 'warning') icon.classList.add('bi-exclamation-triangle', 'text-warning');
+            else icon.classList.add('bi-check-circle', 'text-success');
 
-                        .main-content {
-                            padding: 1rem;
-                        }
-                    }
-                </style>
-                {% endblock %}
+            messageModal.show();
+        }
 
-                {% block navbar_actions %}
-                <a href="{{ url_for('dashboard') }}" class="btn btn-glass">
-                    <i class="bi bi-arrow-left-circle-fill me-2"></i> Regresar
-                </a>
-                {% endblock %}
+        // 3. Lógica del Diagnóstico
+        const form = document.getElementById('healthForm');
+        if (form) {
+            form.addEventListener('submit', async (e) => {
+                e.preventDefault();
+                const btn = form.querySelector('button[type="submit"]');
+                const originalText = btn.innerHTML;
+                btn.innerHTML = '<span class="spinner-border spinner-border-sm"></span> Calculando...';
+                btn.disabled = true;
 
-                {% block content %}
-                <main class="main-content">
-                    <section class="content-section">
-                        <div class="glass-card p-4 fade-in">
-                            <h2 class="mb-4 titulo-dashboard text-center">Diagnóstico de salud financiera 360°</h2>
-                            <p class="lead text-muted text-center mb-5">Ingresa tus datos reales y recibe un análisis
-                                instantáneo.</p>
+                try {
+                    const datos = {
+                        ingresos: document.getElementById('ingresos').value,
+                        gastos: document.getElementById('gastos').value,
+                        deuda: document.getElementById('deuda').value,
+                        ahorro: document.getElementById('ahorro').value
+                    };
 
-                            <div class="row justify-content-center g-5">
-                                <div class="col-lg-5">
-                                    <form id="healthForm" class="glass-panel p-4 h-100">
-                                        <h5 class="mb-4 text-primary"><i class="bi bi-pencil-fill me-2"></i> Tus datos
-                                            mensuales</h5>
-
-                                        <div class="mb-3">
-                                            <label class="form-label small text-muted">Ingresos netos (lo que
-                                                recibes)</label>
-                                            <div class="input-group">
-                                                <span class="input-group-text">$</span>
-                                                <input type="number" id="ingresos" class="form-control glass-input"
-                                                    placeholder="Ej: 15000" required>
-                                            </div>
-                                        </div>
-                                        <div class="mb-3">
-                                            <label class="form-label small text-muted">Gastos fijos (Renta, Luz,
-                                                Comida)</label>
-                                            <div class="input-group">
-                                                <span class="input-group-text">$</span>
-                                                <input type="number" id="gastos" class="form-control glass-input"
-                                                    placeholder="Ej: 8000" required>
-                                            </div>
-                                        </div>
-                                        <div class="mb-3">
-                                            <label class="form-label small text-muted">Pago de deudas (Tarjetas,
-                                                Créditos)</label>
-                                            <div class="input-group">
-                                                <span class="input-group-text">$</span>
-                                                <input type="number" id="deuda" class="form-control glass-input"
-                                                    placeholder="Ej: 2000" required>
-                                            </div>
-                                        </div>
-                                        <div class="mb-4">
-                                            <label class="form-label small text-muted">Ahorro total acumulado
-                                                (Fondo)</label>
-                                            <div class="input-group">
-                                                <span class="input-group-text">$</span>
-                                                <input type="number" id="ahorro" class="form-control glass-input"
-                                                    placeholder="Ej: 5000" required>
-                                            </div>
-                                        </div>
-
-                                        <button type="submit" class="btn btn-primary w-100 btn-lg shadow-sm">
-                                            <i class="bi bi-activity me-2"></i> Diagnosticarme
-                                        </button>
-                                    </form>
-                                </div>
-
-                                <div class="col-lg-7 d-none" id="resultSection">
-                                    <div class="glass-panel p-4 h-100 text-center">
-                                        <h3 class="mb-3">Tu score financiero</h3>
-
-                                        <div class="position-relative d-inline-block mb-3">
-                                            <div class="score-circle"
-                                                style="width: 150px; height: 150px; border-radius: 50%; border: 10px solid #e0e0e0; display: flex; align-items: center; justify-content: center;">
-                                                <div>
-                                                    <span id="scoreValue" class="display-3 fw-bold">0</span>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <h4 id="scoreMessage" class="fw-bold mb-4"></h4>
-
-                                        <div class="text-start">
-                                            <h6 class="text-muted mb-3 ms-1">ANÁLISIS DETALLADO:</h6>
-                                            <div id="analisisContainer" class="d-flex flex-column gap-3">
-                                            </div>
-                                        </div>
-
-                                        <button class="btn btn-outline-secondary w-100 mt-4" id="btnRehacer">
-                                            <i class="bi bi-arrow-clockwise me-2"></i> Hacer otro diagnóstico
-                                        </button>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </section>
-                </main>
-                {% endblock %}
-
-                {% block extra_modals %}
-                <div class="modal fade" id="messageModal" tabindex="-1" aria-hidden="true">
-                    <div class="modal-dialog modal-dialog-centered">
-                        <div class="modal-content glass-modal">
-                            <div class="modal-header border-0">
-                                <h5 class="modal-title fw-bold" id="messageModalTitle">Aviso</h5>
-                                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
-                            </div>
-                            <div class="modal-body text-center p-4">
-                                <i id="messageIcon" class="bi bi-info-circle display-1 mb-3"></i>
-                                <p id="messageText" class="fs-5">Mensaje...</p>
-                            </div>
-                            <div class="modal-footer border-0 justify-content-center">
-                                <button type="button" class="btn btn-primary px-4"
-                                    data-bs-dismiss="modal">Aceptar</button>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                {% endblock %}
-
-                {% block extra_js %}
-                <script>
-                    document.addEventListener('DOMContentLoaded', () => {
-
-                        // 1. Inicialización UI
-                        const loader = document.querySelector('.loader_p');
-                        if (loader) setTimeout(() => { loader.style.display = 'none'; }, 500);
-
-                        // Theme toggle logic
-                        const themeToggle = document.getElementById('themeToggle');
-                        const themeIcon = document.getElementById('themeIcon');
-                        const html = document.documentElement;
-
-                        const savedTheme = localStorage.getItem('theme') || 'light';
-                        html.setAttribute('data-theme', savedTheme);
-                        if (themeIcon) themeIcon.className = savedTheme === 'dark' ? 'bi bi-moon-fill' : 'bi bi-sun-fill';
-
-                        if (themeToggle) {
-                            themeToggle.addEventListener('click', () => {
-                                const current = html.getAttribute('data-theme');
-                                const next = current === 'dark' ? 'light' : 'dark';
-                                html.setAttribute('data-theme', next);
-                                localStorage.setItem('theme', next);
-                                themeIcon.className = next === 'dark' ? 'bi bi-moon-fill' : 'bi bi-sun-fill';
-                            });
-                        }
-
-                        // 2. Modal Helper
-                        const messageModal = new bootstrap.Modal(document.getElementById('messageModal'));
-                        function showMessage(titulo, texto, tipo) {
-                            document.getElementById('messageModalTitle').innerText = titulo;
-                            document.getElementById('messageText').innerText = texto;
-                            const icon = document.getElementById('messageIcon');
-                            icon.className = 'display-1 mb-3 bi';
-
-                            if (tipo === 'error') icon.classList.add('bi-x-circle', 'text-danger');
-                            else if (tipo === 'warning') icon.classList.add('bi-exclamation-triangle', 'text-warning');
-                            else icon.classList.add('bi-check-circle', 'text-success');
-
-                            messageModal.show();
-                        }
-
-                        // 3. Lógica del Diagnóstico
-                        const form = document.getElementById('healthForm');
-                        if (form) {
-                            form.addEventListener('submit', async (e) => {
-                                e.preventDefault();
-                                const btn = form.querySelector('button[type="submit"]');
-                                const originalText = btn.innerHTML;
-                                btn.innerHTML = '<span class="spinner-border spinner-border-sm"></span> Calculando...';
-                                btn.disabled = true;
-
-                                try {
-                                    const datos = {
-                                        ingresos: document.getElementById('ingresos').value,
-                                        gastos: document.getElementById('gastos').value,
-                                        deuda: document.getElementById('deuda').value,
-                                        ahorro: document.getElementById('ahorro').value
-                                    };
-
-                                    const res = await fetch('/api/calcular_salud', {
-                                        method: 'POST',
-                                        headers: { 'Content-Type': 'application/json' },
-                                        body: JSON.stringify(datos)
-                                    });
-                                    const data = await res.json();
-
-                                    if (data.success) {
-                                        // Mostrar resultados
-                                        const resultSection = document.getElementById('resultSection');
-                                        resultSection.classList.remove('d-none');
-
-                                        // Scroll suave en móviles
-                                        if (window.innerWidth < 992) {
-                                            setTimeout(() => resultSection.scrollIntoView({ behavior: 'smooth' }), 100);
-                                        }
-
-                                        // Score y Color
-                                        animateValue("scoreValue", 0, data.puntaje, 1500);
-                                        const msgEl = document.getElementById('scoreMessage');
-                                        const circle = document.querySelector('.score-circle');
-
-                                        msgEl.innerText = data.mensaje_general;
-                                        let color = '#EF4444'; // Rojo
-                                        if (data.puntaje >= 80) color = '#10B981'; // Verde
-                                        else if (data.puntaje >= 50) color = '#F59E0B'; // Amarillo
-
-                                        msgEl.style.color = color;
-                                        circle.style.borderColor = color;
-
-                                        // Tarjetas de Consejos
-                                        const container = document.getElementById('analisisContainer');
-                                        container.innerHTML = '';
-
-                                        data.analisis_detallado.forEach(item => {
-                                            let icon = 'bi-check-circle-fill', colorCls = 'text-success', bg = 'rgba(16,185,129,0.1)';
-                                            if (item.estado === 'mal') { icon = 'bi-exclamation-triangle-fill'; colorCls = 'text-danger'; bg = 'rgba(239,68,68,0.1)'; }
-                                            else if (item.estado === 'regular') { icon = 'bi-info-circle-fill'; colorCls = 'text-warning'; bg = 'rgba(245,158,11,0.1)'; }
-
-                                            container.innerHTML += `
-                                <div class="d-flex align-items-start p-3 rounded" style="background:${bg}; border:1px solid ${item.estado === 'mal' ? 'rgba(239,68,68,0.3)' : 'rgba(0,0,0,0.05)'}">
-                                    <i class="bi ${icon} ${colorCls} fs-3 me-3 mt-1"></i>
-                                    <div>
-                                        <h6 class="fw-bold mb-1 ${colorCls}">${item.titulo}</h6>
-                                        <p class="mb-0 small opacity-75" style="color:var(--text-dark)">${item.texto}</p>
-                                    </div>
-                                </div>`;
-                                        });
-
-                                    } else {
-                                        showMessage('Atención', data.message, 'warning');
-                                    }
-                                } catch (e) {
-                                    showMessage('Error', 'Error de conexión con el servidor.', 'error');
-                                } finally {
-                                    btn.innerHTML = originalText;
-                                    btn.disabled = false;
-                                }
-                            });
-                        }
-
-                        // 4. Botón Rehacer (Sin recargar)
-                        const btnRehacer = document.getElementById('btnRehacer');
-                        if (btnRehacer) {
-                            btnRehacer.addEventListener('click', () => {
-                                document.getElementById('resultSection').classList.add('d-none');
-                                form.reset();
-                                window.scrollTo({ top: 0, behavior: 'smooth' });
-                            });
-                        }
-
-                        function animateValue(id, start, end, duration) {
-                            const obj = document.getElementById(id);
-                            let startTimestamp = null;
-                            const step = (timestamp) => {
-                                if (!startTimestamp) startTimestamp = timestamp;
-                                const progress = Math.min((timestamp - startTimestamp) / duration, 1);
-                                obj.innerHTML = Math.floor(progress * (end - start) + start);
-                                if (progress < 1) window.requestAnimationFrame(step);
-                            };
-                            window.requestAnimationFrame(step);
-                        }
+                    const res = await fetch('/api/calcular_salud', {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify(datos)
                     });
-                </script>
-                {% endblock %}
+                    const data = await res.json();
+
+                    if (data.success) {
+                        // Mostrar resultados
+                        const resultSection = document.getElementById('resultSection');
+                        resultSection.classList.remove('d-none');
+
+                        // Scroll suave en móviles
+                        if (window.innerWidth < 992) {
+                            setTimeout(() => resultSection.scrollIntoView({ behavior: 'smooth' }), 100);
+                        }
+
+                        // Score y Color
+                        animateValue("scoreValue", 0, data.puntaje, 1500);
+                        const msgEl = document.getElementById('scoreMessage');
+                        const circle = document.querySelector('.score-circle');
+
+                        msgEl.innerText = data.mensaje_general;
+                        let color = '#EF4444'; // Rojo
+                        if (data.puntaje >= 80) color = '#10B981'; // Verde
+                        else if (data.puntaje >= 50) color = '#F59E0B'; // Amarillo
+
+                        msgEl.style.color = color;
+                        circle.style.borderColor = color;
+
+                        // Tarjetas de Consejos
+                        const container = document.getElementById('analisisContainer');
+                        container.innerHTML = '';
+
+                        data.analisis_detallado.forEach(item => {
+                            let icon = 'bi-check-circle-fill', colorCls = 'text-success', bg = 'rgba(16,185,129,0.1)';
+                            if (item.estado === 'mal') { icon = 'bi-exclamation-triangle-fill'; colorCls = 'text-danger'; bg = 'rgba(239,68,68,0.1)'; }
+                            else if (item.estado === 'regular') { icon = 'bi-info-circle-fill'; colorCls = 'text-warning'; bg = 'rgba(245,158,11,0.1)'; }
+
+                            container.innerHTML += `
+                <div class="d-flex align-items-start p-3 rounded" style="background:${bg}; border:1px solid ${item.estado === 'mal' ? 'rgba(239,68,68,0.3)' : 'rgba(0,0,0,0.05)'}">
+                    <i class="bi ${icon} ${colorCls} fs-3 me-3 mt-1"></i>
+                    <div>
+                        <h6 class="fw-bold mb-1 ${colorCls}">${item.titulo}</h6>
+                        <p class="mb-0 small opacity-75" style="color:var(--text-dark)">${item.texto}</p>
+                    </div>
+                </div>`;
+                        });
+
+                    } else {
+                        showMessage('Atención', data.message, 'warning');
+                    }
+                } catch (e) {
+                    showMessage('Error', 'Error de conexión con el servidor.', 'error');
+                } finally {
+                    btn.innerHTML = originalText;
+                    btn.disabled = false;
+                }
+            });
+        }
+
+        // 4. Botón Rehacer (Sin recargar)
+        const btnRehacer = document.getElementById('btnRehacer');
+        if (btnRehacer) {
+            btnRehacer.addEventListener('click', () => {
+                document.getElementById('resultSection').classList.add('d-none');
+                form.reset();
+                window.scrollTo({ top: 0, behavior: 'smooth' });
+            });
+        }
+
+        function animateValue(id, start, end, duration) {
+            const obj = document.getElementById(id);
+            let startTimestamp = null;
+            const step = (timestamp) => {
+                if (!startTimestamp) startTimestamp = timestamp;
+                const progress = Math.min((timestamp - startTimestamp) / duration, 1);
+                obj.innerHTML = Math.floor(progress * (end - start) + start);
+                if (progress < 1) window.requestAnimationFrame(step);
+            };
+            window.requestAnimationFrame(step);
+        }
+    });
+</script>
+{% endblock %}
