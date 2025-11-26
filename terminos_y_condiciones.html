@@ -1,189 +1,229 @@
-<!DOCTYPE html>
-<html lang="es">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Términos y condiciones - BANKario</title>
-    <link rel="icon" href="multimedia/logo.ico" type="image/x-icon"/>
-    <meta name="description" content="Términos y condiciones de uso de la plataforma BANKario.">
-    <meta name="keywords" content="términos, condiciones, uso, legal, bankario, simulador financiero">
-    <meta name="author" content="Bankario Team">
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/css/bootstrap.min.css" rel="stylesheet">
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-icons/1.10.0/font/bootstrap-icons.min.css">
-    <link rel="stylesheet" href="css/index.css">
-</head>
-<body class="loader_bg">
-    <div id="loader-screen">
-        <div class="loader-container">
-            <span class="loader"></span>
-            <p class="loader-text">Cargando...</p>
+{% extends "templates/base.html" %}
+
+{% block title %}Términos y condiciones - BANKario{% endblock %}
+
+{% block extra_css %}
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="css/index.css">
+{% endblock %}
+
+{% block loader %}
+<div id="loader-screen">
+    <div class="loader-container">
+        <span class="loader"></span>
+        <p class="loader-text">Cargando...</p>
+    </div>
+</div>
+{% endblock %}
+
+{% block navbar_class %}navbar-custom scrolled fixed-top{% endblock %}
+
+{% block navbar_content %}
+<div class="container">
+    <a class="navbar-brand" href="index.html#home">
+        <div class="navbar-logo">
+            <img src="multimedia/logo.png" alt="Logo BANKario" class="logo-img">
+        </div>
+        BANKario
+    </a>
+    <div class="ms-auto">
+        <a class="btn btn-accent-outline" href="index.html">Volver al inicio</a>
+    </div>
+</div>
+{% endblock %}
+
+{% block content %}
+<main style="padding-top: 100px;">
+    <section id="terms" class="section-padding">
+        <div class="container">
+            <h2 class="section-title lazy-load">Términos y condiciones de uso</h2>
+            <div class="row justify-content-center lazy-load">
+                <div class="col-lg-10">
+                    <p class="mb-4">Última actualización: 6 de julio de 2025</p>
+
+                    <h4 class="mb-3" style="color: var(--primary-color);">1. Aceptación de los términos</h4>
+                    <p class="mb-4">
+                        Al acceder y utilizar la plataforma "bankario" (en adelante, "la plataforma"), usted acepta y se
+                        compromete a cumplir estos términos y condiciones de uso ("términos"). si no está de acuerdo con
+                        estos términos, no debe utilizar la plataforma. nos reservamos el derecho de modificar estos
+                        términos en cualquier momento. la continuación del uso de la plataforma después de dichas
+                        modificaciones constituirá su aceptación de los nuevos términos.
+                    </p>
+
+                    <h4 class="mb-3" style="color: var(--primary-color);">2. Descripción del servicio</h4>
+                    <p class="mb-4">
+                        BANKario es una plataforma diseñada para ofrecer simulaciones y herramientas de análisis
+                        financiero con fines educativos y de planificación personal. no proporcionamos asesoramiento
+                        financiero profesional, legal, fiscal o de inversión. la información y las simulaciones
+                        generadas en la plataforma son solo para fines ilustrativos y no deben considerarse como una
+                        recomendación para tomar decisiones financieras reales.
+                    </p>
+
+                    <h4 class="mb-3" style="color: var(--primary-color);">3. Registro y cuentas de usuario</h4>
+                    <ul class="list-unstyled mb-4">
+                        <li class="mb-2"><i class="bi bi-check-circle-fill me-2"
+                                style="color: var(--success-color);"></i> Para acceder a ciertas funcionalidades de la
+                            plataforma, deberá registrarse y crear una cuenta. usted es responsable de mantener la
+                            confidencialidad de su contraseña y de todas las actividades que ocurran bajo su cuenta.
+                        </li>
+                        <li class="mb-2"><i class="bi bi-check-circle-fill me-2"
+                                style="color: var(--success-color);"></i> Usted se compromete a proporcionar información
+                            precisa, completa y actualizada durante el proceso de registro y a mantenerla así.</li>
+                        <li class="mb-2"><i class="bi bi-check-circle-fill me-2"
+                                style="color: var(--success-color);"></i> Nos reservamos el derecho de suspender o
+                            cancelar su cuenta si la información proporcionada es falsa, inexacta o incompleta, o si
+                            incumple estos términos.</li>
+                    </ul>
+
+                    <h4 class="mb-3" style="color: var(--primary-color);">4. Uso aceptable de la plataforma</h4>
+                    <p class="mb-4">
+                        Usted se compromete a utilizar la plataforma solo para fines lícitos y de acuerdo con estos
+                        términos. usted no debe:
+                    </p>
+                    <ul class="list-unstyled mb-4">
+                        <li class="mb-2"><i class="bi bi-x-circle-fill me-2" style="color: #dc3545;"></i> Utilizar la
+                            plataforma de cualquier manera que pueda dañar, deshabilitar, sobrecargar o deteriorar el
+                            servidor o la red de bankario.</li>
+                        <li class="mb-2"><i class="bi bi-x-circle-fill me-2" style="color: #dc3545;"></i> Intentar
+                            obtener acceso no autorizado a cualquier parte de la plataforma, otras cuentas, sistemas
+                            informáticos o redes conectadas a cualquier servidor de bankario.</li>
+                        <li class="mb-2"><i class="bi bi-x-circle-fill me-2" style="color: #dc3545;"></i> Utilizar la
+                            plataforma para cualquier actividad fraudulenta o ilegal.</li>
+                        <li class="mb-2"><i class="bi bi-x-circle-fill me-2" style="color: #dc3545;"></i> Cargar o
+                            transmitir cualquier virus, gusano, defecto, troyano o cualquier elemento de naturaleza
+                            destructiva.</li>
+                    </ul>
+
+                    <h4 class="mb-3" style="color: var(--primary-color);">5. Propiedad intelectual</h4>
+                    <p class="mb-4">
+                        Todos los contenidos de la plataforma, incluyendo, entre otros, textos, gráficos, logotipos,
+                        iconos, imágenes, clips de audio, descargas digitales y software, son propiedad de bankario o de
+                        sus proveedores de contenido y están protegidos por leyes de derechos de autor y otras leyes de
+                        propiedad intelectual.
+                    </p>
+
+                    <h4 class="mb-3" style="color: var(--primary-color);">6. Exención de garantías</h4>
+                    <p class="mb-4">
+                        La plataforma se proporciona "tal cual" y "según disponibilidad", sin garantías de ningún tipo,
+                        ya sean expresas o implícitas. bankario no garantiza que la plataforma será ininterrumpida,
+                        libre de errores o segura, ni que los resultados obtenidos del uso de la plataforma serán
+                        precisos o confiables.
+                    </p>
+
+                    <h4 class="mb-3" style="color: var(--primary-color);">7. Limitación de responsabilidad</h4>
+                    <p class="mb-4">
+                        En ningún caso bankario, sus directores, empleados o agentes serán responsables de cualquier
+                        daño directo, indirecto, incidental, especial, consecuente o punitivo, incluyendo, entre otros,
+                        pérdida de beneficios, datos o uso, ya sea en una acción contractual, de negligencia o cualquier
+                        otra acción torticera, que surja de o en conexión con el uso o rendimiento de la plataforma.
+                    </p>
+
+                    <h4 class="mb-3" style="color: var(--primary-color);">8. Indemnización</h4>
+                    <p class="mb-4">
+                        Usted acepta indemnizar y eximir de responsabilidad a bankario, sus afiliados, directores,
+                        agentes y empleados de cualquier reclamo o demanda, incluidos los honorarios de abogados,
+                        realizados por cualquier tercero debido a o que surja de su uso de la plataforma, su violación
+                        de estos términos o su violación de cualquier derecho de otro.
+                    </p>
+
+                    <h4 class="mb-3" style="color: var(--primary-color);">9. Ley aplicable</h4>
+                    <p class="mb-4">
+                        Estos términos se regirán e interpretarán de acuerdo con las leyes de méxico, sin tener en
+                        cuenta sus principios de conflicto de leyes.
+                    </p>
+
+                    <h4 class="mb-3" style="color: var(--primary-color);">10. Contacto</h4>
+                    <p class="mb-4">
+                        Si tiene alguna pregunta sobre estos términos, puede contactarnos a través de [dirección de
+                        correo electrónico de contacto o formulario de contacto].
+                    </p>
+                </div>
+            </div>
+        </div>
+    </section>
+</main>
+{% endblock %}
+
+{% block footer %}
+<footer class="footer lazy-load">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-4 mb-4">
+                <h5>BANKario</h5>
+                <p>La plataforma más confiable para la simulación y planificación financiera personal.</p>
+                <div class="d-flex gap-3">
+                    <a href="#"><i class="bi bi-instagram fs-5"></i></a>
+                    <a href="#"><i class="bi bi-youtube fs-5"></i></a>
+                    <a href="#"><i class="bi bi-tiktok fs-5"></i></a>
+                </div>
+            </div>
+            <div class="col-lg-2 col-md-6 mb-4">
+                <h5>Servicios</h5>
+                <ul class="list-unstyled">
+                    <li><a href="iniciar_sesion.html">Simulaciones</a></li>
+                    <li><a href="iniciar_sesion.html">Test de conocimientos</a></li>
+                    <li><a href="iniciar_sesion.html">Glosario de términos</a></li>
+                </ul>
+            </div>
+            <div class="col-lg-2 col-md-6 mb-4">
+                <h5>Legal</h5>
+                <ul class="list-unstyled">
+                    <li><a href="terminos_y_condiciones.html">Términos de uso</a></li>
+                </ul>
+            </div>
+        </div>
+        <hr class="my-4" style="border-color: #374151;">
+        <div class="row justify-content-center">
+            <div class="col-md-6 text-center">
+                <p class="mb-0">&copy; 2025 BANKario. Todos los derechos reservados.</p>
+            </div>
         </div>
     </div>
+</footer>
+{% endblock %}
 
-    <nav class="navbar navbar-expand-lg navbar-custom fixed-top scrolled">
-        <div class="container">
-            <a class="navbar-brand" href="index.html#home">
-                <div class="navbar-logo">
-                    <img src="multimedia/logo.png" alt="Logo BANKario" class="logo-img">
-                </div>
-                BANKario
-            </a>
-            <div class="ms-auto">
-                <a class="btn btn-accent-outline" href="index.html">Volver al inicio</a>
-            </div>
-        </div>
-    </nav>
+{% block extra_js %}
+<script>
+    // Lógica del loader (copia de index.js)
+    document.addEventListener('DOMContentLoaded', () => {
+        const loader = document.getElementById('loader-screen');
+        if (loader) {
+            // Se quita el setTimeout para eliminar el delay
+            loader.style.opacity = '0';
+            setTimeout(() => {
+                loader.style.display = 'none';
+                document.body.classList.remove('loader_bg');
+            }, 500); // Pequeño delay para la transición de opacidad
+        }
 
-    <main style="padding-top: 100px;"> <section id="terms" class="section-padding">
-            <div class="container">
-                <h2 class="section-title lazy-load">Términos y condiciones de uso</h2>
-                <div class="row justify-content-center lazy-load">
-                    <div class="col-lg-10">
-                        <p class="mb-4">Última actualización: 6 de julio de 2025</p>
+        // Lógica de lazy-load para las secciones
+        const lazyLoadElements = document.querySelectorAll('.lazy-load');
+        const observerOptions = {
+            root: null,
+            rootMargin: '0px',
+            threshold: 0.1
+        };
 
-                        <h4 class="mb-3" style="color: var(--primary-color);">1. Aceptación de los términos</h4>
-                        <p class="mb-4">
-                            Al acceder y utilizar la plataforma "bankario" (en adelante, "la plataforma"), usted acepta y se compromete a cumplir estos términos y condiciones de uso ("términos"). si no está de acuerdo con estos términos, no debe utilizar la plataforma. nos reservamos el derecho de modificar estos términos en cualquier momento. la continuación del uso de la plataforma después de dichas modificaciones constituirá su aceptación de los nuevos términos.
-                        </p>
-
-                        <h4 class="mb-3" style="color: var(--primary-color);">2. Descripción del servicio</h4>
-                        <p class="mb-4">
-                            BANKario es una plataforma diseñada para ofrecer simulaciones y herramientas de análisis financiero con fines educativos y de planificación personal. no proporcionamos asesoramiento financiero profesional, legal, fiscal o de inversión. la información y las simulaciones generadas en la plataforma son solo para fines ilustrativos y no deben considerarse como una recomendación para tomar decisiones financieras reales.
-                        </p>
-
-                        <h4 class="mb-3" style="color: var(--primary-color);">3. Registro y cuentas de usuario</h4>
-                        <ul class="list-unstyled mb-4">
-                            <li class="mb-2"><i class="bi bi-check-circle-fill me-2" style="color: var(--success-color);"></i> Para acceder a ciertas funcionalidades de la plataforma, deberá registrarse y crear una cuenta. usted es responsable de mantener la confidencialidad de su contraseña y de todas las actividades que ocurran bajo su cuenta.</li>
-                            <li class="mb-2"><i class="bi bi-check-circle-fill me-2" style="color: var(--success-color);"></i> Usted se compromete a proporcionar información precisa, completa y actualizada durante el proceso de registro y a mantenerla así.</li>
-                            <li class="mb-2"><i class="bi bi-check-circle-fill me-2" style="color: var(--success-color);"></i> Nos reservamos el derecho de suspender o cancelar su cuenta si la información proporcionada es falsa, inexacta o incompleta, o si incumple estos términos.</li>
-                        </ul>
-
-                        <h4 class="mb-3" style="color: var(--primary-color);">4. Uso aceptable de la plataforma</h4>
-                        <p class="mb-4">
-                            Usted se compromete a utilizar la plataforma solo para fines lícitos y de acuerdo con estos términos. usted no debe:
-                        </p>
-                        <ul class="list-unstyled mb-4">
-                            <li class="mb-2"><i class="bi bi-x-circle-fill me-2" style="color: #dc3545;"></i> Utilizar la plataforma de cualquier manera que pueda dañar, deshabilitar, sobrecargar o deteriorar el servidor o la red de bankario.</li>
-                            <li class="mb-2"><i class="bi bi-x-circle-fill me-2" style="color: #dc3545;"></i> Intentar obtener acceso no autorizado a cualquier parte de la plataforma, otras cuentas, sistemas informáticos o redes conectadas a cualquier servidor de bankario.</li>
-                            <li class="mb-2"><i class="bi bi-x-circle-fill me-2" style="color: #dc3545;"></i> Utilizar la plataforma para cualquier actividad fraudulenta o ilegal.</li>
-                            <li class="mb-2"><i class="bi bi-x-circle-fill me-2" style="color: #dc3545;"></i> Cargar o transmitir cualquier virus, gusano, defecto, troyano o cualquier elemento de naturaleza destructiva.</li>
-                        </ul>
-
-                        <h4 class="mb-3" style="color: var(--primary-color);">5. Propiedad intelectual</h4>
-                        <p class="mb-4">
-                            Todos los contenidos de la plataforma, incluyendo, entre otros, textos, gráficos, logotipos, iconos, imágenes, clips de audio, descargas digitales y software, son propiedad de bankario o de sus proveedores de contenido y están protegidos por leyes de derechos de autor y otras leyes de propiedad intelectual.
-                        </p>
-
-                        <h4 class="mb-3" style="color: var(--primary-color);">6. Exención de garantías</h4>
-                        <p class="mb-4">
-                            La plataforma se proporciona "tal cual" y "según disponibilidad", sin garantías de ningún tipo, ya sean expresas o implícitas. bankario no garantiza que la plataforma será ininterrumpida, libre de errores o segura, ni que los resultados obtenidos del uso de la plataforma serán precisos o confiables.
-                        </p>
-
-                        <h4 class="mb-3" style="color: var(--primary-color);">7. Limitación de responsabilidad</h4>
-                        <p class="mb-4">
-                            En ningún caso bankario, sus directores, empleados o agentes serán responsables de cualquier daño directo, indirecto, incidental, especial, consecuente o punitivo, incluyendo, entre otros, pérdida de beneficios, datos o uso, ya sea en una acción contractual, de negligencia o cualquier otra acción torticera, que surja de o en conexión con el uso o rendimiento de la plataforma.
-                        </p>
-
-                        <h4 class="mb-3" style="color: var(--primary-color);">8. Indemnización</h4>
-                        <p class="mb-4">
-                            Usted acepta indemnizar y eximir de responsabilidad a bankario, sus afiliados, directores, agentes y empleados de cualquier reclamo o demanda, incluidos los honorarios de abogados, realizados por cualquier tercero debido a o que surja de su uso de la plataforma, su violación de estos términos o su violación de cualquier derecho de otro.
-                        </p>
-
-                        <h4 class="mb-3" style="color: var(--primary-color);">9. Ley aplicable</h4>
-                        <p class="mb-4">
-                            Estos términos se regirán e interpretarán de acuerdo con las leyes de méxico, sin tener en cuenta sus principios de conflicto de leyes.
-                        </p>
-
-                        <h4 class="mb-3" style="color: var(--primary-color);">10. Contacto</h4>
-                        <p class="mb-4">
-                            Si tiene alguna pregunta sobre estos términos, puede contactarnos a través de [dirección de correo electrónico de contacto o formulario de contacto].
-                        </p>
-                    </div>
-                </div>
-            </div>
-        </section>
-    </main>
-
-    <footer class="footer lazy-load">
-        <div class="container">
-            <div class="row">
-                <div class="col-lg-4 mb-4">
-                    <h5>BANKario</h5>
-                    <p>La plataforma más confiable para la simulación y planificación financiera personal.</p>
-                    <div class="d-flex gap-3">
-                        <a href="#"><i class="bi bi-instagram fs-5"></i></a>
-                        <a href="#"><i class="bi bi-youtube fs-5"></i></a>
-                        <a href="#"><i class="bi bi-tiktok fs-5"></i></a>
-                    </div>
-                </div>
-                <div class="col-lg-2 col-md-6 mb-4">
-                    <h5>Servicios</h5>
-                    <ul class="list-unstyled">
-                        <li><a href="iniciar_sesion.html">Simulaciones</a></li>
-                        <li><a href="iniciar_sesion.html">Test de conocimientos</a></li>
-                        <li><a href="iniciar_sesion.html">Glosario de términos</a></li>
-                    </ul>
-                </div>
-                <div class="col-lg-2 col-md-6 mb-4">
-                    <h5>Legal</h5>
-                    <ul class="list-unstyled">
-                        <li><a href="terminos_y_condiciones.html">Términos de uso</a></li>
-                    </ul>
-                </div>
-            </div>
-            <hr class="my-4" style="border-color: #374151;">
-            <div class="row justify-content-center">
-                <div class="col-md-6 text-center">
-                    <p class="mb-0">&copy; 2025 BANKario. Todos los derechos reservados.</p>
-                </div>
-            </div>
-        </div>
-    </footer>
-
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/js/bootstrap.bundle.min.js"></script>
-    <script>
-        // Lógica del loader (copia de index.js)
-        document.addEventListener('DOMContentLoaded', () => {
-            const loader = document.getElementById('loader-screen');
-            if (loader) {
-                // Se quita el setTimeout para eliminar el delay
-                loader.style.opacity = '0';
-                setTimeout(() => {
-                    loader.style.display = 'none';
-                    document.body.classList.remove('loader_bg');
-                }, 500); // Pequeño delay para la transición de opacidad
-            }
-
-            // Lógica de lazy-load para las secciones
-            const lazyLoadElements = document.querySelectorAll('.lazy-load');
-            const observerOptions = {
-                root: null,
-                rootMargin: '0px',
-                threshold: 0.1
-            };
-
-            const observer = new IntersectionObserver((entries, observer) => {
-                entries.forEach(entry => {
-                    if (entry.isIntersecting) {
-                        entry.target.classList.add('visible');
-                        observer.unobserve(entry.target);
-                    }
-                });
-            }, observerOptions);
-
-            lazyLoadElements.forEach(element => {
-                observer.observe(element);
+        const observer = new IntersectionObserver((entries, observer) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('visible');
+                    observer.unobserve(entry.target);
+                }
             });
+        }, observerOptions);
 
-            // Ajuste del navbar "scrolled" (si se necesita, ya que la página puede ser más corta)
-            const navbar = document.querySelector('.navbar-custom');
-            if (navbar) {
-                // Al cargar la página, añade la clase 'scrolled' si no es la sección hero
-                // o si la página es de contenido fijo como esta.
-                navbar.classList.add('scrolled');
-            }
+        lazyLoadElements.forEach(element => {
+            observer.observe(element);
         });
-    </script>
-</body>
-</html>
+
+        // Ajuste del navbar "scrolled" (si se necesita, ya que la página puede ser más corta)
+        const navbar = document.querySelector('.navbar-custom');
+        if (navbar) {
+            // Al cargar la página, añade la clase 'scrolled' si no es la sección hero
+            // o si la página es de contenido fijo como esta.
+            navbar.classList.add('scrolled');
+        }
+    });
+</script>
+{% endblock %}

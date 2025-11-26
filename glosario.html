@@ -1,482 +1,455 @@
-<!DOCTYPE html>
-<html lang="es">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Bankario - Glosario de términos</title>
-    <link rel="icon" href="multimedia/logo.ico" type="image/x-icon"/>
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/css/bootstrap.min.css" rel="stylesheet">
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-icons/1.10.0/font/bootstrap-icons.min.css" rel="stylesheet">
-    <link href="css/dashboard.css" rel="stylesheet">
-    <link href="css/efecto_navbar_sin_sidebar.css" rel="stylesheet">
-    <style>
-        /* Estilos específicos para el glosario */
-        .glossary-item {
-            padding: 1.5rem;
-            border-radius: 12px;
-            background: var(--glass-bg);
-            backdrop-filter: blur(var(--backdrop-blur));
-            -webkit-backdrop-filter: blur(var(--backdrop-blur));
-            border: 1px solid var(--glass-border);
-            box-shadow: var(--shadow-light);
-            transition: all 0.3s ease;
-        }
+{% extends "templates/base.html" %}
 
-        .glossary-item:hover {
-            transform: translateY(-5px);
-            box-shadow: var(--shadow-medium);
-        }
+{% block title %}Bankario - Glosario de términos{% endblock %}
 
-        .glossary-item h5 {
-            color: var(--primary-color);
-            margin-bottom: 0.75rem;
-            font-weight: bold;
-        }
+{% block extra_css %}
+<link href="css/dashboard.css" rel="stylesheet">
+<link href="css/efecto_navbar_sin_sidebar.css" rel="stylesheet">
+<style>
+    /* Estilos específicos para el glosario */
+    .glossary-item {
+        padding: 1.5rem;
+        border-radius: 12px;
+        background: var(--glass-bg);
+        backdrop-filter: blur(var(--backdrop-blur));
+        -webkit-backdrop-filter: blur(var(--backdrop-blur));
+        border: 1px solid var(--glass-border);
+        box-shadow: var(--shadow-light);
+        transition: all 0.3s ease;
+    }
 
-        .glossary-item p {
-            color: var(--text-dark);
-            line-height: 1.6;
-        }
+    .glossary-item:hover {
+        transform: translateY(-5px);
+        box-shadow: var(--shadow-medium);
+    }
 
-        .search-bar-container {
-            margin-bottom: 2rem;
-            position: relative; /* para posicionar el indicador de filtrado */
-        }
+    .glossary-item h5 {
+        color: var(--primary-color);
+        margin-bottom: 0.75rem;
+        font-weight: bold;
+    }
 
-        #glossarySearchInput {
-            padding-right: 3rem; /* espacio para el icono de filtrado */
-        }
+    .glossary-item p {
+        color: var(--text-dark);
+        line-height: 1.6;
+    }
 
-        #filteringIndicator {
-            position: absolute;
-            right: 1rem;
-            top: 50%;
-            transform: translateY(-50%);
-            color: var(--primary-color);
-            font-size: 1.2rem;
-            display: none; /* oculto por defecto */
-        }
+    .search-bar-container {
+        margin-bottom: 2rem;
+        position: relative;
+        /* para posicionar el indicador de filtrado */
+    }
 
-        /* Diseño de cuadrícula para 3 columnas y espaciado */
+    #glossarySearchInput {
+        padding-right: 3rem;
+        /* espacio para el icono de filtrado */
+    }
+
+    #filteringIndicator {
+        position: absolute;
+        right: 1rem;
+        top: 50%;
+        transform: translateY(-50%);
+        color: var(--primary-color);
+        font-size: 1.2rem;
+        display: none;
+        /* oculto por defecto */
+    }
+
+    /* Diseño de cuadrícula para 3 columnas y espaciado */
+    #glossaryTermsContainer {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+        /* Ajuste para responsividad */
+        gap: 2em;
+        /* Espacio entre los conceptos */
+    }
+
+    /* Centrar el contenido principal */
+    .main-content {
+        margin-left: auto;
+        margin-right: auto;
+        max-width: 1200px;
+        padding-left: 1rem;
+        padding-right: 1rem;
+        margin-top: calc(var(--navbar-height) + 20px);
+    }
+
+    body {
+        overflow-x: hidden;
+    }
+
+    .glass-card,
+    .glass-modal {
+        position: relative;
+        z-index: 1;
+    }
+
+    .loader_p {
+        z-index: 999999999;
+    }
+
+    /* Ajustes responsivos para la cuadrícula */
+    @media (max-width: 992px) {
         #glossaryTermsContainer {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); /* Ajuste para responsividad */
-            gap: 2em; /* Espacio entre los conceptos */
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+        }
+    }
+
+    @media (max-width: 768px) {
+        #glossaryTermsContainer {
+            grid-template-columns: 1fr;
+            /* Una columna en pantallas muy pequeñas */
         }
 
-        /* Centrar el contenido principal */
         .main-content {
-            margin-left: auto;
-            margin-right: auto;
-            max-width: 1200px;
-            padding-left: 1rem;
-            padding-right: 1rem;
-            margin-top: calc(var(--navbar-height) + 20px);
+            padding-left: 0.5rem;
+            padding-right: 0.5rem;
         }
+    }
+</style>
+{% endblock %}
 
-        body {
-            overflow-x: hidden;
-        }
+{% block navbar_actions %}
+<button class="btn btn-glass" id="browserBackBtn">
+    <i class="bi bi-arrow-left-circle-fill me-2"></i>
+    <span class="d-none d-sm-inline">Regresar</span>
+</button>
+{% endblock %}
 
-        .glass-card, .glass-modal {
-            position: relative;
-            z-index: 1; 
-        }
+{% block content %}
+<main class="main-content">
+    <section id="glosario-completo-section" class="content-section">
+        <div class="glass-card p-4 fade-in">
+            <h2 class="mb-4 titulo-dashboard text-center">Glosario de términos financieros</h2>
+            <p class="lead text-muted text-center mb-5">
+                Encuentra rápidamente la definición de cualquier término financiero. Utiliza la barra de búsqueda para
+                filtrar los resultados.
+            </p>
 
-        .loader_p {
-            z-index: 999999999;
-        }
-
-        /* Ajustes responsivos para la cuadrícula */
-        @media (max-width: 992px) {
-            #glossaryTermsContainer {
-                grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-            }
-        }
-
-        @media (max-width: 768px) {
-            #glossaryTermsContainer {
-                grid-template-columns: 1fr; /* Una columna en pantallas muy pequeñas */
-            }
-            .main-content {
-                padding-left: 0.5rem;
-                padding-right: 0.5rem;
-            }
-        }
-    </style>
-</head>
-<body class="loader_bg">
-
-    <nav class="navbar fixed-top glass-nav">
-        <div class="container-fluid px-4">
-            <a class="navbar-brand d-flex align-items-center" href="{{ url_for('dashboard') }}">
-                <img src="multimedia/logo.png" alt="logo bankario" class="me-2" width="40" height="40">
-            </a>
-            
-            <div class="d-flex align-items-center gap-3">
-                
-                <button class="btn btn-glass" id="browserBackBtn">
-                    <i class="bi bi-arrow-left-circle-fill me-2"></i>
-                    <span class="d-none d-sm-inline">Regresar</span>
+            <div class="recommendations-button-container">
+                <button id="recommendationsBtn" class="btn btn-primary btn-lg rounded-pill shadow-lg">
+                    <i class="bi bi-lightbulb-fill me-2"></i>
+                    Ver consejos de gestión
                 </button>
-
-                <button class="btn btn-glass" id="themeToggle" aria-label="toggle theme">
-                    <i class="bi bi-sun-fill" id="themeIcon"></i>
-                </button>
-                
-                <div class="position-relative">
-                    <button class="btn btn-glass d-flex align-items-center" id="userBtn" aria-expanded="false" aria-controls="userDropdown">
-                        <i class="bi bi-person-fill d-md-none"></i>
-                        <span class="d-none d-md-inline">{{ usuario.nombres.split(' ')[0] }} {{ usuario.apellidos.split(' ')[0] }}</span>
-                    </button>
-                    
-                    <div class="user-dropdown glass-panel" id="userDropdown">
-                        <div class="p-3">
-                            <div class="text-center mb-3">
-                                <h6 class="mb-1">{{ usuario.nombres }} {{ usuario.apellidos }}</h6>
-                                <small class="mb-1">{{ usuario.correo }}</small>
-                            </div>
-                            <hr>
-                            <div class="d-grid gap-2">
-                                <button class="btn btn-outline-danger btn-sm" id="logoutBtn">
-                                    <i class="bi bi-box-arrow-right me-2"></i>Cerrar sesión
-                                </button>
-                            </div>
-                        </div>
-                    </div>
-                </div>
             </div>
-        </div>
-    </nav>
-
-    <!-- Sección: Loader de carga -->
-    <div class="loader_p">
-        <div class="loader">    
-            <span class="loader-text">Cargando</span>
-            <span class="load"></span>
-        </div>
-    </div>
-
-    <!-- Sección: Contenido principal del glosario -->
-    <main class="main-content">
-        <section id="glosario-completo-section" class="content-section">
-            <div class="glass-card p-4 fade-in">
-                <h2 class="mb-4 titulo-dashboard text-center">Glosario de términos financieros</h2>
-                <p class="lead text-muted text-center mb-5">
-                    Encuentra rápidamente la definición de cualquier término financiero. Utiliza la barra de búsqueda para filtrar los resultados.
-                </p>
-
-                <div class="recommendations-button-container">
-                    <button id="recommendationsBtn" class="btn btn-primary btn-lg rounded-pill shadow-lg">
-                        <i class="bi bi-lightbulb-fill me-2"></i>
-                        Ver consejos de gestión
-                    </button>
-                </div>
-                <div class="search-bar-container mb-5">
+            <div class="search-bar-container mb-5">
 
                 <!-- Sección: Barra de búsqueda -->
                 <div class="search-bar-container mb-5">
-                    <input type="text" id="glossarySearchInput" class="form-control glass-input form-control-lg" placeholder="Buscar término...">
+                    <input type="text" id="glossarySearchInput" class="form-control glass-input form-control-lg"
+                        placeholder="Buscar término...">
                     <i class="bi bi-funnel-fill" id="filteringIndicator" title="Filtrando resultados"></i>
-                </div>   
+                </div>
 
                 <!-- Sección: Lista de términos del glosario -->
                 <div id="glossaryTermsContainer">
                     <div class="glossary-item" data-term="activo">
                         <h5>Activo</h5>
-                        <p>Un recurso económico que posee una persona o empresa y que se espera que genere beneficios económicos futuros. Puede ser tangible (propiedades, efectivo) o intangible (patentes, marcas).</p>
+                        <p>Un recurso económico que posee una persona o empresa y que se espera que genere beneficios
+                            económicos futuros. Puede ser tangible (propiedades, efectivo) o intangible (patentes,
+                            marcas).</p>
                     </div>
                     <div class="glossary-item" data-term="pasivo">
                         <h5>Pasivo</h5>
-                        <p>Una obligación financiera presente de una persona o empresa que debe ser pagada en el futuro. Representa deudas y compromisos, como préstamos bancarios o hipotecas.</p>
+                        <p>Una obligación financiera presente de una persona o empresa que debe ser pagada en el futuro.
+                            Representa deudas y compromisos, como préstamos bancarios o hipotecas.</p>
                     </div>
                     <div class="glossary-item" data-term="capital">
                         <h5>Capital</h5>
-                        <p>Los fondos y activos que posee una persona o empresa. Es la diferencia entre activos y pasivos, representando la inversión de los propietarios o el patrimonio neto.</p>
+                        <p>Los fondos y activos que posee una persona o empresa. Es la diferencia entre activos y
+                            pasivos, representando la inversión de los propietarios o el patrimonio neto.</p>
                     </div>
                     <div class="glossary-item" data-term="inflacion">
                         <h5>Inflación</h5>
-                        <p>El aumento generalizado y sostenido de los precios de bienes y servicios en una economía durante un período de tiempo, disminuyendo el poder adquisitivo de la moneda.</p>
+                        <p>El aumento generalizado y sostenido de los precios de bienes y servicios en una economía
+                            durante un período de tiempo, disminuyendo el poder adquisitivo de la moneda.</p>
                     </div>
                     <div class="glossary-item" data-term="interes">
                         <h5>Interés</h5>
-                        <p>El costo de pedir dinero prestado o la recompensa por prestarlo. Se expresa como un porcentaje del capital principal y puede ser simple o compuesto.</p>
+                        <p>El costo de pedir dinero prestado o la recompensa por prestarlo. Se expresa como un
+                            porcentaje del capital principal y puede ser simple o compuesto.</p>
                     </div>
                     <div class="glossary-item" data-term="presupuesto">
                         <h5>Presupuesto</h5>
-                        <p>Un plan detallado de ingresos y gastos para un período futuro. Ayuda a controlar finanzas, asignar recursos y alcanzar objetivos económicos.</p>
+                        <p>Un plan detallado de ingresos y gastos para un período futuro. Ayuda a controlar finanzas,
+                            asignar recursos y alcanzar objetivos económicos.</p>
                     </div>
                     <div class="glossary-item" data-term="diversificacion">
                         <h5>Diversificación</h5>
-                        <p>Estrategia de inversión para reducir el riesgo al invertir en una variedad de activos diferentes, compensando pérdidas de uno con ganancias de otro.</p>
+                        <p>Estrategia de inversión para reducir el riesgo al invertir en una variedad de activos
+                            diferentes, compensando pérdidas de uno con ganancias de otro.</p>
                     </div>
                     <div class="glossary-item" data-term="ahorro">
                         <h5>Ahorro</h5>
-                        <p>La parte del ingreso que no se gasta y se reserva para uso futuro. Fundamental para la estabilidad financiera y metas a largo plazo.</p>
+                        <p>La parte del ingreso que no se gasta y se reserva para uso futuro. Fundamental para la
+                            estabilidad financiera y metas a largo plazo.</p>
                     </div>
                     <div class="glossary-item" data-term="inversion">
                         <h5>Inversión</h5>
-                        <p>La acción de colocar dinero en un activo o proyecto con la expectativa de obtener una ganancia futura. Implica riesgo y potencial de rendimiento.</p>
+                        <p>La acción de colocar dinero en un activo o proyecto con la expectativa de obtener una
+                            ganancia futura. Implica riesgo y potencial de rendimiento.</p>
                     </div>
                     <div class="glossary-item" data-term="credito">
                         <h5>Crédito</h5>
-                        <p>La capacidad de una persona o entidad para pedir dinero prestado o adquirir bienes y servicios con la promesa de pagarlos en el futuro.</p>
+                        <p>La capacidad de una persona o entidad para pedir dinero prestado o adquirir bienes y
+                            servicios con la promesa de pagarlos en el futuro.</p>
                     </div>
                     <div class="glossary-item" data-term="deuda">
                         <h5>Deuda</h5>
-                        <p>Una obligación monetaria que una persona o entidad tiene con otra. Es el resultado de pedir dinero prestado y debe ser pagada con intereses.</p>
+                        <p>Una obligación monetaria que una persona o entidad tiene con otra. Es el resultado de pedir
+                            dinero prestado y debe ser pagada con intereses.</p>
                     </div>
                     <div class="glossary-item" data-term="tasa de interes">
                         <h5>Tasa de interés</h5>
-                        <p>El porcentaje del capital que se cobra por el uso del dinero prestado o se paga por el dinero ahorrado o invertido.</p>
+                        <p>El porcentaje del capital que se cobra por el uso del dinero prestado o se paga por el dinero
+                            ahorrado o invertido.</p>
                     </div>
                     <div class="glossary-item" data-term="rentabilidad">
                         <h5>Rentabilidad</h5>
-                        <p>La medida de la ganancia o el retorno obtenido de una inversión en relación con el capital invertido.</p>
+                        <p>La medida de la ganancia o el retorno obtenido de una inversión en relación con el capital
+                            invertido.</p>
                     </div>
                     <div class="glossary-item" data-term="liquidez">
                         <h5>Liquidez</h5>
-                        <p>La facilidad con la que un activo puede convertirse en efectivo sin una pérdida significativa de valor.</p>
+                        <p>La facilidad con la que un activo puede convertirse en efectivo sin una pérdida significativa
+                            de valor.</p>
                     </div>
                     <div class="glossary-item" data-term="presupuesto familiar">
                         <h5>Presupuesto familiar</h5>
-                        <p>Un plan financiero que detalla los ingresos y gastos de un hogar durante un período específico para gestionar el dinero de manera efectiva.</p>
+                        <p>Un plan financiero que detalla los ingresos y gastos de un hogar durante un período
+                            específico para gestionar el dinero de manera efectiva.</p>
                     </div>
                     <div class="glossary-item" data-term="fondo de emergencia">
                         <h5>Fondo de emergencia</h5>
-                        <p>Dinero ahorrado y reservado para cubrir gastos inesperados, como pérdida de empleo, emergencias médicas o reparaciones urgentes.</p>
+                        <p>Dinero ahorrado y reservado para cubrir gastos inesperados, como pérdida de empleo,
+                            emergencias médicas o reparaciones urgentes.</p>
                     </div>
                     <div class="glossary-item" data-term="amortizacion">
                         <h5>Amortización</h5>
-                        <p>El proceso de reducir una deuda a través de pagos regulares que cubren tanto el capital como los intereses a lo largo del tiempo.</p>
+                        <p>El proceso de reducir una deuda a través de pagos regulares que cubren tanto el capital como
+                            los intereses a lo largo del tiempo.</p>
                     </div>
                     <div class="glossary-item" data-term="bolsa de valores">
                         <h5>Bolsa de valores</h5>
-                        <p>Un mercado donde se compran y venden acciones de empresas, bonos y otros instrumentos financieros.</p>
+                        <p>Un mercado donde se compran y venden acciones de empresas, bonos y otros instrumentos
+                            financieros.</p>
                     </div>
                     <div class="glossary-item" data-term="accion">
                         <h5>Acción</h5>
-                        <p>Una unidad de propiedad en una empresa. Representa una parte proporcional del capital social de la compañía.</p>
+                        <p>Una unidad de propiedad en una empresa. Representa una parte proporcional del capital social
+                            de la compañía.</p>
                     </div>
                     <div class="glossary-item" data-term="bono">
                         <h5>Bono</h5>
-                        <p>Un instrumento de deuda mediante el cual un inversor presta dinero a una entidad (gobierno o empresa) a cambio de pagos de interés periódicos y la devolución del capital al vencimiento.</p>
+                        <p>Un instrumento de deuda mediante el cual un inversor presta dinero a una entidad (gobierno o
+                            empresa) a cambio de pagos de interés periódicos y la devolución del capital al vencimiento.
+                        </p>
                     </div>
                     <div class="glossary-item" data-term="dividendo">
                         <h5>Dividendo</h5>
-                        <p>Una parte de las ganancias de una empresa que se distribuye a sus accionistas, generalmente en efectivo.</p>
+                        <p>Una parte de las ganancias de una empresa que se distribuye a sus accionistas, generalmente
+                            en efectivo.</p>
                     </div>
                     <div class="glossary-item" data-term="cartera de inversion">
                         <h5>Cartera de inversión</h5>
-                        <p>El conjunto de activos financieros (acciones, bonos, fondos) que posee un inversor, diseñado para cumplir sus objetivos financieros.</p>
+                        <p>El conjunto de activos financieros (acciones, bonos, fondos) que posee un inversor, diseñado
+                            para cumplir sus objetivos financieros.</p>
                     </div>
                     <div class="glossary-item" data-term="riesgo financiero">
                         <h5>Riesgo financiero</h5>
-                        <p>La posibilidad de perder dinero en una inversión o de no poder cumplir con las obligaciones financieras.</p>
+                        <p>La posibilidad de perder dinero en una inversión o de no poder cumplir con las obligaciones
+                            financieras.</p>
                     </div>
                     <div class="glossary-item" data-term="hipoteca">
                         <h5>Hipoteca</h5>
-                        <p>Un préstamo utilizado para comprar una propiedad, donde la propiedad misma sirve como garantía del préstamo.</p>
+                        <p>Un préstamo utilizado para comprar una propiedad, donde la propiedad misma sirve como
+                            garantía del préstamo.</p>
                     </div>
                     <div class="glossary-item" data-term="impuesto">
                         <h5>Impuesto</h5>
-                        <p>Una contribución obligatoria de dinero al gobierno para financiar gastos públicos y servicios.</p>
+                        <p>Una contribución obligatoria de dinero al gobierno para financiar gastos públicos y
+                            servicios.</p>
                     </div>
                     <div class="glossary-item" data-term="pension">
                         <h5>Pensión</h5>
-                        <p>Un pago regular recibido por una persona después de su jubilación, generalmente de un fondo de pensiones o del gobierno.</p>
+                        <p>Un pago regular recibido por una persona después de su jubilación, generalmente de un fondo
+                            de pensiones o del gobierno.</p>
                     </div>
                     <div class="glossary-item" data-term="seguro">
                         <h5>Seguro</h5>
-                        <p>Un contrato en el que una persona o entidad (asegurado) paga primas a una compañía (aseguradora) a cambio de protección financiera contra pérdidas futuras.</p>
+                        <p>Un contrato en el que una persona o entidad (asegurado) paga primas a una compañía
+                            (aseguradora) a cambio de protección financiera contra pérdidas futuras.</p>
                     </div>
                     <div class="glossary-item" data-term="tipo de cambio">
                         <h5>Tipo de cambio</h5>
-                        <p>El valor de una moneda en relación con otra. Indica cuánto de una moneda se necesita para comprar una unidad de otra.</p>
+                        <p>El valor de una moneda en relación con otra. Indica cuánto de una moneda se necesita para
+                            comprar una unidad de otra.</p>
                     </div>
                     <div class="glossary-item" data-term="producto interno bruto">
                         <h5>Producto Interno Bruto (PIB)</h5>
-                        <p>El valor total de todos los bienes y servicios finales producidos en un país durante un período específico. Es un indicador clave de la salud económica.</p>
+                        <p>El valor total de todos los bienes y servicios finales producidos en un país durante un
+                            período específico. Es un indicador clave de la salud económica.</p>
                     </div>
                     <div class="glossary-item" data-term="recesion">
                         <h5>Recesión</h5>
-                        <p>Una disminución significativa y prolongada de la actividad económica, caracterizada por una caída del PIB, aumento del desempleo y reducción del consumo.</p>
+                        <p>Una disminución significativa y prolongada de la actividad económica, caracterizada por una
+                            caída del PIB, aumento del desempleo y reducción del consumo.</p>
                     </div>
                     <div class="glossary-item" data-term="banco central">
                         <h5>Banco Central</h5>
-                        <p>Una institución financiera pública que gestiona la moneda de un país, la oferta monetaria y las tasas de interés, y supervisa el sistema bancario comercial.</p>
+                        <p>Una institución financiera pública que gestiona la moneda de un país, la oferta monetaria y
+                            las tasas de interés, y supervisa el sistema bancario comercial.</p>
                     </div>
                     <div class="glossary-item" data-term="mercado de valores">
                         <h5>Mercado de valores</h5>
-                        <p>Un mercado donde se negocian instrumentos financieros como acciones y bonos. Incluye bolsas de valores y mercados extrabursátiles (OTC).</p>
+                        <p>Un mercado donde se negocian instrumentos financieros como acciones y bonos. Incluye bolsas
+                            de valores y mercados extrabursátiles (OTC).</p>
                     </div>
                     <div class="glossary-item" data-term="derivado financiero">
                         <h5>Derivado financiero</h5>
-                        <p>Un contrato cuyo valor se deriva del rendimiento de un activo subyacente, como acciones, bonos, materias primas o tasas de interés.</p>
+                        <p>Un contrato cuyo valor se deriva del rendimiento de un activo subyacente, como acciones,
+                            bonos, materias primas o tasas de interés.</p>
                     </div>
                     <div class="glossary-item" data-term="apalancamiento">
                         <h5>Apalancamiento</h5>
-                        <p>El uso de dinero prestado (deuda) para financiar una inversión, con el objetivo de aumentar el rendimiento potencial de la inversión. Aumenta tanto las ganancias como las pérdidas.</p>
+                        <p>El uso de dinero prestado (deuda) para financiar una inversión, con el objetivo de aumentar
+                            el rendimiento potencial de la inversión. Aumenta tanto las ganancias como las pérdidas.</p>
                     </div>
                     <div class="glossary-item" data-term="depreciacion">
                         <h5>Depreciación</h5>
-                        <p>La disminución del valor de un activo a lo largo del tiempo debido al uso, obsolescencia o desgaste.</p>
+                        <p>La disminución del valor de un activo a lo largo del tiempo debido al uso, obsolescencia o
+                            desgaste.</p>
                     </div>
                     <div class="glossary-item" data-term="apreciacion">
                         <h5>Apreciación</h5>
-                        <p>El aumento del valor de un activo con el tiempo, a menudo debido a la demanda del mercado o mejoras económicas.</p>
+                        <p>El aumento del valor de un activo con el tiempo, a menudo debido a la demanda del mercado o
+                            mejoras económicas.</p>
                     </div>
                     <div class="glossary-item" data-term="capital de trabajo">
                         <h5>Capital de trabajo</h5>
-                        <p>La diferencia entre los activos circulantes y los pasivos circulantes de una empresa, indicando su liquidez a corto plazo.</p>
+                        <p>La diferencia entre los activos circulantes y los pasivos circulantes de una empresa,
+                            indicando su liquidez a corto plazo.</p>
                     </div>
                     <div class="glossary-item" data-term="flujo de caja">
                         <h5>Flujo de caja</h5>
-                        <p>El movimiento de dinero en efectivo que entra y sale de una empresa o cuenta personal durante un período determinado.</p>
+                        <p>El movimiento de dinero en efectivo que entra y sale de una empresa o cuenta personal durante
+                            un período determinado.</p>
                     </div>
                     <div class="glossary-item" data-term="rendimiento sobre la inversion">
                         <h5>Rendimiento sobre la inversión (ROI)</h5>
-                        <p>Una métrica utilizada para evaluar la eficiencia o rentabilidad de una inversión, calculada como la ganancia dividida por el costo de la inversión.</p>
+                        <p>Una métrica utilizada para evaluar la eficiencia o rentabilidad de una inversión, calculada
+                            como la ganancia dividida por el costo de la inversión.</p>
                     </div>
                     <div class="glossary-item" data-term="mercado alcista">
                         <h5>Mercado alcista (Bull Market)</h5>
-                        <p>Un período en el que los precios de los activos en un mercado (como la bolsa de valores) están subiendo o se espera que suban.</p>
+                        <p>Un período en el que los precios de los activos en un mercado (como la bolsa de valores)
+                            están subiendo o se espera que suban.</p>
                     </div>
                     <div class="glossary-item" data-term="mercado bajista">
                         <h5>Mercado bajista (Bear Market)</h5>
-                        <p>Un período en el que los precios de los activos en un mercado están cayendo o se espera que caigan, a menudo asociado con pesimismo económico.</p>
+                        <p>Un período en el que los precios de los activos en un mercado están cayendo o se espera que
+                            caigan, a menudo asociado con pesimismo económico.</p>
                     </div>
                     <div class="glossary-item" data-term="indice bursatil">
                         <h5>Índice bursátil</h5>
-                        <p>Una medida estadística que representa el rendimiento de un segmento específico del mercado de valores, como el S&P 500 o el Dow Jones.</p>
+                        <p>Una medida estadística que representa el rendimiento de un segmento específico del mercado de
+                            valores, como el S&P 500 o el Dow Jones.</p>
                     </div>
                     <div class="glossary-item" data-term="arbitraje">
                         <h5>Arbitraje</h5>
-                        <p>La práctica de aprovechar las diferencias de precios entre dos o más mercados para obtener ganancias sin riesgo, comprando y vendiendo simultáneamente el mismo activo.</p>
+                        <p>La práctica de aprovechar las diferencias de precios entre dos o más mercados para obtener
+                            ganancias sin riesgo, comprando y vendiendo simultáneamente el mismo activo.</p>
                     </div>
                     <div class="glossary-item" data-term="volatilidad">
                         <h5>Volatilidad</h5>
-                        <p>La medida de la rapidez y magnitud con la que el precio de un activo financiero fluctúa. Una alta volatilidad indica mayores cambios de precio.</p>
+                        <p>La medida de la rapidez y magnitud con la que el precio de un activo financiero fluctúa. Una
+                            alta volatilidad indica mayores cambios de precio.</p>
                     </div>
                     <div class="glossary-item" data-term="spread">
                         <h5>Spread (Diferencial)</h5>
-                        <p>La diferencia entre el precio de compra (bid) y el precio de venta (ask) de un activo financiero.</p>
+                        <p>La diferencia entre el precio de compra (bid) y el precio de venta (ask) de un activo
+                            financiero.</p>
                     </div>
                     <div class="glossary-item" data-term="apalancamiento financiero">
                         <h5>Apalancamiento financiero</h5>
-                        <p>El uso de deuda para aumentar el rendimiento potencial de una inversión. Si bien puede magnificar las ganancias, también amplifica las pérdidas.</p>
+                        <p>El uso de deuda para aumentar el rendimiento potencial de una inversión. Si bien puede
+                            magnificar las ganancias, también amplifica las pérdidas.</p>
                     </div>
                     <div class="glossary-item" data-term="default">
                         <h5>Default (Incumplimiento)</h5>
-                        <p>La falta de pago de una deuda o el incumplimiento de las obligaciones contractuales de un préstamo o bono.</p>
+                        <p>La falta de pago de una deuda o el incumplimiento de las obligaciones contractuales de un
+                            préstamo o bono.</p>
                     </div>
                     <div class="glossary-item" data-term="rating de credito">
                         <h5>Rating de crédito</h5>
-                        <p>Una evaluación de la solvencia de un individuo, empresa o gobierno, que indica su capacidad para cumplir con sus obligaciones financieras.</p>
+                        <p>Una evaluación de la solvencia de un individuo, empresa o gobierno, que indica su capacidad
+                            para cumplir con sus obligaciones financieras.</p>
                     </div>
                     <div class="glossary-item" data-term="capitalizacion de mercado">
                         <h5>Capitalización de mercado</h5>
-                        <p>El valor total de las acciones en circulación de una empresa, calculado multiplicando el precio actual de la acción por el número total de acciones.</p>
+                        <p>El valor total de las acciones en circulación de una empresa, calculado multiplicando el
+                            precio actual de la acción por el número total de acciones.</p>
                     </div>
                     <div class="glossary-item" data-term="fondos mutuos">
                         <h5>Fondos mutuos</h5>
-                        <p>Un tipo de vehículo de inversión que agrupa el dinero de múltiples inversores para invertir en una cartera diversificada de acciones, bonos u otros activos.</p>
+                        <p>Un tipo de vehículo de inversión que agrupa el dinero de múltiples inversores para invertir
+                            en una cartera diversificada de acciones, bonos u otros activos.</p>
                     </div>
                     <div class="glossary-item" data-term="etf">
                         <h5>ETF (Exchange Traded Fund)</h5>
-                        <p>Un fondo de inversión que se negocia en bolsas de valores, similar a las acciones. Ofrece diversificación y liquidez.</p>
+                        <p>Un fondo de inversión que se negocia en bolsas de valores, similar a las acciones. Ofrece
+                            diversificación y liquidez.</p>
                     </div>
                     <div class="glossary-item" data-term="opcion financiera">
                         <h5>Opción financiera</h5>
-                        <p>Un contrato que da al comprador el derecho, pero no la obligación, de comprar o vender un activo subyacente a un precio específico en una fecha futura.</p>
+                        <p>Un contrato que da al comprador el derecho, pero no la obligación, de comprar o vender un
+                            activo subyacente a un precio específico en una fecha futura.</p>
                     </div>
                     <div class="glossary-item" data-term="futuros">
                         <h5>Futuros</h5>
-                        <p>Un contrato estandarizado para comprar o vender un activo a un precio predeterminado en una fecha futura específica. Se utilizan para cobertura o especulación.</p>
+                        <p>Un contrato estandarizado para comprar o vender un activo a un precio predeterminado en una
+                            fecha futura específica. Se utilizan para cobertura o especulación.</p>
                     </div>
                     <div class="glossary-item" data-term="commodities">
                         <h5>Commodities (Materias Primas)</h5>
-                        <p>Bienes físicos básicos que se utilizan en la producción de otros bienes, como petróleo, oro, plata, productos agrícolas, etc.</p>
+                        <p>Bienes físicos básicos que se utilizan en la producción de otros bienes, como petróleo, oro,
+                            plata, productos agrícolas, etc.</p>
                     </div>
                     <div class="glossary-item" data-term="divisa">
                         <h5>Divisa</h5>
-                        <p>Moneda extranjera. Se refiere a las monedas de otros países que se utilizan en el comercio internacional.</p>
+                        <p>Moneda extranjera. Se refiere a las monedas de otros países que se utilizan en el comercio
+                            internacional.</p>
                     </div>
                     <div class="glossary-item" data-term="balanza de pagos">
                         <h5>Balanza de pagos</h5>
-                        <p>Un registro de todas las transacciones económicas entre los residentes de un país y el resto del mundo durante un período determinado.</p>
+                        <p>Un registro de todas las transacciones económicas entre los residentes de un país y el resto
+                            del mundo durante un período determinado.</p>
                     </div>
                     <div class="glossary-item" data-term="deficit">
                         <h5>Déficit</h5>
-                        <p>Situación en la que los gastos superan a los ingresos, ya sea en un presupuesto gubernamental, una empresa o una cuenta personal.</p>
+                        <p>Situación en la que los gastos superan a los ingresos, ya sea en un presupuesto
+                            gubernamental, una empresa o una cuenta personal.</p>
                     </div>
                     <div class="glossary-item" data-term="superavit">
                         <h5>Superávit</h5>
-                        <p>Situación en la que los ingresos superan a los gastos, lo que resulta en un exceso de fondos.</p>
+                        <p>Situación en la que los ingresos superan a los gastos, lo que resulta en un exceso de fondos.
+                        </p>
                     </div>
                 </div>
             </div>
-        </section>
-    </main>
+    </section>
+</main>
+{% endblock %}
 
-    <!-- Sección: Modales (copiados de simulador_ahorro.html para consistencia) -->
-    <div class="modal fade" id="successMessageModal" tabindex="-1" aria-labelledby="successMessageModalLabel" aria-hidden="true">
-        <div class="modal-dialog modal-dialog-centered">
-            <div class="modal-content glass-modal">
-                <div class="modal-header border-0">
-                    <h5 class="modal-title" id="successMessageModalLabel">Éxito</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Cerrar"></button>
-                </div>
-                <div class="modal-body">
-                    <p id="successMessageModalBody"></p>
-                </div>
-                <div class="modal-footer border-0">
-                    <button type="button" class="btn btn-primary" data-bs-dismiss="modal">Aceptar</button>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <div class="modal fade" id="errorMessageModal" tabindex="-1" aria-labelledby="errorMessageModalLabel" aria-hidden="true">
-        <div class="modal-dialog modal-dialog-centered">
-            <div class="modal-content glass-modal">
-                <div class="modal-header border-0">
-                    <h5 class="modal-title" id="errorMessageModalLabel">Error</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="cerrar"></button>
-                </div>
-                <div class="modal-body">
-                    <p id="errorMessageModalBody"></p>
-                </div>
-                <div class="modal-footer border-0">
-                    <button type="button" class="btn btn-danger" data-bs-dismiss="modal">cerrar</button>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <div class="modal fade" id="logoutModal" tabindex="-1" aria-labelledby="logoutModalLabel" aria-hidden="true">
-        <div class="modal-dialog modal-dialog-centered">
-            <div class="modal-content glass-modal">
-                <div class="modal-header border-0">
-                    <h5 class="modal-title" id="logoutModalLabel">Cerrar sesión</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="cerrar"></button>
-                </div>
-                <div class="modal-body">
-                    <p>¿Estás seguro/a de que deseas cerrar sesión?</p>
-                </div>
-                <div class="modal-footer border-0">
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
-                    <button type="button" class="btn btn-danger" id="confirmLogout">Cerrar sesión</button>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <div class="modal fade" id="recommendationsModal" tabindex="-1" aria-labelledby="recommendationsModalLabel" aria-hidden="true">
+{% block extra_modals %}
+<div class="modal fade" id="recommendationsModal" tabindex="-1" aria-labelledby="recommendationsModalLabel"
+    aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered modal-lg">
         <div class="modal-content glass-modal">
             <div class="modal-header border-0">
-                <h5 class="modal-title" id="recommendationsModalLabel"><i class="bi bi-lightbulb-fill me-2"></i>Recomendaciones de gestión</h5>
+                <h5 class="modal-title" id="recommendationsModalLabel"><i
+                        class="bi bi-lightbulb-fill me-2"></i>Recomendaciones de gestión</h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Cerrar"></button>
             </div>
             <div class="modal-body">
@@ -492,7 +465,9 @@
                             </div>
                             <div class="rec-content">
                                 <strong>Crea un presupuesto</strong>
-                                <p>Define tus ingresos y gastos. Asigna una parte fija al ahorro. Usa el <a href="{{ url_for('simulador_presupuesto_personal') }}">simulador</a> para empezar.</p>
+                                <p>Define tus ingresos y gastos. Asigna una parte fija al ahorro. Usa el <a
+                                        href="{{ url_for('simulador_presupuesto_personal') }}">simulador</a> para
+                                    empezar.</p>
                             </div>
                         </div>
                     </div>
@@ -504,7 +479,8 @@
                             </div>
                             <div class="rec-content">
                                 <strong>Fondo de emergencia</strong>
-                                <p>Ahorra de 3 a 6 meses de tus gastos fijos. Este dinero debe ser accesible (aprende sobre <a href="#" class="glossary-link" data-term="liquidez">liquidez</a>).</p>
+                                <p>Ahorra de 3 a 6 meses de tus gastos fijos. Este dinero debe ser accesible (aprende
+                                    sobre <a href="#" class="glossary-link" data-term="liquidez">liquidez</a>).</p>
                             </div>
                         </div>
                     </div>
@@ -516,7 +492,10 @@
                             </div>
                             <div class="rec-content">
                                 <strong>Paga tus deudas</strong>
-                                <p>Prioriza las deudas con mayor <a href="#" class="glossary-link" data-term="tasa de interes">tasa de interés</a>. Usa la <a href="{{ url_for('calculadora_deuda') }}">calculadora de deuda</a> para crear un plan.</p>
+                                <p>Prioriza las deudas con mayor <a href="#" class="glossary-link"
+                                        data-term="tasa de interes">tasa de interés</a>. Usa la <a
+                                        href="{{ url_for('calculadora_deuda') }}">calculadora de deuda</a> para crear un
+                                    plan.</p>
                             </div>
                         </div>
                     </div>
@@ -528,7 +507,10 @@
                             </div>
                             <div class="rec-content">
                                 <strong>Diversifica tus inversiones</strong>
-                                <p>No pongas todo en un solo lugar (revisa <a href="#" class="glossary-link" data-term="diversificacion">diversificación</a>). Reparte entre <a href="#" class="glossary-link" data-term="accion">acciones</a> o <a href="#" class="glossary-link" data-term="bono">bonos</a>.</p>
+                                <p>No pongas todo en un solo lugar (revisa <a href="#" class="glossary-link"
+                                        data-term="diversificacion">diversificación</a>). Reparte entre <a href="#"
+                                        class="glossary-link" data-term="accion">acciones</a> o <a href="#"
+                                        class="glossary-link" data-term="bono">bonos</a>.</p>
                             </div>
                         </div>
                     </div>
@@ -540,7 +522,9 @@
                             </div>
                             <div class="rec-content">
                                 <strong>Define metas claras</strong>
-                                <p>Tener un objetivo claro (un <a href="{{ url_for('simulador_ahorro') }}">viaje</a> o tu <a href="{{ url_for('simulador_retiro_jubilacion') }}">jubilación</a>) te ayuda a mantener la disciplina.</p>
+                                <p>Tener un objetivo claro (un <a href="{{ url_for('simulador_ahorro') }}">viaje</a> o
+                                    tu <a href="{{ url_for('simulador_retiro_jubilacion') }}">jubilación</a>) te ayuda a
+                                    mantener la disciplina.</p>
                             </div>
                         </div>
                     </div>
@@ -552,19 +536,21 @@
                             </div>
                             <div class="rec-content">
                                 <strong>Págate a ti primero</strong>
-                                <p>Considera tu <a href="#" class="glossary-link" data-term="ahorro">ahorro</a> como un gasto fijo más. Automatízalo al recibir tus ingresos.</p>
+                                <p>Considera tu <a href="#" class="glossary-link" data-term="ahorro">ahorro</a> como un
+                                    gasto fijo más. Automatízalo al recibir tus ingresos.</p>
                             </div>
                         </div>
                     </div>
 
-                </div> </div>
+                </div>
+            </div>
             <div class="modal-footer border-0">
                 <button type="button" class="btn btn-primary" data-bs-dismiss="modal">¡Entendido!</button>
             </div>
         </div>
     </div>
-</div>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/js/bootstrap.bundle.min.js"></script>
-<script src="js/glosario.js"></script>
-</body>
-</html>
+    {% endblock %}
+
+    {% block extra_js %}
+    <script src="js/glosario.js"></script>
+    {% endblock %}
