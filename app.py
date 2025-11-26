@@ -15,27 +15,36 @@ app = Flask(__name__,
 
 app.secret_key = 'mercysecret'
 
-# --- CAMBIO: configuración de sqlalchemy ---
-# reemplaza pyodbc con flask_sqlalchemy
+# --- CONFIGURACIÓN DE LA BASE DE DATOS (HÍBRIDA) ---
 
-# configuración de la conexión a la base de datos para sql server
-DB_SERVER = '.'
-DB_DATABASE = 'bankario_db_v2' # asegúrate que sea el nombre correcto de tu bd
-DB_DRIVER = '{ODBC Driver 18 for SQL Server}' # asegúrate que este driver esté instalado
+# Intenta obtener la URL de la base de datos de las variables de entorno (Render)
+database_url = os.environ.get('DATABASE_URL')
 
-# codifica el driver para la url
-params = urllib.parse.quote_plus(
-    f"DRIVER={DB_DRIVER};"
-    f"SERVER={DB_SERVER};"
-    f"DATABASE={DB_DATABASE};"
-    f"trusted_connection=yes;"
-    f"TrustServerCertificate=yes;"
-)
+if database_url:
+    # === MODO PRODUCCIÓN (RENDER - POSTGRESQL) ===
+    # Render a veces entrega la URL con 'postgres://', pero SQLAlchemy necesita 'postgresql://'
+    if database_url.startswith("postgres://"):
+        database_url = database_url.replace("postgres://", "postgresql://", 1)
+    app.config['SQLALCHEMY_DATABASE_URI'] = database_url
+else:
+    # === MODO LOCAL (TU PC - SQL SERVER) ===
+    DB_SERVER = '.'
+    DB_DATABASE = 'bankario_db_v2'
+    DB_DRIVER = '{ODBC Driver 18 for SQL Server}'
+    
+    # Codifica los parámetros para la conexión local
+    params = urllib.parse.quote_plus(
+        f"DRIVER={DB_DRIVER};"
+        f"SERVER={DB_SERVER};"
+        f"DATABASE={DB_DATABASE};"
+        f"trusted_connection=yes;"
+        f"TrustServerCertificate=yes;"
+    )
+    app.config['SQLALCHEMY_DATABASE_URI'] = f"mssql+pyodbc:///?odbc_connect={params}"
 
-app.config['SQLALCHEMY_DATABASE_URI'] = f"mssql+pyodbc:///?odbc_connect={params}"
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 
-# inicializa la extensión de sqlalchemy
+# Inicializa la extensión de SQLAlchemy
 db = SQLAlchemy(app)
 
 # carpeta para subir imágenes de perfil (aunque no se usa en este ejemplo, se mantiene)
@@ -69,7 +78,7 @@ class Usuarios(db.Model):
     fecha_registro = db.Column(db.DateTime, nullable=False, default=datetime.utcnow)
     ultima_sesion = db.Column(db.DateTime)
     test_completado = db.Column(db.Boolean, nullable=False, default=False)
-    
+        
     # relación inversa con datosp
     datosp = db.relationship('DatosP', back_populates='usuario', lazy=True)
     # relación uno-a-muchos con resultados_test
